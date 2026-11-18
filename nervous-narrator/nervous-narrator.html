@@ -1,0 +1,627 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Nervous Narrator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@500;700&family=Inter:wght@400;600&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a polygraph readout. Question at the top, the needle trace and the spoken transcript in the main column, voice controls and calibration in a side column. */
+:root {
+  --paper: #f3f5f7;
+  --card: #ffffff;
+  --grid: #dbe2e8;
+  --ink: #14202b;
+  --muted: #5d6b78;
+  --line: #d3dbe2;
+  --needle: #c4302b;
+  --steady: #1d5c8c;
+  --mark: #fff1a8;
+  --display: "Familjen Grotesk", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #0e1419; --card: #151d24; --grid: #22303b; --ink: #e6edf3; --muted: #93a3b1; --line: #2a3742;
+    --needle: #ff6b5e; --steady: #6fb3e8; --mark: #4a4316; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--paper); color: var(--ink); font: 15px/1.5 var(--body);
+  padding: 24px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px));
+}
+.wrap { max-width: 1160px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+h1 { font: 700 clamp(32px, 6vw, 50px)/1 var(--display); margin: 0; letter-spacing: -0.02em; }
+h1 em { font-style: normal; color: var(--needle); display: inline-block; animation: tremble 2.4s infinite; }
+@keyframes tremble { 0%, 86%, 100% { transform: none; } 88% { transform: translateX(-1.5px) rotate(-1deg); } 90% { transform: translateX(1.5px) rotate(1deg); } 92% { transform: translateX(-1px); } 94% { transform: none; } }
+.tag { color: var(--muted); max-width: 56ch; margin: 6px 0 0; }
+.engine { display: grid; gap: 8px; justify-items: end; min-width: 0; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.engine .row { justify-content: end; }
+select, button, textarea, input { font: inherit; color: inherit; }
+select { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; min-width: 0; max-width: 100%; }
+button { border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+button.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+button.small { font-size: 13px; padding: 5px 10px; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+:is(button, select, textarea, input, .w):focus-visible { outline: 2px solid var(--needle); outline-offset: 2px; }
+.lbl { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.status { font: 12px/1.4 var(--mono); color: var(--muted); text-align: right; max-width: 460px; }
+.bar { width: 280px; max-width: 100%; height: 6px; background: var(--grid); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--needle); transition: width .2s; }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; align-items: start; }
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } .engine { justify-items: start; } .engine .row { justify-content: start; } .status { text-align: left; } }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.pad { padding: 18px; display: grid; gap: 14px; }
+
+.ask textarea { width: 100%; min-height: 64px; resize: vertical; font: 18px/1.4 var(--body); background: var(--paper); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+.presets { display: flex; gap: 6px; flex-wrap: wrap; }
+.presets button { font-weight: 400; font-size: 13px; padding: 5px 10px; border-radius: 999px; }
+.talk[aria-pressed="true"] { background: var(--needle); color: #fff; border-color: var(--needle); }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+
+.trace-wrap { position: relative; background: var(--paper); border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+canvas { display: block; width: 100%; height: 170px; }
+.trace-legend { position: absolute; top: 8px; left: 10px; font: 11px/1 var(--mono); color: var(--muted); }
+
+.answer { font: 500 clamp(20px, 3vw, 26px)/1.55 var(--display); min-height: 2.6em; overflow-wrap: anywhere; }
+.answer.placeholder { color: var(--muted); font-weight: 400; }
+.w { border-radius: 4px; cursor: pointer; padding: 0 1px; transition: background .15s; text-underline-offset: 6px; }
+.w.c1 { text-decoration: underline wavy color-mix(in srgb, var(--needle) 45%, transparent); text-decoration-thickness: 1.5px; }
+.w.c2 { color: color-mix(in srgb, var(--needle) 70%, var(--ink)); text-decoration: underline wavy var(--needle); text-decoration-thickness: 2px; }
+.w.c3 { color: var(--needle); text-decoration: underline wavy var(--needle); text-decoration-thickness: 2.5px; font-style: italic; }
+.w.speaking { background: var(--mark); }
+.w.sel { outline: 2px solid var(--steady); }
+
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.stat { background: var(--paper); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.stat b { display: block; font: 700 22px/1.1 var(--display); font-variant-numeric: tabular-nums; overflow-wrap: anywhere; }
+.stat span { font-size: 12px; color: var(--muted); }
+@media (max-width: 520px) { .stats { grid-template-columns: 1fr; } }
+
+.detail { background: var(--paper); border-radius: 8px; padding: 12px 14px; display: grid; gap: 8px; }
+.alts { display: grid; gap: 6px; }
+.alt { display: grid; grid-template-columns: minmax(0, 140px) 1fr 52px; gap: 10px; align-items: center; font: 13px/1.2 var(--mono); }
+.alt .tok { overflow: hidden; text-overflow: ellipsis; white-space: pre; }
+.alt .meter { height: 8px; background: var(--grid); border-radius: 4px; overflow: hidden; }
+.alt .meter i { display: block; height: 100%; background: var(--steady); }
+.alt.chosen .meter i { background: var(--needle); }
+.alt .pct { text-align: right; font-variant-numeric: tabular-nums; }
+
+aside { display: grid; gap: 16px; }
+.ctl { display: grid; gap: 6px; }
+.ctl input[type=range] { width: 100%; accent-color: var(--needle); }
+.ctl .val { font: 12px var(--mono); color: var(--muted); }
+.check { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+.check input { margin-top: 3px; accent-color: var(--needle); }
+.seg { display: grid; grid-template-columns: 1fr 1fr; border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; font-size: 13px; padding: 7px 8px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+.calib { width: 100%; border-collapse: collapse; font-size: 14px; }
+.calib td { padding: 6px 0; border-bottom: 1px solid var(--line); }
+.calib td:last-child { text-align: right; font: 600 14px var(--mono); font-variant-numeric: tabular-nums; }
+details summary { cursor: pointer; font-weight: 600; }
+details p, details li { font-size: 14px; color: var(--muted); }
+details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--card); padding: 8px 14px; border-radius: 6px; font-weight: 600; z-index: 10; }
+@media (prefers-reduced-motion: reduce) { h1 em { animation: none; } .bar > i, .w { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Nervous <em>Narrator</em></h1>
+      <p class="tag">Ask a question out loud. A small language model on your laptop answers, and its voice shakes where it isn't sure. Every word's confidence comes straight from the model's own probabilities.</p>
+    </div>
+    <div class="engine">
+      <div class="row">
+        <label for="llm" class="lbl">Brain</label>
+        <select id="llm">
+          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~450 MB</option>
+          <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.1 GB, knows more</option>
+        </select>
+      </div>
+      <div class="row">
+        <label for="voiceEngine" class="lbl">Voice</label>
+        <select id="voiceEngine">
+          <option value="kokoro">Kokoro neural voice · ~90 MB, wobbles</option>
+          <option value="browser">Browser voice · instant, no wobble</option>
+          <option value="off">Silent (text only)</option>
+        </select>
+        <button id="load" class="primary" type="button">Load models</button>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+      <div class="status" id="status">Models not loaded. Weights download once, then cache in your browser.</div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <main style="display:grid;gap:20px;min-width:0">
+      <section class="card pad ask" aria-label="Ask a question">
+        <label for="q" class="lbl">Your question</label>
+        <textarea id="q" placeholder="Who was Canada's 14th prime minister?"></textarea>
+        <div class="row">
+          <button type="button" id="ask" class="primary" disabled>Ask</button>
+          <button type="button" id="talk" class="talk" aria-pressed="false" disabled>Hold to talk</button>
+          <button type="button" id="stop" disabled>Stop voice</button>
+          <button type="button" id="replay" disabled>Replay</button>
+        </div>
+        <p class="hint">Hold the Space bar anywhere outside the text box to talk. Speech recognition (Whisper, ~80 MB) loads the first time you use it.</p>
+        <div class="presets" id="presets" aria-label="Example questions"></div>
+      </section>
+
+      <section class="card pad" aria-label="Answer" aria-live="polite">
+        <div class="trace-wrap">
+          <span class="trace-legend">CONFIDENCE PER WORD · 100% top, 0% bottom</span>
+          <canvas id="trace" aria-label="Confidence trace for each word of the answer" role="img"></canvas>
+        </div>
+        <div class="answer placeholder" id="answer">The answer appears here, shaded by how sure the model was of each word. Click any word to see what else it considered.</div>
+        <div class="stats">
+          <div class="stat"><b id="sOverall">–</b><span>overall confidence</span></div>
+          <div class="stat"><b id="sShaky">–</b><span>shakiest word</span></div>
+          <div class="stat"><b id="sTokens">–</b><span>tokens · decisions made</span></div>
+        </div>
+        <div class="detail" id="detail" hidden>
+          <span class="lbl" id="detailTitle"></span>
+          <div class="alts" id="alts"></div>
+          <p class="hint" id="detailNote"></p>
+        </div>
+        <div class="row" id="judge" hidden>
+          <span class="hint">Was it right?</span>
+          <button type="button" class="small" id="right">Correct</button>
+          <button type="button" class="small" id="wrong">Wrong</button>
+        </div>
+      </section>
+    </main>
+
+    <aside>
+      <section class="card pad" aria-label="Voice settings">
+        <span class="lbl">How it sounds</span>
+        <div class="ctl">
+          <label for="nerves">Nervousness</label>
+          <input type="range" id="nerves" min="0" max="2" step="0.1" value="1">
+          <span class="val" id="nervesVal">1.0× · how strongly doubt changes the voice</span>
+        </div>
+        <label class="check"><input type="checkbox" id="umms" checked><span>Add “um” before very shaky words. These fillers are added for effect; the model didn't say them.</span></label>
+        <div class="ctl">
+          <span>Measure confidence by</span>
+          <div class="seg" role="group" aria-label="Confidence measure">
+            <button type="button" id="mTop" aria-pressed="true">Top choice</button>
+            <button type="button" id="mEnt" aria-pressed="false">Spread</button>
+          </div>
+          <span class="val" id="measureHelp"></span>
+        </div>
+      </section>
+
+      <section class="card pad" aria-label="Calibration check">
+        <span class="lbl">Calibration check</span>
+        <p class="hint" style="margin:0">Mark answers right or wrong. A well-calibrated model is less confident when it's wrong.</p>
+        <table class="calib">
+          <tr><td>Avg confidence when right</td><td id="cRight">–</td></tr>
+          <tr><td>Avg confidence when wrong</td><td id="cWrong">–</td></tr>
+          <tr><td>Answers marked</td><td id="cCount">0</td></tr>
+        </table>
+        <button type="button" class="small" id="cReset">Clear tally</button>
+      </section>
+
+      <section class="card pad">
+        <details>
+          <summary>How it works</summary>
+          <ul>
+            <li>At every step the model scores all ~150,000 tokens in its vocabulary. A hook captures that distribution before it picks the top one.</li>
+            <li><b>Top choice</b> confidence is the probability of the token it picked. <b>Spread</b> is 1 ÷ e<sup>entropy</sup>: high when probability is concentrated, low when it's spread across many options.</li>
+            <li>A word's confidence is its least confident token. Words with similar confidence are spoken together, so the voice changes smoothly.</li>
+            <li>Lower confidence means slower, quieter speech, a pause before the word and, with the Kokoro voice, a pitch and volume wobble.</li>
+            <li>Confidence isn't correctness. Small models can be sure and wrong. That's what the calibration check is for.</li>
+            <li>Everything runs in this tab. Nothing you say or type leaves your machine.</li>
+          </ul>
+        </details>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ================= Settings & state =================
+const PRESETS = [
+  "What is the capital of France?",
+  "Who was Canada's 14th prime minister?",
+  "What is 17 times 23?",
+  "Who won the Stanley Cup in 1987?",
+  "What does HTTP status code 418 mean?",
+  "Who painted the Mona Lisa?",
+  "What year was the first iPhone released?",
+];
+const KEY = "nervous-narrator-v1";
+let prefs = { llm: "onnx-community/Qwen2.5-0.5B-Instruct", voice: "kokoro", nerves: 1, umms: true, measure: "top", calib: { right: [], wrong: [] } };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) prefs = Object.assign(prefs, s); } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch {} };
+
+const $ = id => document.getElementById(id);
+$("llm").value = prefs.llm; $("voiceEngine").value = prefs.voice;
+$("nerves").value = prefs.nerves; $("umms").checked = prefs.umms;
+
+let T = null, tok = null, model = null, kokoro = null, asr = null, backend = "";
+let busy = false, last = null, selWord = -1, speaking = null;
+
+function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2000); }
+const pct = x => Math.round(x * 100) + "%";
+
+// ================= Model loading =================
+function progressTracker(label) {
+  const files = {};
+  return e => {
+    if (e.status === "progress" && e.total) {
+      files[e.file] = [e.loaded, e.total];
+      const [l, t] = Object.values(files).reduce((a, [x, y]) => [a[0] + x, a[1] + y], [0, 0]);
+      setStatus(`${label}: ${e.file} · ${(l / 1e6).toFixed(0)} / ${(t / 1e6).toFixed(0)} MB`, Math.round(100 * l / t));
+    }
+  };
+}
+async function loadLLM() {
+  T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+  let hasGPU = false;
+  try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
+  tok = await T.AutoTokenizer.from_pretrained(prefs.llm);
+  const attempts = hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]];
+  let err;
+  for (const [device, dtype] of attempts) {
+    try {
+      model = await T.AutoModelForCausalLM.from_pretrained(prefs.llm, { device, dtype, progress_callback: progressTracker("Brain") });
+      backend = `${device}/${dtype}`; return hasGPU;
+    } catch (e) { err = e; console.warn(device, dtype, e); }
+  }
+  throw err;
+}
+async function loadKokoro() {
+  const { KokoroTTS } = await import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js");
+  kokoro = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", { dtype: "q8", device: "wasm", progress_callback: progressTracker("Voice") });
+}
+$("load").onclick = async () => {
+  const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
+  try {
+    setStatus("Loading the language model…", 0);
+    const gpu = await loadLLM();
+    if (prefs.voice === "kokoro" && !kokoro) {
+      setStatus("Loading the Kokoro voice…", 0);
+      try { await loadKokoro(); }
+      catch (e) { console.error(e); prefs.voice = "browser"; $("voiceEngine").value = "browser"; save(); toast("Kokoro didn't load. Switched to the browser voice."); }
+    }
+    setStatus(`Ready · ${prefs.llm.split("/")[1]} on ${backend}${gpu ? "" : " (no WebGPU, slower)"} · voice: ${prefs.voice}`, 100);
+    btn.textContent = "Loaded"; $("ask").disabled = false; $("talk").disabled = false;
+  } catch (e) {
+    console.error(e);
+    setStatus(`Couldn't load: ${e?.message || e}. Use a recent Chrome or Edge with internet access for the first load.`, 0);
+    btn.disabled = false; btn.textContent = "Retry";
+  }
+};
+$("llm").onchange = e => { prefs.llm = e.target.value; save(); model = null; $("ask").disabled = true; $("talk").disabled = true; $("load").disabled = false; $("load").textContent = "Load models"; setStatus("Model changed. Load it to continue.", 0); };
+$("voiceEngine").onchange = async e => {
+  prefs.voice = e.target.value; save();
+  if (prefs.voice === "kokoro" && !kokoro && model) {
+    try { setStatus("Loading the Kokoro voice…", 0); await loadKokoro(); setStatus("Kokoro voice ready.", 100); }
+    catch (err) { console.error(err); prefs.voice = "browser"; e.target.value = "browser"; save(); toast("Kokoro didn't load. Using the browser voice."); }
+  }
+};
+
+// ================= Capturing the model's decisions =================
+const f16 = new Float32Array(1), u32 = new Uint32Array(f16.buffer);
+function half(h) {
+  const s = (h & 0x8000) << 16, e = (h >> 10) & 0x1f, m = h & 0x3ff;
+  if (e === 0) return (s ? -1 : 1) * m * 2 ** -24;
+  if (e === 31) return m ? NaN : (s ? -Infinity : Infinity);
+  u32[0] = s | ((e + 112) << 23) | (m << 13); return f16[0];
+}
+// Called by Transformers.js once per generated token with the final logits for that step.
+function rowStats(logits) {
+  const d = logits.data, V = logits.dims.at(-1), off = d.length - V;
+  const get = d instanceof Uint16Array ? i => half(d[i]) : i => d[i];
+  let max = -Infinity; const top = [[-1, -Infinity], [-1, -Infinity], [-1, -Infinity], [-1, -Infinity]];
+  for (let i = 0; i < V; i++) {
+    const v = get(off + i);
+    if (v > max) max = v;
+    if (v > top[3][1]) { top[3] = [i, v]; top.sort((a, b) => b[1] - a[1]); }
+  }
+  let sum = 0, se = 0;
+  for (let i = 0; i < V; i++) {
+    const v = get(off + i); if (v === -Infinity || Number.isNaN(v)) continue;
+    const x = v - max, e = Math.exp(x); sum += e; se += e * x;
+  }
+  const H = Math.log(sum) - se / sum; // entropy in nats
+  return { top: top.map(([id, v]) => [id, Math.exp(v - max) / sum]), H };
+}
+
+async function answer(question) {
+  if (busy || !model) return;
+  busy = true; stopVoice(); setBusyUI(true);
+  const box = $("answer"); box.className = "answer placeholder"; box.textContent = "Thinking…";
+  $("detail").hidden = true; $("judge").hidden = true; selWord = -1;
+  const steps = [];
+  try {
+    const messages = [
+      { role: "system", content: "Answer the question in one or two short sentences. Plain text only, no lists or markdown." },
+      { role: "user", content: question },
+    ];
+    const inputs = tok.apply_chat_template(messages, { add_generation_prompt: true, return_dict: true });
+    let streamed = "";
+    const streamer = new T.TextStreamer(tok, { skip_prompt: true, skip_special_tokens: true, callback_function: t => { streamed += t; box.className = "answer"; box.textContent = streamed; } });
+    const capture = (ids, logits) => { steps.push(rowStats(logits)); return logits; };
+    const seq = await model.generate({ ...inputs, max_new_tokens: 72, do_sample: false, logits_processor: [capture], streamer });
+    const all = Array.from(seq.data, Number), gen = all.slice(inputs.input_ids.dims.at(-1));
+    last = analyze(question, gen, steps);
+    render();
+    $("judge").hidden = false; $("replay").disabled = false;
+    if (prefs.voice !== "off") await speak(last);
+  } catch (e) {
+    console.error(e); box.className = "answer placeholder"; box.textContent = "Something went wrong: " + (e?.message || e);
+  } finally { busy = false; setBusyUI(false); }
+}
+function setBusyUI(b) { $("ask").disabled = b || !model; $("talk").disabled = b || !model; }
+
+// Turn tokens into words, each with the confidence of its least confident token.
+function analyze(question, gen, steps) {
+  const tokens = []; let prev = "";
+  for (let k = 0; k < gen.length; k++) {
+    const text = tok.decode(gen.slice(0, k + 1), { skip_special_tokens: true });
+    const piece = text.slice(prev.length); prev = text;
+    if (!piece || !steps[k]) continue;
+    tokens.push({ piece, step: steps[k], id: gen[k] });
+  }
+  const words = [];
+  for (const t of tokens) {
+    const startsNew = !words.length || (/^\s/.test(t.piece) && /\S/.test(t.piece)) || /\s$/.test(words.at(-1).text);
+    if (startsNew || !/\S/.test(words.at(-1).text + t.piece)) words.push({ text: t.piece, toks: [t] });
+    else { words.at(-1).text += t.piece; words.at(-1).toks.push(t); }
+  }
+  return { question, words: words.filter(w => /\S/.test(w.text)), tokens };
+}
+const confOf = s => prefs.measure === "top" ? s.top[0][1] : Math.exp(-s.H);
+function wordConf(w) { let i = 0, m = Infinity; w.toks.forEach((t, k) => { const c = confOf(t.step); if (c < m) { m = c; i = k; } }); return { c: m, at: i }; }
+const band = c => c >= 0.85 ? 0 : c >= 0.6 ? 1 : c >= 0.35 ? 2 : 3;
+
+// ================= Rendering =================
+function render() {
+  if (!last) return;
+  const box = $("answer"); box.className = "answer"; box.innerHTML = "";
+  last.words.forEach((w, i) => {
+    const { c } = wordConf(w); w.conf = c;
+    const lead = w.text.match(/^\s*/)[0];
+    if (lead) box.appendChild(document.createTextNode(" "));
+    const s = document.createElement("span");
+    s.className = "w" + (band(c) ? " c" + band(c) : "") + (i === selWord ? " sel" : "");
+    s.textContent = w.text.trim(); s.tabIndex = 0; s.dataset.i = i;
+    s.title = `${pct(c)} confident`;
+    s.style.opacity = (0.45 + 0.55 * Math.min(1, c + 0.25)).toFixed(2);
+    s.onclick = () => showDetail(i);
+    s.onkeydown = e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); showDetail(i); } };
+    box.appendChild(s);
+  });
+  const all = last.tokens.map(t => confOf(t.step));
+  const geo = Math.exp(all.reduce((a, c) => a + Math.log(Math.max(c, 1e-9)), 0) / Math.max(1, all.length));
+  last.overall = geo;
+  $("sOverall").textContent = pct(geo);
+  const shaky = last.words.reduce((a, w) => w.conf < a.conf ? w : a, { conf: 2 });
+  $("sShaky").textContent = shaky.text ? `${shaky.text.trim().replace(/[.,!?;:]+$/, "")} · ${pct(shaky.conf)}` : "–";
+  $("sTokens").textContent = last.tokens.length;
+  drawTrace();
+  if (selWord >= 0) showDetail(selWord);
+}
+
+function showDetail(i) {
+  selWord = i;
+  document.querySelectorAll(".w").forEach(el => el.classList.toggle("sel", +el.dataset.i === i));
+  const w = last.words[i], { c, at } = wordConf(w), t = w.toks[at];
+  $("detail").hidden = false;
+  $("detailTitle").textContent = `“${w.text.trim()}” · ${pct(c)} confident`;
+  const alts = $("alts"); alts.innerHTML = "";
+  t.step.top.forEach(([id, p], k) => {
+    const row = document.createElement("div"); row.className = "alt" + (k === 0 ? " chosen" : "");
+    let s = tok.decode([id], { skip_special_tokens: false }).replace(/\n/g, "⏎");
+    row.innerHTML = `<span class="tok"></span><span class="meter"><i style="width:${(p * 100).toFixed(1)}%"></i></span><span class="pct">${(p * 100).toFixed(p < 0.1 ? 1 : 0)}%</span>`;
+    row.querySelector(".tok").textContent = (k === 0 ? "▸ " : "  ") + JSON.stringify(s);
+    alts.appendChild(row);
+  });
+  const rest = Math.max(0, 1 - t.step.top.reduce((a, [, p]) => a + p, 0));
+  $("detailNote").textContent = `Top 4 options at the shakiest decision inside this word. The other ~150,000 tokens share ${(rest * 100).toFixed(1)}%. Entropy: ${t.step.H.toFixed(2)} nats.`;
+}
+
+function drawTrace(activeFrom = -1, activeTo = -1) {
+  const cv = $("trace"), dpr = window.devicePixelRatio || 1, W = cv.clientWidth, H = cv.clientHeight;
+  cv.width = W * dpr; cv.height = H * dpr;
+  const g = cv.getContext("2d"); g.scale(dpr, dpr);
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const grid = css("--grid"), needle = css("--needle"), ink = css("--ink"), mark = css("--mark"), steady = css("--steady");
+  g.clearRect(0, 0, W, H);
+  g.strokeStyle = grid; g.lineWidth = 1;
+  for (let x = 0; x < W; x += 16) { g.beginPath(); g.moveTo(x + .5, 0); g.lineTo(x + .5, H); g.stroke(); }
+  for (let y = 0; y < H; y += 16) { g.beginPath(); g.moveTo(0, y + .5); g.lineTo(W, y + .5); g.stroke(); }
+  const top = 26, bot = H - 14, Y = c => bot - c * (bot - top);
+  g.setLineDash([4, 4]); g.strokeStyle = needle; g.globalAlpha = .5;
+  [0.85, 0.35].forEach(c => { g.beginPath(); g.moveTo(0, Y(c)); g.lineTo(W, Y(c)); g.stroke(); });
+  g.setLineDash([]); g.globalAlpha = 1;
+  if (!last || !last.words.length) return;
+  const n = last.words.length, X = i => n === 1 ? W / 2 : 16 + i * (W - 32) / (n - 1);
+  if (activeFrom >= 0) { g.fillStyle = mark; g.globalAlpha = .7; g.fillRect(X(activeFrom) - 8, 0, X(activeTo) - X(activeFrom) + 16, H); g.globalAlpha = 1; }
+  g.strokeStyle = ink; g.lineWidth = 2; g.lineJoin = "round"; g.beginPath();
+  last.words.forEach((w, i) => {
+    const x = X(i), y = Y(w.conf);
+    if (!i) { g.moveTo(x, y); return; }
+    // wobble the needle more where confidence is low
+    const px = X(i - 1), jitter = (1 - w.conf) * 10;
+    const mid = (px + x) / 2;
+    g.lineTo(mid, (Y(last.words[i - 1].conf) + y) / 2 + (i % 2 ? jitter : -jitter));
+    g.lineTo(x, y);
+  });
+  g.stroke();
+  last.words.forEach((w, i) => { g.beginPath(); g.fillStyle = band(w.conf) >= 2 ? needle : steady; g.arc(X(i), Y(w.conf), band(w.conf) >= 2 ? 4.5 : 3, 0, Math.PI * 2); g.fill(); });
+  if (activeFrom >= 0) { g.strokeStyle = needle; g.lineWidth = 2; g.beginPath(); g.moveTo(X(activeTo), 0); g.lineTo(X(activeTo), H); g.stroke(); }
+}
+window.addEventListener("resize", () => drawTrace());
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", () => drawTrace());
+
+// ================= Voice =================
+function chunksFor(a) {
+  const out = [];
+  a.words.forEach((w, i) => {
+    const b = band(w.conf), cur = out.at(-1);
+    const endsSentence = cur && /[.!?]$/.test(cur.text.trim());
+    if (!cur || cur.band !== b || cur.to - cur.from >= 7 || endsSentence) out.push({ band: b, from: i, to: i, text: w.text.trim(), conf: w.conf });
+    else { cur.to = i; cur.text += " " + w.text.trim(); cur.conf = Math.min(cur.conf, w.conf); }
+  });
+  return out;
+}
+function stopVoice() {
+  if (speaking) { speaking.cancelled = true; speaking.source?.stop?.(); }
+  try { speechSynthesis.cancel(); } catch {}
+  speaking = null; $("stop").disabled = true;
+  document.querySelectorAll(".w.speaking").forEach(el => el.classList.remove("speaking"));
+  drawTrace();
+}
+$("stop").onclick = stopVoice;
+$("replay").onclick = () => { if (last && prefs.voice !== "off") speak(last); };
+const sleep = ms => new Promise(r => setTimeout(r, ms));
+let actx = null;
+
+async function speak(a) {
+  stopVoice();
+  const job = { cancelled: false }; speaking = job; $("stop").disabled = false;
+  const chunks = chunksFor(a), n = prefs.nerves;
+  const doubt = c => Math.min(1.5, (1 - c) * n);
+  const fillers = ["um,", "uh,", "hmm,"];
+  if (prefs.voice === "kokoro" && kokoro) {
+    setStatus("Composing the voice…", null);
+    actx = actx || new AudioContext();
+    if (actx.state === "suspended") await actx.resume();
+    const audio = [];
+    for (const ch of chunks) {
+      if (job.cancelled) return;
+      const u = doubt(ch.conf), um = prefs.umms && ch.band === 3 && n > 0 ? fillers[ch.from % 3] + " " : "";
+      const r = await kokoro.generate(um + ch.text, { voice: "af_heart", speed: Math.max(0.6, 1 - 0.3 * u) });
+      audio.push({ ch, u, r });
+    }
+    setStatus(`Ready · ${prefs.llm.split("/")[1]} on ${backend} · voice: kokoro`, null);
+    for (const { ch, u, r } of audio) {
+      if (job.cancelled) return;
+      highlight(ch);
+      if (u > 0.15) await sleep(140 * u);
+      await playWobbly(r, u, job);
+    }
+  } else if (prefs.voice === "browser" || (prefs.voice === "kokoro" && !kokoro)) {
+    for (const ch of chunks) {
+      if (job.cancelled) return;
+      const u = doubt(ch.conf), um = prefs.umms && ch.band === 3 && n > 0 ? fillers[ch.from % 3] + " " : "";
+      highlight(ch);
+      if (u > 0.15) await sleep(160 * u);
+      await new Promise(res => {
+        const ut = new SpeechSynthesisUtterance(um + ch.text);
+        ut.rate = Math.max(0.55, 1 - 0.35 * u); ut.pitch = Math.min(2, 1 + 0.3 * u); ut.volume = Math.max(0.35, 1 - 0.45 * u);
+        const v = speechSynthesis.getVoices().find(v => /^en/i.test(v.lang) && v.localService) || null; if (v) ut.voice = v;
+        ut.onend = ut.onerror = () => res(); speechSynthesis.speak(ut);
+      });
+    }
+  }
+  if (!job.cancelled) stopVoice();
+}
+function highlight(ch) {
+  document.querySelectorAll(".w").forEach(el => { const i = +el.dataset.i; el.classList.toggle("speaking", i >= ch.from && i <= ch.to); });
+  drawTrace(ch.from, ch.to);
+}
+// Plays a Kokoro clip with volume drop plus pitch vibrato and tremolo scaled by doubt.
+function playWobbly(r, u, job) {
+  return new Promise(res => {
+    const buf = actx.createBuffer(1, r.audio.length, r.sampling_rate); buf.copyToChannel(r.audio, 0);
+    const src = actx.createBufferSource(); src.buffer = buf;
+    const gain = actx.createGain(); gain.gain.value = Math.max(0.35, 1 - 0.4 * u);
+    if (u > 0.05) {
+      const vib = actx.createOscillator(), vibAmt = actx.createGain();
+      vib.frequency.value = 5.5; vibAmt.gain.value = 55 * u; vib.connect(vibAmt).connect(src.detune);
+      const trem = actx.createOscillator(), tremAmt = actx.createGain();
+      trem.frequency.value = 7; tremAmt.gain.value = 0.22 * Math.min(1, u); trem.connect(tremAmt).connect(gain.gain);
+      vib.start(); trem.start(); src.onended = () => { vib.stop(); trem.stop(); res(); };
+    } else src.onended = () => res();
+    src.connect(gain).connect(actx.destination);
+    job.source = src; src.start();
+  });
+}
+
+// ================= Speech input =================
+let rec = null, chunks = [], stream = null;
+async function startTalk() {
+  if (rec || busy || !model) return;
+  stopVoice();
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    chunks = []; rec = new MediaRecorder(stream);
+    rec.ondataavailable = e => chunks.push(e.data);
+    rec.onstop = transcribe;
+    rec.start(); $("talk").setAttribute("aria-pressed", "true"); $("talk").textContent = "Listening… release to ask";
+    if (!asr) loadASR();
+  } catch (e) { console.error(e); toast("Microphone blocked. Allow it in the browser's address bar, or type instead."); rec = null; }
+}
+function stopTalk() { if (rec && rec.state === "recording") { rec.stop(); stream.getTracks().forEach(t => t.stop()); } $("talk").setAttribute("aria-pressed", "false"); $("talk").textContent = "Hold to talk"; }
+let asrLoading = null;
+function loadASR() {
+  asrLoading = asrLoading || (async () => {
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    asr = await T.pipeline("automatic-speech-recognition", "Xenova/whisper-base.en", { progress_callback: progressTracker("Ears") });
+    setStatus(`Ready · ${prefs.llm.split("/")[1]} on ${backend} · voice: ${prefs.voice} · ears: whisper-base.en`, 100);
+  })();
+  return asrLoading;
+}
+async function transcribe() {
+  const blob = new Blob(chunks, { type: rec.mimeType }); rec = null;
+  $("q").value = "Transcribing…";
+  try {
+    await loadASR();
+    const ctx = new AudioContext({ sampleRate: 16000 });
+    const buf = await ctx.decodeAudioData(await blob.arrayBuffer()); ctx.close();
+    const out = await asr(buf.getChannelData(0));
+    const text = (out.text || "").trim();
+    $("q").value = text;
+    if (text && !/^\[.*\]$/.test(text)) answer(text); else toast("Didn't catch that. Try again, a bit closer to the mic.");
+  } catch (e) { console.error(e); $("q").value = ""; toast("Speech recognition failed: " + (e?.message || e)); }
+}
+$("talk").addEventListener("pointerdown", e => { e.preventDefault(); startTalk(); });
+["pointerup", "pointerleave", "pointercancel"].forEach(ev => $("talk").addEventListener(ev, stopTalk));
+const typing = () => /^(TEXTAREA|INPUT|SELECT)$/.test(document.activeElement?.tagName);
+window.addEventListener("keydown", e => { if (e.code === "Space" && !typing() && !e.repeat && model) { e.preventDefault(); startTalk(); } });
+window.addEventListener("keyup", e => { if (e.code === "Space" && !typing()) { e.preventDefault(); stopTalk(); } });
+
+// ================= Wiring =================
+$("ask").onclick = () => { const q = $("q").value.trim(); if (q) answer(q); };
+$("q").addEventListener("keydown", e => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); $("ask").click(); } });
+PRESETS.forEach(p => { const b = document.createElement("button"); b.type = "button"; b.textContent = p; b.onclick = () => { $("q").value = p; if (model) answer(p); else toast("Load the models first."); }; $("presets").appendChild(b); });
+$("nerves").oninput = e => { prefs.nerves = +e.target.value; save(); $("nervesVal").textContent = `${prefs.nerves.toFixed(1)}× · ${prefs.nerves === 0 ? "the voice ignores doubt" : "how strongly doubt changes the voice"}`; };
+$("nerves").oninput({ target: $("nerves") });
+$("umms").onchange = e => { prefs.umms = e.target.checked; save(); };
+function setMeasure(m) {
+  prefs.measure = m; save();
+  $("mTop").setAttribute("aria-pressed", m === "top"); $("mEnt").setAttribute("aria-pressed", m === "ent");
+  $("measureHelp").textContent = m === "top" ? "Probability of the token it picked." : "1 ÷ e^entropy: how concentrated the whole distribution is.";
+  render();
+}
+$("mTop").onclick = () => setMeasure("top"); $("mEnt").onclick = () => setMeasure("ent");
+setMeasure(prefs.measure);
+
+function renderCalib() {
+  const avg = a => a.length ? pct(a.reduce((x, y) => x + y, 0) / a.length) : "–";
+  $("cRight").textContent = avg(prefs.calib.right); $("cWrong").textContent = avg(prefs.calib.wrong);
+  $("cCount").textContent = prefs.calib.right.length + prefs.calib.wrong.length;
+}
+function mark(ok) { if (!last?.overall) return; prefs.calib[ok ? "right" : "wrong"].push(last.overall); save(); renderCalib(); $("judge").hidden = true; toast(ok ? "Marked correct" : "Marked wrong"); }
+$("right").onclick = () => mark(true); $("wrong").onclick = () => mark(false);
+$("cReset").onclick = () => { prefs.calib = { right: [], wrong: [] }; save(); renderCalib(); };
+renderCalib();
+drawTrace();
+</script>
+</body>
+</html>

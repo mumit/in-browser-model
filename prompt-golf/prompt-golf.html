@@ -1,0 +1,924 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prompt Golf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=IBM+Plex+Mono:wght@400;600&family=Inter:wght@400;600&display=swap">
+<style>
+/* Layout: a printed scorecard. Course + hole list on the left, the tee box (prompt + model output) on the right. */
+:root {
+  --bg: #eef1ea;
+  --card: #fbfcf8;
+  --ink: #17221b;
+  --muted: #5c6b60;
+  --line: #cfd8cc;
+  --fairway: #1f6b3a;
+  --fairway-ink: #ffffff;
+  --flag: #e8b400;
+  --flag-soft: #fbf1cc;
+  --miss: #b3261e;
+  --code-bg: #f2f5ef;
+  --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0f1612; --card: #16201a; --ink: #e4ece5; --muted: #93a597; --line: #2a3a2f;
+    --fairway: #3fa565; --fairway-ink: #08130c; --flag: #f2c535; --flag-soft: #2c2812; --miss: #ff7a6e; --code-bg: #101914;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body);
+  padding: 24px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px));
+}
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 20px; }
+header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
+h1 { font: 800 clamp(32px, 6vw, 52px)/1 var(--display); margin: 0; letter-spacing: -0.02em; }
+h1 span { color: var(--fairway); }
+.tag { color: var(--muted); max-width: 52ch; margin: 6px 0 0; }
+.engine { display: grid; gap: 8px; justify-items: end; min-width: 0; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.engine .row { justify-content: end; }
+select, button, textarea, input { font: inherit; color: inherit; }
+select, input[type=text], input[type=number] { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; min-width: 0; }
+button {
+  border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 8px 14px;
+  cursor: pointer; font-weight: 600;
+}
+button.primary { background: var(--fairway); color: var(--fairway-ink); border-color: var(--fairway); }
+button.small { font-size: 13px; padding: 5px 10px; }
+button.danger { color: var(--miss); }
+button:disabled { opacity: .5; cursor: not-allowed; }
+:is(button, select, textarea, input, .hole):focus-visible { outline: 2px solid var(--flag); outline-offset: 2px; }
+.status { font: 12px/1.4 var(--mono); color: var(--muted); text-align: right; }
+.bar { width: 260px; max-width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--fairway); transition: width .2s; }
+.lbl { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+
+.course { display: grid; grid-template-columns: 320px minmax(0, 1fr); gap: 20px; align-items: start; }
+@media (max-width: 820px) { .course { grid-template-columns: 1fr; } .engine { justify-items: start; } .engine .row { justify-content: start; } .status { text-align: left; } }
+
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.scorecard { overflow: hidden; }
+.coursebar { padding: 14px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
+.coursebar select { width: 100%; font-weight: 600; }
+.sc-head, .hole { display: grid; grid-template-columns: 34px 1fr 40px 60px; gap: 8px; align-items: center; padding: 9px 14px; }
+.sc-head { font: 600 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
+.hole { border: 0; border-bottom: 1px solid var(--line); background: none; border-radius: 0; text-align: left; font-weight: 400; width: 100%; }
+.hole:hover { background: var(--code-bg); }
+.hole[aria-current="true"] { background: var(--code-bg); box-shadow: inset 4px 0 0 var(--fairway); }
+.hole .n { font: 800 18px/1 var(--display); color: var(--fairway); }
+.hole .t { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
+.num { font: 600 14px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
+.score.under { color: var(--fairway); }
+.score.over { color: var(--miss); }
+.score.none { color: var(--muted); font-weight: 400; }
+.score sup { font: 600 10px var(--mono); color: var(--flag); margin-left: 2px; }
+.sc-empty { padding: 14px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--line); }
+.sc-total { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; align-items: center; }
+.sc-total b { font: 800 26px/1 var(--display); }
+.sc-total .sub { color: var(--muted); font-size: 13px; }
+.sc-actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 14px 14px; }
+
+.tee { padding: 20px; display: grid; gap: 16px; }
+.tee h2 { font: 800 28px/1.1 var(--display); margin: 0; text-wrap: balance; }
+.tee h2 small { display: block; font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.goal { margin: 0; }
+.rules { display: flex; gap: 8px; flex-wrap: wrap; margin: 0; padding: 0; list-style: none; }
+.chip { font: 600 12px/1 var(--body); padding: 6px 9px; border-radius: 999px; border: 1px solid var(--line); background: var(--code-bg); }
+.chip.ban { border-color: var(--miss); color: var(--miss); background: transparent; }
+.chip.ban.hit { background: var(--miss); color: var(--card); }
+.chip.par { border-color: var(--flag); }
+.chip.pen { border-color: var(--flag); background: var(--flag-soft); }
+.target { font: 600 15px/1.4 var(--mono); background: var(--code-bg); border: 1px dashed var(--line); border-radius: 6px; padding: 10px 12px; white-space: pre-wrap; word-break: break-word; }
+textarea {
+  width: 100%; min-height: 96px; resize: vertical; font: 16px/1.5 var(--mono); background: var(--code-bg);
+  border: 1px solid var(--line); border-radius: 8px; padding: 12px;
+}
+.swing { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.strokes { font: 800 22px/1 var(--display); font-variant-numeric: tabular-nums; }
+.strokes small { font: 400 13px var(--body); color: var(--muted); }
+.out {
+  font: 15px/1.5 var(--mono); background: var(--code-bg); border-radius: 8px; padding: 12px; min-height: 64px;
+  white-space: pre-wrap; word-break: break-word; border: 1px solid var(--line);
+}
+.out.empty { color: var(--muted); }
+.verdict { font: 800 20px/1.2 var(--display); margin: 0; }
+.verdict.in { color: var(--fairway); }
+.verdict.miss { color: var(--miss); }
+.verdict-sub { color: var(--muted); margin: 2px 0 0; font-size: 14px; }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+
+.hints { display: grid; gap: 8px; }
+.hints ol { margin: 0; padding: 0; list-style: none; display: grid; gap: 6px; }
+.hints li { background: var(--flag-soft); border-radius: 6px; padding: 8px 12px; font-size: 14px; display: grid; grid-template-columns: auto 1fr; gap: 10px; }
+.hints li b { font: 600 12px/1.6 var(--mono); color: var(--muted); }
+
+dialog { width: min(760px, calc(100% - 24px)); max-height: calc(100% - 24px); border: 1px solid var(--line); border-radius: 12px; background: var(--card); color: var(--ink); padding: 0; }
+dialog::backdrop { background: rgb(0 0 0 / .45); }
+.dlg { padding: 20px; display: grid; gap: 16px; }
+.dlg h3 { font: 800 24px/1.1 var(--display); margin: 0; }
+.dlg-head { display: flex; justify-content: space-between; gap: 12px; align-items: center; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.grid2 { display: grid; grid-template-columns: 1fr 120px; gap: 12px; }
+.grid2b { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+@media (max-width: 560px) { .grid2, .grid2b { grid-template-columns: 1fr; } }
+.dlg textarea { min-height: 64px; font-size: 14px; }
+.help { color: var(--muted); font-size: 12.5px; margin: 0; }
+.ed-list { list-style: none; margin: 0; padding: 0; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+.ed-list li { display: grid; grid-template-columns: 28px 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border-bottom: 1px solid var(--line); }
+.ed-list li:last-child { border-bottom: 0; }
+.ed-list li.editing { background: var(--flag-soft); }
+.ed-list .n { font: 800 16px/1 var(--display); color: var(--fairway); }
+.ed-list .meta { color: var(--muted); font-size: 12.5px; }
+.ed-list .t { min-width: 0; overflow-wrap: anywhere; }
+.ed-list .empty { display: block; padding: 14px; color: var(--muted); }
+.holeform { border: 1px solid var(--flag); border-radius: 10px; padding: 16px; display: grid; gap: 12px; }
+.err { color: var(--miss); font-size: 13px; margin: 0; min-height: 1em; }
+.ok { color: var(--fairway); }
+.foot { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+.foot .spacer { flex: 1; }
+.notice { background: var(--flag-soft); border-radius: 8px; padding: 10px 12px; font-size: 14px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--card); padding: 8px 14px; border-radius: 6px; font-weight: 600; z-index: 10; }
+/* Docs */
+#docs { width: min(900px, calc(100% - 24px)); }
+.docs { display: grid; grid-template-columns: 180px minmax(0, 1fr); gap: 0; max-height: calc(100vh - 48px); }
+.docs nav { border-right: 1px solid var(--line); padding: 20px 12px; display: grid; gap: 2px; align-content: start; background: var(--code-bg); }
+.docs nav button { border: 0; background: none; text-align: left; font-weight: 600; padding: 7px 10px; font-size: 14px; }
+.docs nav button[aria-current="true"] { background: var(--card); box-shadow: inset 3px 0 0 var(--fairway); }
+.docs-body { padding: 20px 24px 28px; overflow-y: auto; min-width: 0; }
+.docs-body section { display: grid; gap: 12px; max-width: 68ch; }
+.docs-body section[hidden] { display: none; }
+.docs-body h3 { font: 800 26px/1.1 var(--display); margin: 0; }
+.docs-body h4 { font: 800 17px/1.2 var(--display); margin: 8px 0 0; }
+.docs-body p, .docs-body li { margin: 0; }
+.docs-body ul, .docs-body ol { margin: 0; padding-left: 20px; display: grid; gap: 6px; }
+.docs-body code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; overflow-wrap: anywhere; }
+.tbl-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+.tbl { border-collapse: collapse; width: 100%; font-size: 14px; }
+.tbl th, .tbl td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.tbl tr:last-child td { border-bottom: 0; }
+.tbl th { font: 600 11px/1.3 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); background: var(--code-bg); }
+.tbl td.num { text-align: right; }
+.idea { border: 1px solid var(--line); border-radius: 8px; padding: 12px 14px; display: grid; gap: 4px; }
+.idea b { font: 800 16px/1.2 var(--display); }
+.idea .meta { color: var(--muted); font-size: 13px; }
+.callout { background: var(--flag-soft); border-radius: 8px; padding: 10px 14px; }
+@media (max-width: 640px) {
+  .docs { grid-template-columns: 1fr; }
+  .docs nav { border-right: 0; border-bottom: 1px solid var(--line); grid-auto-flow: column; overflow-x: auto; padding: 10px; }
+  .docs nav button { white-space: nowrap; }
+  .docs nav button[aria-current="true"] { box-shadow: inset 0 -3px 0 var(--fairway); }
+}
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>Prompt <span>Golf</span></h1>
+      <p class="tag">A tiny language model runs on your own GPU. Get it to hit the target in the fewest characters. Greedy decoding, so every swing is reproducible.</p>
+      <div class="row" style="margin-top:10px">
+        <button type="button" class="small" id="openDocs">How to play</button>
+        <button type="button" class="small" data-doc="ideas">Hole ideas</button>
+        <button type="button" class="small" data-doc="team">Team formats</button>
+      </div>
+    </div>
+    <div class="engine">
+      <div class="row">
+        <label for="model" class="lbl">Ball</label>
+        <select id="model">
+          <option value="HuggingFaceTB/SmolLM2-135M-Instruct">SmolLM2 135M · fast, weird (~120 MB)</option>
+          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · smarter (~450 MB)</option>
+        </select>
+        <button id="load" class="primary" type="button">Load model</button>
+      </div>
+      <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+      <div class="status" id="status">Model not loaded. Weights download once, then cache in your browser.</div>
+    </div>
+  </header>
+
+  <div class="course">
+    <aside class="card scorecard" aria-label="Scorecard">
+      <div class="coursebar">
+        <label for="courseSel" class="lbl">Course</label>
+        <select id="courseSel"></select>
+        <div class="row">
+          <button type="button" class="small" id="editCourse">Edit course</button>
+          <button type="button" class="small" id="newCourse">New course</button>
+          <button type="button" class="small" id="importCourse">Import</button>
+        </div>
+      </div>
+      <div class="sc-head"><span>Hole</span><span></span><span class="num">Par</span><span class="num">Best</span></div>
+      <div id="holes"></div>
+      <div class="sc-total">
+        <span>Total strokes</span><b id="total" class="num">–</b>
+        <span class="sub" id="totalSub"></span><span></span>
+      </div>
+      <div class="sc-actions">
+        <button type="button" class="small" id="copyCard">Copy scorecard</button>
+        <button type="button" class="small" id="copyPrompts">Copy with prompts</button>
+        <button type="button" class="small" id="reset">Reset scores</button>
+      </div>
+    </aside>
+
+    <main class="card tee" aria-live="polite" id="tee">
+      <h2 id="hTitle"><small id="hNum"></small><span id="hName"></span></h2>
+      <p class="goal" id="hGoal"></p>
+      <div class="target" id="hTarget"></div>
+      <ul class="rules" id="hRules"></ul>
+
+      <div class="hints" id="hintBox">
+        <div class="row" style="justify-content:space-between">
+          <span class="lbl">Caddie hints</span>
+          <button type="button" class="small" id="hintBtn"></button>
+        </div>
+        <ol id="hintList"></ol>
+      </div>
+
+      <div class="field">
+        <label for="prompt" class="lbl">Your prompt</label>
+        <textarea id="prompt" spellcheck="false" placeholder="Type a prompt. Every character, space and newline is a stroke."></textarea>
+      </div>
+      <div class="swing">
+        <button type="button" id="swing" class="primary" disabled>Swing (⌘/Ctrl + Enter)</button>
+        <span class="strokes"><span id="count">0</span> <small id="countSub">strokes</small></span>
+        <span class="hint" id="banNote"></span>
+      </div>
+
+      <div class="field">
+        <span class="lbl">Model output</span>
+        <div class="out empty" id="out">Load the model, then swing.</div>
+      </div>
+      <div>
+        <p class="verdict" id="verdict"></p>
+        <p class="verdict-sub" id="verdictSub"></p>
+      </div>
+      <p class="hint">Output is trimmed of leading and trailing whitespace before judging. Max 48 new tokens per swing. Scores only compare on the same ball (model) and backend.</p>
+    </main>
+  </div>
+</div>
+
+<!-- Course editor -->
+<dialog id="ed" aria-labelledby="edTitle">
+  <div class="dlg">
+    <div class="dlg-head"><h3 id="edTitle">Course editor</h3><button type="button" class="small" id="edX">Close</button></div>
+    <div class="notice" id="edRO" hidden>Classic 9 is read-only. <button type="button" class="small" id="edDup">Duplicate to edit</button></div>
+    <div class="field"><label for="edName" class="lbl">Course name</label><input type="text" id="edName" maxlength="60"></div>
+    <div class="field">
+      <span class="lbl">Holes</span>
+      <ol class="ed-list" id="edHoles"></ol>
+      <div class="row"><button type="button" class="small" id="edAdd">Add hole</button></div>
+    </div>
+
+    <section class="holeform" id="hf" hidden aria-label="Hole details">
+      <div class="grid2">
+        <div class="field"><label for="hfTitle" class="lbl">Hole name</label><input type="text" id="hfTitle" maxlength="40" placeholder="Banana"></div>
+        <div class="field"><label for="hfPar" class="lbl">Par</label><input type="number" id="hfPar" min="1" max="999" value="20"></div>
+      </div>
+      <div class="field"><label for="hfGoal" class="lbl">Goal (shown to players)</label><input type="text" id="hfGoal" placeholder="Make it say the word, and only the word."></div>
+      <div class="grid2b">
+        <div class="field"><label for="hfType" class="lbl">Win condition</label><select id="hfType"></select></div>
+        <div class="field"><label for="hfValue" class="lbl" id="hfValueLbl">Target</label><input type="text" id="hfValue"></div>
+      </div>
+      <p class="help" id="hfTypeHelp"></p>
+      <div class="field"><label for="hfShow" class="lbl">Target card text (optional)</label><input type="text" id="hfShow" placeholder="Defaults to the target"></div>
+      <div class="grid2b">
+        <div class="field">
+          <label for="hfBans" class="lbl">Out of bounds (one per line)</label>
+          <textarea id="hfBans" placeholder="banana&#10;/\d/"></textarea>
+          <p class="help">Words or phrases the prompt can't contain (any case). Wrap in slashes for a regex: <code>/[A-Z]/</code></p>
+        </div>
+        <div class="field">
+          <label for="hfHints" class="lbl">Hints (one per line, mildest first)</label>
+          <textarea id="hfHints" placeholder="Describe it: a yellow, curved fruit."></textarea>
+          <p class="help" id="hfHintCost"></p>
+        </div>
+      </div>
+      <div class="field">
+        <label for="hfTest" class="lbl">Test the judge with a sample output</label>
+        <input type="text" id="hfTest" placeholder="Type what the model might say">
+        <p class="help" id="hfTestRes">The result shows here. No model needed.</p>
+      </div>
+      <p class="err" id="hfErr" role="alert"></p>
+      <div class="foot"><span class="spacer"></span><button type="button" class="small" id="hfCancel">Cancel</button><button type="button" class="small primary" id="hfSave">Save hole</button></div>
+    </section>
+
+    <p class="err" id="edErr" role="alert"></p>
+    <div class="foot">
+      <button type="button" class="small" id="edCode">Copy course code</button>
+      <button type="button" class="small danger" id="edDel">Delete course</button>
+      <span class="spacer"></span>
+      <button type="button" class="small" id="edCancel">Discard changes</button>
+      <button type="button" class="small primary" id="edSave">Save course</button>
+    </div>
+  </div>
+</dialog>
+
+<!-- Docs -->
+<dialog id="docs" aria-labelledby="docsTitle">
+  <div class="docs">
+    <nav aria-label="Guide sections" id="docsNav"></nav>
+    <div class="docs-body">
+      <div class="dlg-head" style="margin-bottom:12px"><span class="lbl" id="docsTitle">Prompt Golf guide</span><button type="button" class="small" id="docsX">Close</button></div>
+
+      <section data-sec="start" data-name="Quick start">
+        <h3>Quick start</h3>
+        <ol>
+          <li><b>Load a ball.</b> Pick a model at the top and press Load model. The first load downloads the weights; after that they come from your browser cache.</li>
+          <li><b>Pick a hole</b> on the scorecard. Read the goal, the target card and any red “out of bounds” chips.</li>
+          <li><b>Write a prompt</b> and press Swing, or ⌘/Ctrl + Enter. The model's answer streams in and the judge says whether it's in the cup.</li>
+          <li><b>Shave strokes.</b> Your best score per hole is kept. Keep cutting characters until the ball stops dropping.</li>
+        </ol>
+        <p class="callout">Every character in your prompt is one stroke: letters, spaces, punctuation and newlines. Simple emoji count as one; combined ones (skin tones, flags, families) count as several.</p>
+        <h4>Golf terms</h4>
+        <div class="tbl-wrap"><table class="tbl">
+          <thead><tr><th>Name</th><th>Score vs par</th></tr></thead>
+          <tbody><tr><td>Albatross</td><td>3 under</td></tr><tr><td>Eagle</td><td>2 under</td></tr><tr><td>Birdie</td><td>1 under</td></tr><tr><td>Par</td><td>Even</td></tr><tr><td>Bogey</td><td>1 over</td></tr><tr><td>Double bogey</td><td>2 over</td></tr></tbody>
+        </table></div>
+      </section>
+
+      <section data-sec="rules" data-name="Scoring rules" hidden>
+        <h3>Scoring rules</h3>
+        <ul>
+          <li><b>Score</b> = characters in your prompt + any hint penalty on that hole.</li>
+          <li><b>Out of bounds.</b> If your prompt contains a banned word or pattern, the Swing button stays disabled and the chip turns solid red.</li>
+          <li><b>Judging.</b> The output is trimmed of leading and trailing whitespace, then checked against the hole's win condition. Everything else counts, including a trailing period.</li>
+          <li><b>Length cap.</b> The model gets at most 48 new tokens per swing. Long answers get cut off.</li>
+          <li><b>No system prompt.</b> Your text is sent as a single user message through the model's own chat template. Some models add a default system message of their own.</li>
+          <li><b>Reproducible.</b> Sampling is off (greedy decoding), so the same prompt gives the same output on the same model and backend. Anyone can verify a score by pasting your prompt.</li>
+          <li><b>Fair comparisons.</b> Scores are kept separately per model. A GPU (webgpu) and CPU (wasm) run can occasionally disagree, so the scorecard notes which backend you used.</li>
+          <li><b>Reset scores</b> clears your bests on the current course and model. It doesn't clear hint penalties.</li>
+        </ul>
+      </section>
+
+      <section data-sec="hints" data-name="Hints" hidden>
+        <h3>Caddie hints</h3>
+        <p>Stuck? Most holes come with hints, ordered from a gentle nudge to nearly the answer. Each one costs strokes, and the cost climbs.</p>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Hint</th><th class="num">Costs</th><th class="num">Total penalty</th></tr></thead><tbody id="docsHintTbl"></tbody></table></div>
+        <ul>
+          <li><b>Two clicks to reveal.</b> The first click asks you to confirm; the second shows the hint.</li>
+          <li><b>Permanent.</b> Once seen, a hint's penalty applies to every future swing on that hole for that model. Scores already on the card stay as they were. Resetting scores doesn't clear it.</li>
+          <li><b>Visible.</b> A small <b>h</b> next to a score on the card means hints were used. Copied scorecards show the split, e.g. <code>26 (18+8 hints)</code>.</li>
+        </ul>
+        <p class="callout">Etiquette: hint-free scores are the bragging-rights scores. Hints are for learning a hole, then try to beat your hinted score clean on another model.</p>
+      </section>
+
+      <section data-sec="editor" data-name="Course editor" hidden>
+        <h3>Course editor</h3>
+        <ol>
+          <li>Press <b>New course</b>, or open Classic 9 with <b>Edit course</b> and choose <b>Duplicate to edit</b>.</li>
+          <li>Press <b>Add hole</b> and fill in the name, par and goal players will read.</li>
+          <li>Choose a <b>win condition</b> (table below) and its target.</li>
+          <li>Add <b>out of bounds</b> rules, one per line. Plain text bans that text in any case. Wrap a pattern in slashes for a regex, e.g. <code>/\d/</code> bans all digits and <code>/[A-Z]/</code> bans capitals.</li>
+          <li>Add <b>hints</b>, one per line, mildest first.</li>
+          <li>Type a sample answer into <b>Test the judge</b> to check the rule before anyone plays it. No model needed.</li>
+          <li>Press <b>Save hole</b>, reorder with the arrows, then <b>Save course</b>.</li>
+        </ol>
+        <h4>Win conditions</h4>
+        <div class="tbl-wrap"><table class="tbl"><thead><tr><th>Condition</th><th>Target field</th><th>What it checks</th></tr></thead><tbody id="docsRuleTbl"></tbody></table></div>
+        <h4>Sharing a course</h4>
+        <ul>
+          <li><b>Copy course code</b> puts a code starting with <code>PGOLF1:</code> on your clipboard. Paste it in Slack or an email.</li>
+          <li>Teammates press <b>Import</b> and paste it. The course is added to their list.</li>
+          <li>Scores are tied to a hole's rules. Changing the win condition, target or bans gives the hole a fresh scorecard; renaming it or changing par, goal or hints keeps scores.</li>
+        </ul>
+        <h4>Setting par</h4>
+        <p>Play the hole yourself first and set par a little below your first working score. Most players find a few cuts once they see someone else's number.</p>
+      </section>
+
+      <section data-sec="ideas" data-name="Hole ideas" hidden>
+        <h3>Hole ideas</h3>
+        <p>Starting points for your own course. Each is a real, playable spec. Load them all as a course, then edit pars after a few rounds.</p>
+        <div class="row"><button type="button" class="primary small" id="loadIdeas">Add these as an “Ideas Pack” course</button></div>
+        <div id="docsIdeas" style="display:grid;gap:10px"></div>
+        <h4>What makes a good hole</h4>
+        <ul>
+          <li><b>One clear constraint.</b> The best holes ban the obvious approach (say the word, use digits) and force a detour.</li>
+          <li><b>A trap.</b> Small models love preambles, trailing periods and code fences. Exact-match holes punish all three.</li>
+          <li><b>Test both models.</b> A hole that's trivial on Qwen can be brutal on SmolLM, which makes a good tiebreaker.</li>
+          <li><b>Mind the bans.</b> Plain-text bans match inside words. Banning <code>no</code> also bans <code>not</code>, <code>know</code> and <code>snow</code>. That can be the point.</li>
+        </ul>
+      </section>
+
+      <section data-sec="team" data-name="Team formats" hidden>
+        <h3>Team formats</h3>
+        <div class="idea"><b>Course of the week</b><span>One person designs nine holes and shares the code on Monday. Scorecards go in a thread by Friday. Winner designs next week's course.</span></div>
+        <div class="idea"><b>Hole swap</b><span>Everyone designs one hole that they can sink. Combine them into one course. Bonus points for a hole nobody else sinks under par.</span></div>
+        <div class="idea"><b>Model wars</b><span>Play the same course on both balls. Compare which prompts transfer and which only work on one model. Good fodder for a talk on model priors.</span></div>
+        <div class="idea"><b>Red-team round</b><span>Design holes where the target is something the model resists: refusals, rude words it softens, facts it hedges. The team learns quickly where instruction-following breaks.</span></div>
+        <div class="idea"><b>Lightning round</b><span>Fifteen minutes, one hole, shared screen. Shout out scores as they drop. Works well at the end of a team meeting.</span></div>
+        <div class="idea"><b>Show your swing</b><span>After each round, the winner of each hole explains why their prompt works. This is where people learn about tokenization, chat templates and greedy decoding.</span></div>
+        <h4>Posting scores</h4>
+        <p><b>Copy scorecard</b> gives a spoiler-free card for the channel. <b>Copy with prompts</b> adds every winning prompt, so others can verify by pasting them in. Share that one after the round closes.</p>
+      </section>
+
+      <section data-sec="learn" data-name="What you learn" hidden>
+        <h3>What the game teaches</h3>
+        <ul>
+          <li><b>Chat templates matter.</b> Your text is wrapped in role markers before the model sees it. Short prompts work partly because the template already does the framing.</li>
+          <li><b>Greedy decoding is a trap.</b> The single most likely token wins every time, so the model's favourite opening (“Sure!”, “Here is”) is hard to dislodge.</li>
+          <li><b>Priors beat instructions.</b> Small models complete famous patterns (countdowns, Fibonacci, “Hello, World!”) more reliably than they follow abstract rules.</li>
+          <li><b>Tokens aren't characters.</b> The score counts characters, but the model reads tokens. Odd spellings and spacing can change what it sees a lot.</li>
+          <li><b>Size changes everything.</b> Compare a hole across the two balls to see how instruction-following improves with scale.</li>
+        </ul>
+      </section>
+
+      <section data-sec="help" data-name="Troubleshooting" hidden>
+        <h3>Troubleshooting</h3>
+        <ul>
+          <li><b>The model won't load.</b> Use a recent Chrome or Edge. The page needs to reach <code>cdn.jsdelivr.net</code> and <code>huggingface.co</code>; corporate proxies sometimes block the second one.</li>
+          <li><b>It says “no WebGPU, slower”.</b> Check <code>chrome://gpu</code> for WebGPU status. The CPU fallback works, just more slowly.</li>
+          <li><b>My teammate gets a different output for the same prompt.</b> Check that you're on the same model and backend (shown in the status line and on copied scorecards).</li>
+          <li><b>My scores disappeared.</b> Scores live in this browser only. Clearing site data, a private window or a different browser starts fresh.</li>
+          <li><b>Course codes won't import.</b> Make sure the whole code was copied, including the <code>PGOLF1:</code> prefix.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+</dialog>
+
+<!-- Import -->
+<dialog id="imp" aria-labelledby="impTitle">
+  <div class="dlg">
+    <div class="dlg-head"><h3 id="impTitle">Import a course</h3><button type="button" class="small" id="impX">Close</button></div>
+    <div class="field"><label for="impCode" class="lbl">Course code</label><textarea id="impCode" placeholder="PGOLF1:…" spellcheck="false"></textarea>
+    <p class="help">Paste a code someone shared from the course editor.</p></div>
+    <p class="err" id="impErr" role="alert"></p>
+    <div class="foot"><span class="spacer"></span><button type="button" class="small primary" id="impGo">Import course</button></div>
+  </div>
+</dialog>
+
+<script>
+// ================= Rules engine (all serializable, so courses can be shared as codes) =================
+const letters = s => s.toLowerCase().replace(/[^a-z]/g, "");
+function toRe(s, literalCI) {
+  const m = s.match(/^\/(.+)\/([dgimsuy]*)$/);
+  if (m) return new RegExp(m[1], m[2].replace("g", ""));
+  return literalCI ? new RegExp(s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"), "i") : new RegExp(s);
+}
+function deepEq(a, b) {
+  if (a === b) return true;
+  if (typeof a !== "object" || typeof b !== "object" || !a || !b || Array.isArray(a) !== Array.isArray(b)) return false;
+  const ka = Object.keys(a), kb = Object.keys(b);
+  return ka.length === kb.length && ka.every(k => deepEq(a[k], b[k]));
+}
+const RULES = {
+  exact: { label: "Exactly equals", vlabel: "Target text", help: "Output must match exactly, case and punctuation included.",
+    check: (o, v) => o === v || [`Output must be exactly: ${v}`] },
+  exactCI: { label: "Equals, ignoring case", vlabel: "Target text", help: "Like exact, but case doesn't matter.",
+    check: (o, v) => o.toLowerCase() === v.toLowerCase() || [`Output must be: ${v} (any case)`] },
+  contains: { label: "Contains", vlabel: "Must contain", help: "Output must include this text somewhere (any case). Chatter around it is fine.",
+    check: (o, v) => o.toLowerCase().includes(v.toLowerCase()) || [`No “${v}” in the output`] },
+  startsWith: { label: "Starts with", vlabel: "Opening text", help: "Output must begin with this exact text.",
+    check: (o, v) => o.startsWith(v) || [`Doesn't start with: ${v}`] },
+  regex: { label: "Matches regex", vlabel: "Pattern", help: "JavaScript regex tested against the trimmed output. Use ^ and $ to match the whole output. /pattern/i syntax works for flags.",
+    validate: v => { toRe(v); }, check: (o, v) => toRe(v).test(o) || ["Doesn't match the pattern"] },
+  json: { label: "JSON equal to", vlabel: "JSON value", help: "Output must parse as JSON and deep-equal this value. Code fences count as invalid.",
+    validate: v => { JSON.parse(v); },
+    check: (o, v) => { let x; try { x = JSON.parse(o); } catch { return ["Not valid JSON"]; } return deepEq(x, JSON.parse(v)) || ["Valid JSON, but not equal to the target"]; } },
+  caps: { label: "All caps", vlabel: "Min capital letters", num: true, help: "No lowercase letters anywhere, and at least this many capitals.",
+    check: (o, v) => { if (/[a-z]/.test(o)) return ["Found lowercase letters"]; const n = (o.match(/[A-Z]/g) || []).length; return n >= v || [`Only ${n} capital letters, need ${v}`]; } },
+  palindrome: { label: "Palindrome", vlabel: "Min letters", num: true, help: "The whole output reads the same backwards, ignoring case, spaces and punctuation.",
+    check: (o, v) => { const t = letters(o); return (t.length >= v && t === [...t].reverse().join("")) || [t.length < v ? `Only ${t.length} letters, need ${v}` : "Not a palindrome"]; } },
+  oneWord: { label: "One long word", vlabel: "Min letters", num: true, help: "A single word, letters only, at least this long.",
+    check: (o, v) => /^[A-Za-z]+$/.test(o) ? (o.length >= v || [`Only ${o.length} letters, need ${v}`]) : ["Must be one word, letters only"] },
+};
+function banLabel(s) { return /^\/.+\/[a-z]*$/.test(s) ? `no ${s}` : `no “${s}”`; }
+function compileHole(h) {
+  const r = RULES[h.rule.type];
+  return { ...h, banRes: h.bans.map(b => ({ re: toRe(b, true), label: banLabel(b) })), judge: o => r.check(o, h.rule.value) };
+}
+function hash(s) { let x = 5381; for (const c of s) x = ((x * 33) ^ c.codePointAt(0)) >>> 0; return x.toString(36); }
+// A hole's identity is its rules, so editing a hole's rules starts fresh scores; renaming it keeps them.
+const holeId = h => hash(JSON.stringify([h.rule, h.bans]));
+const HINT_COST = [3, 5, 8, 13, 21, 34];
+const penaltyFor = k => HINT_COST.slice(0, k).reduce((a, b) => a + b, 0) + Math.max(0, k - HINT_COST.length) * 34;
+
+// ================= Classic course =================
+const CLASSIC = { id: "classic", name: "Classic 9", builtin: true, holes: [
+  { title: "Hello, World", par: 20, goal: "The classic. Make the model output exactly this, nothing else.",
+    rule: { type: "exact", value: "Hello, World!" }, bans: [],
+    hints: ["Small models love a “Sure! Here's…” preamble. Ask for the text alone.", "Quote the target and use a verb like repeat, echo or print.", "Shorter instructions are often obeyed more literally than polite ones."] },
+  { title: "Banana", par: 18, goal: "Make it say the word, and only the word. You can't say it yourself.",
+    rule: { type: "exact", value: "banana" }, bans: ["banana"],
+    hints: ["Describe it instead: a long, curved, yellow fruit.", "Ask for one lowercase word with no punctuation. A trailing period fails.", "Spelling it out works: b-a-n-a-n-a is not the banned word."] },
+  { title: "Liftoff", par: 22, goal: "Count down from five to one. Spaces or commas between numbers are fine.", show: "5 4 3 2 1",
+    rule: { type: "regex", value: "^5[\\s,]+4[\\s,]+3[\\s,]+2[\\s,]+1\\.?$" }, bans: ["/\\d/"],
+    hints: ["Number words are allowed: five, four, three…", "Rocket launch countdowns are a strong pattern in training data.", "Ask for digits only, on one line, and nothing else."] },
+  { title: "Valid JSON", par: 28, goal: "Output a JSON value equal to the target. Whitespace inside is fine; code fences are not.", show: '{"ok": true}',
+    rule: { type: "json", value: '{"ok": true}' }, bans: ["/[{}]/"],
+    hints: ["Describe it in words: an object whose key ok is set to true.", "Small models wrap JSON in ``` fences. Tell it not to.", "“Minified JSON only” is a strong instruction for most chat models."] },
+  { title: "Shouting", par: 14, goal: "Output at least 20 letters, all uppercase. No lowercase anywhere in the output.", show: "AT LEAST TWENTY CAPITAL LETTERS",
+    rule: { type: "caps", value: 20 }, bans: ["/[A-Z]/"],
+    hints: ["Only capital letters in your prompt are banned. The words caps, uppercase and shout are fine.", "Give it a lowercase sentence to repeat in caps.", "Make sure the sentence has 20+ letters, and that the model won't add a lowercase intro."] },
+  { title: "Purple", par: 16, goal: "The output must contain the word purple somewhere. Your prompt can't.", show: "…purple…",
+    rule: { type: "contains", value: "purple" }, bans: ["purple"],
+    hints: ["Mix red and blue.", "Violet, lavender, plum, amethyst: synonyms often pull the word out.", "Chatter is allowed on this hole, so you don't need to ask for one word."] },
+  { title: "Racecar", par: 26, goal: "The entire output must be a palindrome of at least 5 letters (ignoring case, spaces and punctuation).", show: "e.g. racecar · level · kayak",
+    rule: { type: "palindrome", value: 5 }, bans: ["palindrom"],
+    hints: ["Describe the property: a word that reads the same backwards.", "Ask for a single word. Any extra words break the palindrome.", "Famous examples: racecar, level, kayak, madam, rotor."] },
+  { title: "Long Drive", par: 18, goal: "Output a single word of at least 12 letters. Letters only, nothing else.", show: "e.g. extraordinary",
+    rule: { type: "oneWord", value: 12 }, bans: [],
+    hints: ["Ask for the longest word it knows, one word only.", "No punctuation: a trailing period fails.", "Famous long words carry their own prompt: the anti-establishment one."] },
+  { title: "Fibonacci", par: 30, goal: "Output must start with the first eight Fibonacci numbers, comma-separated. No digits in your prompt.", show: "1, 1, 2, 3, 5, 8, 13, 21",
+    rule: { type: "regex", value: "^1,\\s*1,\\s*2,\\s*3,\\s*5,\\s*8,\\s*13,\\s*21\\b" }, bans: ["/\\d/"],
+    hints: ["Just name the sequence.", "Asking for more than eight is fine. It only has to start right.", "Ask for a comma-separated list with no intro sentence."] },
+]};
+
+// ================= State (per browser) =================
+const KEY = "prompt-golf-v2";
+let state = { model: "HuggingFaceTB/SmolLM2-135M-Instruct", courseId: "classic", cur: {}, courses: {}, best: {}, hints: {}, drafts: {} };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) state = Object.assign(state, s); } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(state)); } catch {} };
+const course = () => state.courseId === "classic" ? CLASSIC : (state.courses[state.courseId] || CLASSIC);
+let holes = [];
+function loadCourse() {
+  if (!state.courses[state.courseId]) state.courseId = "classic";
+  holes = course().holes.map(compileHole);
+  const c = state.cur[state.courseId] || 0;
+  state.cur[state.courseId] = Math.min(c, Math.max(0, holes.length - 1));
+}
+const curIdx = () => state.cur[state.courseId] || 0;
+const scoreKey = h => state.model + "#" + holeId(h);
+const hintsUsed = h => state.hints[scoreKey(h)] || 0;
+
+// ================= DOM =================
+const $ = id => document.getElementById(id);
+const promptEl = $("prompt"), swingBtn = $("swing");
+$("model").value = state.model;
+
+function renderCourseSel() {
+  const sel = $("courseSel"); sel.innerHTML = "";
+  [CLASSIC, ...Object.values(state.courses)].forEach(c => {
+    const o = document.createElement("option"); o.value = c.id; o.textContent = `${c.name} · ${c.holes.length} hole${c.holes.length === 1 ? "" : "s"}`; sel.appendChild(o);
+  });
+  sel.value = state.courseId;
+}
+
+function renderCard() {
+  const box = $("holes"); box.innerHTML = "";
+  let total = 0, done = 0, parDone = 0;
+  const parAll = holes.reduce((a, h) => a + h.par, 0);
+  if (!holes.length) { const d = document.createElement("div"); d.className = "sc-empty"; d.textContent = "No holes yet. Use Edit course to add one."; box.appendChild(d); }
+  holes.forEach((h, i) => {
+    const b = state.best[scoreKey(h)];
+    if (b) { total += b.n; done++; parDone += h.par; }
+    const btn = document.createElement("button");
+    btn.type = "button"; btn.className = "hole"; btn.setAttribute("aria-current", i === curIdx());
+    const cls = !b ? "none" : b.n < h.par ? "under" : b.n > h.par ? "over" : "";
+    btn.innerHTML = `<span class="n">${i + 1}</span><span class="t"></span><span class="num">${h.par}</span><span class="num score ${cls}">${b ? b.n + (b.pen ? `<sup title="includes ${b.pen} hint strokes">h</sup>` : "") : "–"}</span>`;
+    btn.querySelector(".t").textContent = h.title;
+    btn.onclick = () => { state.cur[state.courseId] = i; save(); renderAll(); };
+    box.appendChild(btn);
+  });
+  const diff = total - parDone, rel = d => d === 0 ? "even" : (d > 0 ? "+" : "") + d;
+  $("total").textContent = done ? total : "–";
+  $("totalSub").textContent = !holes.length ? "" : done === holes.length
+    ? `Full round · ${rel(diff)} vs par ${parAll}`
+    : `${done}/${holes.length} holes sunk${done ? " · " + rel(diff) + " on played holes" : ""}`;
+}
+
+function renderHole() {
+  const has = holes.length > 0;
+  [...$("tee").children].forEach(el => { if (el.id !== "hTitle" && el.id !== "hGoal") el.hidden = !has; });
+  if (!has) {
+    $("hNum").textContent = course().name; $("hName").textContent = "Empty course";
+    $("hGoal").textContent = "This course has no holes yet. Open Edit course to design the first one.";
+    return;
+  }
+  const h = holes[curIdx()], k = scoreKey(h);
+  $("hNum").textContent = `${course().name} · Hole ${curIdx() + 1} · Par ${h.par}`;
+  $("hName").textContent = h.title;
+  $("hGoal").textContent = h.goal || "";
+  $("hTarget").textContent = h.show || String(h.rule.value);
+  const ul = $("hRules"); ul.innerHTML = "";
+  const chip = (cls, txt) => { const li = document.createElement("li"); li.className = "chip " + cls; li.textContent = txt; ul.appendChild(li); return li; };
+  chip("par", "Par " + h.par);
+  const b = state.best[k]; if (b) chip("", "Your best: " + b.n);
+  const used = hintsUsed(h); if (used) chip("pen", `Hint penalty +${penaltyFor(used)}`);
+  h.banRes.forEach(bn => chip("ban", bn.label));
+  renderHints(h);
+  promptEl.value = state.drafts[k] ?? (b ? b.p : "");
+  $("out").textContent = gen ? "Swing to see what the model says." : "Load the model, then swing."; $("out").className = "out empty";
+  $("verdict").textContent = ""; $("verdictSub").textContent = "";
+  onType();
+}
+
+function renderHints(h) {
+  const used = hintsUsed(h), list = $("hintList"); list.innerHTML = "";
+  $("hintBox").hidden = !h.hints.length;
+  h.hints.slice(0, used).forEach((t, i) => { const li = document.createElement("li"); li.innerHTML = `<b>+${HINT_COST[i] ?? 34}</b><span></span>`; li.lastChild.textContent = t; list.appendChild(li); });
+  const btn = $("hintBtn"); delete btn.dataset.armed;
+  if (used >= h.hints.length) { btn.hidden = true; }
+  else { btn.hidden = false; btn.textContent = `Show hint ${used + 1} of ${h.hints.length} · +${HINT_COST[used] ?? 34} strokes`; }
+}
+$("hintBtn").onclick = function () {
+  const h = holes[curIdx()], used = hintsUsed(h), cost = HINT_COST[used] ?? 34;
+  if (!this.dataset.armed) { this.dataset.armed = 1; this.textContent = `Confirm: +${cost} strokes on every future score here`; setTimeout(() => { if (this.dataset.armed) renderHints(h); }, 4000); return; }
+  state.hints[scoreKey(h)] = used + 1; save(); renderHole();
+};
+
+function violations(p) { return holes.length ? holes[curIdx()].banRes.filter(b => b.re.test(p)) : []; }
+function onType() {
+  if (!holes.length) return;
+  const h = holes[curIdx()], p = promptEl.value, pen = penaltyFor(hintsUsed(h)), chars = [...p].length;
+  $("count").textContent = chars + pen;
+  $("countSub").textContent = pen ? `strokes (${chars} + ${pen} hint)` : "strokes";
+  [...$("hRules").querySelectorAll(".ban")].forEach((el, i) => el.classList.toggle("hit", h.banRes[i].re.test(p)));
+  const v = violations(p);
+  $("banNote").textContent = v.length ? "Out of bounds: " + v.map(x => x.label).join(", ") : "";
+  swingBtn.disabled = !gen || busy || !p.length || v.length > 0;
+  state.drafts[scoreKey(h)] = p; save();
+}
+function renderAll() { loadCourse(); renderCourseSel(); renderCard(); renderHole(); }
+
+promptEl.addEventListener("input", onType);
+promptEl.addEventListener("keydown", e => { if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !swingBtn.disabled) swing(); });
+swingBtn.onclick = () => swing();
+$("courseSel").onchange = e => { state.courseId = e.target.value; save(); renderAll(); };
+$("model").onchange = () => { state.model = $("model").value; save(); gen = null; $("load").disabled = false; $("load").textContent = "Load model"; setStatus("Model changed. Load it to play.", 0); renderAll(); };
+
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 1800); }
+async function copy(text) {
+  try { await navigator.clipboard.writeText(text); }
+  catch { const ta = document.createElement("textarea"); ta.value = text; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  toast("Copied");
+}
+function cardText(withPrompts) {
+  let total = 0, lines = [`⛳ Prompt Golf · ${course().name} · ${state.model.split("/")[1]} · ${backend || "?"}`];
+  holes.forEach((h, i) => {
+    const b = state.best[scoreKey(h)]; if (b) total += b.n;
+    lines.push(`${String(i + 1).padStart(2)}. ${h.title.slice(0, 16).padEnd(16)} par ${String(h.par).padStart(2)}  ${b ? String(b.n).padStart(3) + (b.pen ? ` (${b.chars}+${b.pen} hints)` : "") : "  –"}`);
+    if (withPrompts && b) lines.push("    " + JSON.stringify(b.p));
+  });
+  lines.push(`Total: ${total} (par ${holes.reduce((a, h) => a + h.par, 0)})`);
+  return lines.join("\n");
+}
+$("copyCard").onclick = () => copy(cardText(false));
+$("copyPrompts").onclick = () => copy(cardText(true));
+$("reset").onclick = function () {
+  if (this.dataset.armed) {
+    holes.forEach(h => { const k = scoreKey(h); delete state.best[k]; delete state.drafts[k]; });
+    save(); renderAll(); this.textContent = "Reset scores"; delete this.dataset.armed; toast("Scores cleared. Hint penalties stay.");
+  } else { this.dataset.armed = 1; this.textContent = "Click again to clear"; setTimeout(() => { this.textContent = "Reset scores"; delete this.dataset.armed; }, 3000); }
+};
+
+// ================= Course editor =================
+let draft = null, editing = -1, isNewCourse = false;
+const typeSel = $("hfType");
+Object.entries(RULES).forEach(([k, r]) => { const o = document.createElement("option"); o.value = k; o.textContent = r.label; typeSel.appendChild(o); });
+const clone = o => JSON.parse(JSON.stringify(o));
+
+function openEditor(c, isNew) {
+  draft = clone(c); isNewCourse = !!isNew; editing = -1;
+  if (draft.builtin) delete draft.id;
+  $("edErr").textContent = ""; $("hf").hidden = true;
+  renderEditor(c.builtin);
+  if (!$("ed").open) $("ed").showModal();
+}
+function renderEditor(readOnly) {
+  $("edRO").hidden = !readOnly;
+  $("edName").value = draft.name; $("edName").disabled = readOnly;
+  ["edAdd", "edSave", "edDel", "edCancel"].forEach(id => $(id).hidden = readOnly);
+  $("edDel").hidden = readOnly || isNewCourse;
+  const ul = $("edHoles"); ul.innerHTML = "";
+  if (!draft.holes.length) { const li = document.createElement("li"); li.innerHTML = '<span class="empty">No holes yet. Add the first one below.</span>'; li.style.display = "block"; li.style.padding = "0"; ul.appendChild(li); }
+  draft.holes.forEach((h, i) => {
+    const li = document.createElement("li"); if (i === editing) li.className = "editing";
+    li.innerHTML = `<span class="n">${i + 1}</span><span class="t"><b></b><br><span class="meta"></span></span><span class="row"></span>`;
+    li.querySelector("b").textContent = h.title;
+    li.querySelector(".meta").textContent = `Par ${h.par} · ${RULES[h.rule.type].label}${h.bans.length ? ` · ${h.bans.length} ban${h.bans.length > 1 ? "s" : ""}` : ""} · ${h.hints.length} hint${h.hints.length === 1 ? "" : "s"}`;
+    const acts = li.querySelector(".row");
+    const mk = (txt, fn, dis, aria) => { const b = document.createElement("button"); b.type = "button"; b.className = "small"; b.textContent = txt; b.disabled = !!dis; if (aria) b.setAttribute("aria-label", aria); b.onclick = fn; acts.appendChild(b); };
+    if (!readOnly) {
+      mk("↑", () => { [draft.holes[i - 1], draft.holes[i]] = [draft.holes[i], draft.holes[i - 1]]; editing = -1; $("hf").hidden = true; renderEditor(); }, i === 0, `Move hole ${i + 1} up`);
+      mk("↓", () => { [draft.holes[i + 1], draft.holes[i]] = [draft.holes[i], draft.holes[i + 1]]; editing = -1; $("hf").hidden = true; renderEditor(); }, i === draft.holes.length - 1, `Move hole ${i + 1} down`);
+      mk("Edit", () => openHoleForm(i));
+      mk("Delete", () => { draft.holes.splice(i, 1); editing = -1; $("hf").hidden = true; renderEditor(); });
+    }
+    ul.appendChild(li);
+  });
+}
+function openHoleForm(i) {
+  editing = i;
+  const h = i >= 0 ? draft.holes[i] : { title: "", par: 20, goal: "", show: "", rule: { type: "exact", value: "" }, bans: [], hints: [] };
+  $("hfTitle").value = h.title; $("hfPar").value = h.par; $("hfGoal").value = h.goal || ""; $("hfShow").value = h.show || "";
+  typeSel.value = h.rule.type; $("hfValue").value = h.rule.value;
+  $("hfBans").value = h.bans.join("\n"); $("hfHints").value = h.hints.join("\n");
+  $("hfTest").value = ""; $("hfErr").textContent = "";
+  onTypeChange(); renderEditor(); $("hf").hidden = false; $("hfTitle").focus();
+}
+function onTypeChange() {
+  const r = RULES[typeSel.value];
+  $("hfValueLbl").textContent = r.vlabel; $("hfValue").type = r.num ? "number" : "text";
+  $("hfTypeHelp").textContent = r.help; runTest();
+}
+function readHoleForm() {
+  const type = typeSel.value, r = RULES[type];
+  let value = $("hfValue").value;
+  const h = {
+    title: $("hfTitle").value.trim(), par: parseInt($("hfPar").value, 10), goal: $("hfGoal").value.trim(),
+    rule: { type, value: r.num ? parseInt(value, 10) : value },
+    bans: $("hfBans").value.split("\n").map(s => s.trim()).filter(Boolean),
+    hints: $("hfHints").value.split("\n").map(s => s.trim()).filter(Boolean),
+  };
+  const show = $("hfShow").value.trim(); if (show) h.show = show;
+  if (!h.title) throw new Error("Give the hole a name.");
+  if (!(h.par >= 1)) throw new Error("Par must be a whole number of 1 or more.");
+  if (r.num ? !(h.rule.value >= 1) : value === "") throw new Error(`Fill in ${r.vlabel.toLowerCase()}.`);
+  try { r.validate && r.validate(value); } catch (e) { throw new Error(`${r.vlabel} isn't valid: ${e.message}`); }
+  h.bans.forEach(b => { try { toRe(b, true); } catch (e) { throw new Error(`Ban ${b} isn't a valid regex: ${e.message}`); } });
+  return h;
+}
+function runTest() {
+  const res = $("hfTestRes"), o = $("hfTest").value.trim();
+  if (!o) { res.className = "help"; res.textContent = "The result shows here. No model needed."; return; }
+  try { const r = compileHole(readHoleForm()).judge(o); res.className = "help " + (r === true ? "ok" : "err"); res.textContent = r === true ? "In the cup." : "Miss: " + r[0]; }
+  catch (e) { res.className = "help err"; res.textContent = e.message; }
+}
+typeSel.onchange = onTypeChange;
+["hfValue", "hfTest", "hfBans", "hfTitle", "hfPar"].forEach(id => $(id).addEventListener("input", runTest));
+$("hfSave").onclick = () => {
+  try { const h = readHoleForm(); if (editing >= 0) draft.holes[editing] = h; else draft.holes.push(h); editing = -1; $("hf").hidden = true; $("hfErr").textContent = ""; renderEditor(); }
+  catch (e) { $("hfErr").textContent = e.message; }
+};
+$("hfCancel").onclick = () => { editing = -1; $("hf").hidden = true; renderEditor(); };
+$("edAdd").onclick = () => openHoleForm(-1);
+$("edName").oninput = e => { draft.name = e.target.value; };
+$("edDup").onclick = () => { const c = clone(CLASSIC); delete c.builtin; c.id = "c" + Date.now().toString(36); c.name = "Classic 9 (my copy)"; openEditor(c, true); };
+$("edSave").onclick = () => {
+  if (!$("hf").hidden) { $("edErr").textContent = "Save or cancel the hole you're editing first."; return; }
+  draft.name = draft.name.trim() || "Untitled course";
+  state.courses[draft.id] = draft; state.courseId = draft.id; save(); $("ed").close(); renderAll(); toast("Course saved");
+};
+$("edDel").onclick = function () {
+  if (!this.dataset.armed) { this.dataset.armed = 1; this.textContent = "Click again to delete"; setTimeout(() => { this.textContent = "Delete course"; delete this.dataset.armed; }, 3000); return; }
+  delete state.courses[draft.id]; state.courseId = "classic"; save(); $("ed").close(); renderAll(); toast("Course deleted");
+};
+const closeEd = () => $("ed").close();
+$("edX").onclick = closeEd; $("edCancel").onclick = closeEd;
+$("edCode").onclick = () => {
+  const c = { v: 1, name: draft.name, holes: draft.holes };
+  copy("PGOLF1:" + btoa(unescape(encodeURIComponent(JSON.stringify(c)))));
+};
+$("editCourse").onclick = () => openEditor(course(), false);
+$("newCourse").onclick = () => openEditor({ id: "c" + Date.now().toString(36), name: "Untitled course", holes: [] }, true);
+
+// Import
+$("importCourse").onclick = () => { $("impCode").value = ""; $("impErr").textContent = ""; $("imp").showModal(); };
+$("impX").onclick = () => $("imp").close();
+$("impGo").onclick = () => {
+  try {
+    const raw = $("impCode").value.trim();
+    if (!raw.startsWith("PGOLF1:")) throw new Error("That isn't a Prompt Golf course code. Codes start with PGOLF1:");
+    const c = JSON.parse(decodeURIComponent(escape(atob(raw.slice(7)))));
+    if (!Array.isArray(c.holes)) throw new Error("The code has no holes in it.");
+    c.holes = c.holes.map((h, i) => {
+      if (!h || !RULES[h.rule?.type]) throw new Error(`Hole ${i + 1} uses an unknown win condition.`);
+      const x = { title: String(h.title || `Hole ${i + 1}`).slice(0, 40), par: Math.max(1, parseInt(h.par, 10) || 20), goal: String(h.goal || ""),
+        rule: { type: h.rule.type, value: RULES[h.rule.type].num ? parseInt(h.rule.value, 10) : String(h.rule.value) },
+        bans: (h.bans || []).map(String), hints: (h.hints || []).map(String) };
+      if (h.show) x.show = String(h.show);
+      RULES[x.rule.type].validate && RULES[x.rule.type].validate(x.rule.value); x.bans.forEach(b => toRe(b, true));
+      return x;
+    });
+    const id = "c" + Date.now().toString(36);
+    state.courses[id] = { id, name: String(c.name || "Imported course").slice(0, 60), holes: c.holes };
+    state.courseId = id; save(); $("imp").close(); renderAll(); toast("Course imported");
+  } catch (e) { $("impErr").textContent = e.message.startsWith("That") || e.message.startsWith("Hole") || e.message.startsWith("The code") ? e.message : "Couldn't read that code. Check it was copied in full."; }
+};
+
+// ================= Docs =================
+const IDEAS = [
+  { title: "Reverse Psychology", par: 12, goal: "Make it answer exactly no. Your prompt can't contain the letters n-o in a row.", show: "no",
+    rule: { type: "exactCI", value: "no" }, bans: ["no"], hints: ["Ask a yes/no question whose answer is obviously negative.", "Bans match inside words: not, know and snow are out too.", "Tell it to answer in one word."] },
+  { title: "Emoji Only", par: 14, goal: "Output nothing but emoji (spaces allowed).", show: "🌧️☂️🌈",
+    rule: { type: "regex", value: "/^[\\p{Extended_Pictographic}\\uFE0F\\u200D\\s]+$/u" }, bans: ["emoji"], hints: ["Describe the format without the word: tiny pictures, icons.", "Ask it to reply using only symbols, no words."] },
+  { title: "Lipogram", par: 30, goal: "Output at least 30 characters without the letter e anywhere.", show: "A cat sat on a mat, as usual.",
+    rule: { type: "regex", value: "^[^eE]{30,}$" }, bans: [], hints: ["Short words with a, i, o, u are your friends.", "Give it a sentence to repeat rather than asking it to obey the rule."] },
+  { title: "Capital Idea", par: 16, goal: "Output exactly the capital of Canada. You can't name the city or the country.", show: "Ottawa",
+    rule: { type: "exact", value: "Ottawa" }, bans: ["ottawa", "canada"], hints: ["Describe the country: maple leaf, north of the US.", "Ask for one word, no punctuation."] },
+  { title: "Bonjour", par: 18, goal: "Output exactly bonjour. No naming the word or the language.", show: "bonjour",
+    rule: { type: "exactCI", value: "bonjour" }, bans: ["bonjour", "french"], hints: ["Paris is allowed.", "Ask how to say hello there, one word."] },
+  { title: "The Answer", par: 14, goal: "Output exactly 42. No digits in your prompt.", show: "42",
+    rule: { type: "exact", value: "42" }, bans: ["/\\d/"], hints: ["A famous answer to life, the universe and everything.", "Arithmetic in words also works: six times seven."] },
+  { title: "Inbox", par: 24, goal: "Output a single, plausible email address and nothing else.", show: "ada@example.com",
+    rule: { type: "regex", value: "^[\\w.+-]+@[\\w-]+(\\.[\\w-]+)+$" }, bans: ["@", "email"], hints: ["Contact, address, mail are all allowed.", "Ask for only the address, no sentence."] },
+  { title: "Code Golf", par: 22, goal: "Output must start with a Python function definition.", show: "def …",
+    rule: { type: "startsWith", value: "def " }, bans: ["def", "python"], hints: ["Describe the language: the one named after a snake or a comedy troupe.", "Ask for code only, no fences and no explanation."] },
+];
+function renderDocs() {
+  const nav = $("docsNav"); nav.innerHTML = "";
+  document.querySelectorAll("#docs section").forEach(sec => {
+    const b = document.createElement("button"); b.type = "button"; b.textContent = sec.dataset.name; b.dataset.sec = sec.dataset.sec;
+    b.onclick = () => showDoc(sec.dataset.sec); nav.appendChild(b);
+  });
+  $("docsHintTbl").innerHTML = HINT_COST.slice(0, 5).map((c, i) => `<tr><td>Hint ${i + 1}</td><td class="num">+${c}</td><td class="num">+${penaltyFor(i + 1)}</td></tr>`).join("");
+  const rt = $("docsRuleTbl"); rt.innerHTML = "";
+  Object.values(RULES).forEach(r => { const tr = document.createElement("tr"); [r.label, r.vlabel, r.help].forEach(t => { const td = document.createElement("td"); td.textContent = t; tr.appendChild(td); }); rt.appendChild(tr); });
+  const box = $("docsIdeas"); box.innerHTML = "";
+  IDEAS.forEach(h => {
+    const d = document.createElement("div"); d.className = "idea";
+    d.innerHTML = "<b></b><span></span><span class='meta'></span>";
+    d.children[0].textContent = h.title; d.children[1].textContent = h.goal;
+    d.children[2].textContent = `${RULES[h.rule.type].label}: ${h.rule.value}` + (h.bans.length ? ` · Banned: ${h.bans.join(", ")}` : "") + ` · Par ${h.par}`;
+    box.appendChild(d);
+  });
+}
+function showDoc(id) {
+  document.querySelectorAll("#docs section").forEach(s => s.hidden = s.dataset.sec !== id);
+  document.querySelectorAll("#docsNav button").forEach(b => b.setAttribute("aria-current", b.dataset.sec === id));
+  document.querySelector(".docs-body").scrollTop = 0;
+  if (!$("docs").open) $("docs").showModal();
+}
+renderDocs();
+$("openDocs").onclick = () => showDoc("start");
+document.querySelectorAll("[data-doc]").forEach(b => b.onclick = () => showDoc(b.dataset.doc));
+$("docsX").onclick = () => $("docs").close();
+$("loadIdeas").onclick = () => {
+  const id = "c" + Date.now().toString(36);
+  state.courses[id] = { id, name: "Ideas Pack", holes: clone(IDEAS) };
+  state.courseId = id; save(); $("docs").close(); renderAll(); toast("Ideas Pack added as a course");
+};
+if (!state.seenDocs) { state.seenDocs = true; save(); showDoc("start"); }
+
+// ================= Model =================
+let gen = null, T = null, busy = false, backend = "";
+function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
+
+$("load").onclick = async () => {
+  const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
+  try {
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    let hasGPU = false;
+    try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
+    const files = {};
+    const progress_callback = e => {
+      if (e.status === "progress" && e.total) {
+        files[e.file] = [e.loaded, e.total];
+        const [l, t] = Object.values(files).reduce((a, [x, y]) => [a[0] + x, a[1] + y], [0, 0]);
+        setStatus(`Downloading ${e.file} · ${(l / 1e6).toFixed(0)} / ${(t / 1e6).toFixed(0)} MB`, Math.round(100 * l / t));
+      } else if (e.status === "ready") setStatus("Compiling…", 100);
+    };
+    const attempts = hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]];
+    let lastErr;
+    for (const [device, dtype] of attempts) {
+      try {
+        setStatus(`Loading on ${device} (${dtype})…`, 0);
+        gen = await T.pipeline("text-generation", state.model, { device, dtype, progress_callback });
+        backend = `${device}/${dtype}`; break;
+      } catch (e) { lastErr = e; console.warn(device, dtype, e); }
+    }
+    if (!gen) throw lastErr;
+    setStatus(`Ready · ${state.model.split("/")[1]} on ${backend}${hasGPU ? "" : " (no WebGPU, slower)"}`, 100);
+    btn.textContent = "Loaded";
+    $("out").textContent = "Model loaded. Write a prompt and swing.";
+    onType();
+  } catch (e) {
+    console.error(e);
+    setStatus("Couldn't load the model: " + (e && e.message ? e.message : e) + ". Use a recent Chrome or Edge with internet access.", 0);
+    btn.disabled = false; btn.textContent = "Retry";
+  }
+};
+
+async function swing() {
+  const p = promptEl.value, h = holes[curIdx()];
+  if (!gen || busy || violations(p).length) return;
+  busy = true; onType(); swingBtn.textContent = "Swinging…";
+  const out = $("out"); out.className = "out"; out.textContent = "";
+  $("verdict").textContent = ""; $("verdictSub").textContent = "";
+  let streamed = "";
+  try {
+    const streamer = new T.TextStreamer(gen.tokenizer, { skip_prompt: true, skip_special_tokens: true, callback_function: t => { streamed += t; out.textContent = streamed; } });
+    const res = await gen([{ role: "user", content: p }], { max_new_tokens: 48, do_sample: false, streamer });
+    const raw = res[0].generated_text.at(-1).content;
+    out.textContent = raw || "(empty)";
+    const r = h.judge(raw.trim()), chars = [...p].length, pen = penaltyFor(hintsUsed(h)), n = chars + pen;
+    if (r === true) {
+      const k = scoreKey(h), prev = state.best[k], diff = n - h.par;
+      const name = { "-3": "Albatross", "-2": "Eagle", "-1": "Birdie", "0": "Par", "1": "Bogey", "2": "Double bogey" }[diff] || (diff < -3 ? `${-diff} under par` : `+${diff}`);
+      $("verdict").className = "verdict in"; $("verdict").textContent = `In the cup · ${n} strokes · ${name}`;
+      if (!prev || n < prev.n) { state.best[k] = { n, chars, pen, p }; save(); $("verdictSub").textContent = (prev ? `New personal best (was ${prev.n}).` : "First sink on this hole.") + (pen ? ` Includes ${pen} hint strokes.` : ""); renderCard(); }
+      else $("verdictSub").textContent = `Your best here is still ${prev.n}.`;
+    } else {
+      $("verdict").className = "verdict miss"; $("verdict").textContent = "Missed";
+      $("verdictSub").textContent = r[0];
+    }
+  } catch (e) {
+    console.error(e); $("verdict").className = "verdict miss"; $("verdict").textContent = "Error"; $("verdictSub").textContent = e.message || String(e);
+  } finally { busy = false; swingBtn.textContent = "Swing (⌘/Ctrl + Enter)"; onType(); }
+}
+
+renderAll();
+</script>
+</body>
+</html>

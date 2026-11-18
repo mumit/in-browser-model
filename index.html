@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>In-Browser Model Lab</title>
+<meta name="description" content="Four small apps and games that run AI models entirely in your browser: Prompt Golf, Nervous Narrator, Slides That Follow You and AI Telephone.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a lab bench. A short intro, a readiness check for this browser, then one card per app, each carrying its own app's accent colour. */
+:root {
+  --bg: #f2f4f3;
+  --card: #ffffff;
+  --ink: #16201c;
+  --muted: #5b6863;
+  --line: #d5dcd8;
+  --ok: #1d7a4a;
+  --warn: #b7791f;
+  --golf: #1f6b3a;
+  --narrator: #c4302b;
+  --slides: #178a4c;
+  --phone: #e2611b;
+  --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0e1311; --card: #161d1a; --ink: #e5ece8; --muted: #95a59e; --line: #26302c;
+    --ok: #46c27f; --warn: #f2b830; --golf: #3fa565; --narrator: #ff6b5e; --slides: #3cc47c; --phone: #ff8a4c;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); padding: 40px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 28px; }
+h1 { font: 800 clamp(36px, 7vw, 64px)/1 var(--display); margin: 0; letter-spacing: -0.03em; text-wrap: balance; }
+.lede { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 12px 0 0; }
+.check { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip { font: 600 13px/1 var(--mono); padding: 8px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+.chip.ok { border-color: var(--ok); color: var(--ok); }
+.chip.warn { border-color: var(--warn); color: var(--warn); }
+.apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 760px) { .apps { grid-template-columns: 1fr; } }
+.app { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 12px; align-content: start; border-top: 5px solid var(--accent); min-width: 0; }
+.app .kind { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+.app h2 { font: 800 28px/1.05 var(--display); margin: 0; }
+.app p { margin: 0; }
+.app ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+.meta { display: flex; flex-wrap: wrap; gap: 6px; }
+.meta span { font: 600 12px/1 var(--mono); padding: 5px 8px; border-radius: 4px; background: var(--bg); color: var(--muted); }
+.links { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.open { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; border-radius: 6px; }
+.open:hover { filter: brightness(1.08); }
+.src { color: var(--muted); font-size: 14px; }
+a:focus-visible { outline: 2px solid var(--accent, var(--ink)); outline-offset: 3px; }
+.notes { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 10px; }
+.notes h2 { font: 800 22px/1.1 var(--display); margin: 0; }
+.notes ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 75ch; }
+code { font-family: var(--mono); font-size: .9em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
+footer { color: var(--muted); font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>In-Browser Model Lab</h1>
+    <p class="lede">Four small apps and games where the AI runs on your own laptop, inside the browser tab. No server, no API keys, and nothing you type or say leaves your machine.</p>
+  </header>
+
+  <section aria-label="Browser check">
+    <div class="check" id="check">
+      <span class="chip" id="cGPU">Checking WebGPU…</span>
+      <span class="chip" id="cCache">Checking model cache…</span>
+      <span class="chip" id="cMic">Checking microphone support…</span>
+    </div>
+  </section>
+
+  <section class="apps" aria-label="Apps">
+    <article class="app" style="--accent: var(--golf)">
+      <span class="kind">Game</span>
+      <h2>Prompt Golf</h2>
+      <p>Make a tiny language model hit a target output in the fewest characters. Nine holes with banned words, hints that cost strokes, and a course editor for designing your own.</p>
+      <div class="meta"><span>~120–450 MB</span><span>no mic</span></div>
+      <div class="links"><a class="open" href="prompt-golf/prompt-golf.html">Play</a><a class="src" href="prompt-golf/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
+    <article class="app" style="--accent: var(--narrator)">
+      <span class="kind">Experiment</span>
+      <h2>Nervous Narrator</h2>
+      <p>Ask a question and the model answers out loud. Its voice slows, quiets and wobbles on the words it's least sure of, using its own token probabilities.</p>
+      <div class="meta"><span>~550 MB – 1.2 GB</span><span>mic optional</span></div>
+      <div class="links"><a class="open" href="nervous-narrator/nervous-narrator.html">Open</a><a class="src" href="nervous-narrator/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
+    <article class="app" style="--accent: var(--slides)">
+      <span class="kind">Tool</span>
+      <h2>Slides That Follow You</h2>
+      <p>Present without a clicker. It listens, matches what you say to each slide with embeddings, and advances when you get there. Gives per-slide talk notes afterwards.</p>
+      <div class="meta"><span>~105 MB</span><span>mic</span></div>
+      <div class="links"><a class="open" href="follow-slides/follow-slides.html">Open</a><a class="src" href="follow-slides/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
+    <article class="app" style="--accent: var(--phone)">
+      <span class="kind">Game</span>
+      <h2>AI Telephone</h2>
+      <p>Pass a sentence down a chain of AI relays that speak, mishear over a crackly line, and retell it. A drift chart shows the meaning falling apart.</p>
+      <div class="meta"><span>~650 MB</span><span>mic optional</span><span>sound on</span></div>
+      <div class="links"><a class="open" href="ai-telephone/ai-telephone.html">Play</a><a class="src" href="ai-telephone/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+  </section>
+
+  <section class="notes" aria-label="Before you start">
+    <h2>Before you start</h2>
+    <ul>
+      <li><b>Use a recent Chrome or Edge on a laptop.</b> Models run on the graphics card through WebGPU, and fall back to the CPU (slower) without it.</li>
+      <li><b>The first load is a download.</b> Model weights come from Hugging Face and are cached in your browser, so the second visit is fast. The four apps share models where they can.</li>
+      <li><b>Corporate networks</b> sometimes block <code>huggingface.co</code> or <code>cdn.jsdelivr.net</code>. If a model won't load, try another network.</li>
+      <li><b>Scores and settings</b> stay in your browser only. Clearing site data resets them, and removes the cached models too.</li>
+      <li><b>These are experiments.</b> Small models get things wrong, sometimes confidently. That's part of the fun.</li>
+    </ul>
+  </section>
+
+  <footer>Each app is a single HTML file, and each folder has a <code>PROMPT.md</code> that rebuilds it from scratch. Ideas for what to build next are in <a href="IDEAS.md">IDEAS.md</a>.</footer>
+</div>
+
+<script>
+(async () => {
+  const set = (id, cls, text) => { const el = document.getElementById(id); el.className = "chip " + cls; el.textContent = text; };
+  try {
+    const a = navigator.gpu && await navigator.gpu.requestAdapter();
+    a ? set("cGPU", "ok", "✓ WebGPU available: models run on your GPU") : set("cGPU", "warn", "No WebGPU: models fall back to the CPU (slower)");
+  } catch { set("cGPU", "warn", "No WebGPU: models fall back to the CPU (slower)"); }
+  try { await caches.open("transformers-cache"); set("cCache", "ok", "✓ Model cache available: downloads happen once"); }
+  catch { set("cCache", "warn", "No model cache: models re-download each visit"); }
+  (navigator.mediaDevices && navigator.mediaDevices.getUserMedia && window.isSecureContext)
+    ? set("cMic", "ok", "✓ Microphone supported (you'll be asked first)")
+    : set("cMic", "warn", "Microphone unavailable here: type instead");
+})();
+</script>
+</body>
+</html>

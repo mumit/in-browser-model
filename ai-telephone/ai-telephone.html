@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Telephone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Unbounded:wght@600;800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
+<style>
+/* Layout: a telephone exchange. Left column is the operator's desk (message, line settings, drift chart, leaderboard); right column is the line itself, one card per relay. */
+:root {
+  --bg: #edf2f1;
+  --card: #ffffff;
+  --ink: #102624;
+  --muted: #587370;
+  --line: #cfdcda;
+  --cable: #e2611b;
+  --good: #1e8a5a;
+  --warn: #c98a00;
+  --bad: #c0392b;
+  --mark: #ffe39a;
+  --display: "Unbounded", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0c1615; --card: #13211f; --ink: #e3efed; --muted: #8fa9a5; --line: #233634;
+    --cable: #ff8a4c; --good: #3cc488; --warn: #f2b830; --bad: #ff6b5e; --mark: #4d4214; color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding: 22px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1200px; margin: 0 auto; display: grid; gap: 18px; }
+header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: end; gap: 12px 24px; }
+h1 { font: 800 clamp(28px, 5vw, 44px)/1 var(--display); margin: 0; letter-spacing: -0.02em; }
+h1 span { color: var(--cable); }
+.tag { color: var(--muted); max-width: 60ch; margin: 8px 0 0; }
+.engine { display: grid; gap: 8px; justify-items: end; min-width: 0; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+select, button, textarea, input { font: inherit; color: inherit; }
+select, input[type=text] { background: var(--card); border: 1px solid var(--line); border-radius: 6px; padding: 7px 10px; min-width: 0; max-width: 100%; }
+button { border: 1px solid var(--line); background: var(--card); border-radius: 6px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+button.primary { background: var(--cable); color: #fff; border-color: var(--cable); }
+button.small { font-size: 13px; padding: 5px 10px; }
+button:disabled { opacity: .5; cursor: not-allowed; }
+:is(button, select, textarea, input):focus-visible { outline: 2px solid var(--cable); outline-offset: 2px; }
+.lbl { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.status { font: 12px/1.4 var(--mono); color: var(--muted); text-align: right; max-width: 480px; }
+.bar { width: 280px; max-width: 100%; height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--cable); transition: width .2s; }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 10px; }
+.pad { padding: 16px; display: grid; gap: 12px; }
+h2 { font: 600 16px/1.2 var(--display); margin: 0; }
+
+.desk { display: grid; grid-template-columns: 380px minmax(0, 1fr); gap: 18px; align-items: start; }
+@media (max-width: 920px) { .desk { grid-template-columns: 1fr; } .engine { justify-items: start; } .status { text-align: left; } }
+.left { display: grid; gap: 18px; min-width: 0; }
+
+textarea#msg { width: 100%; min-height: 84px; resize: vertical; font: 17px/1.4 var(--body); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 12px; }
+.talk[aria-pressed="true"] { background: var(--bad); color: #fff; border-color: var(--bad); }
+.settings { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 12px; }
+.settings .f { display: grid; gap: 4px; min-width: 0; }
+.settings .wide { grid-column: 1 / -1; }
+input[type=range] { width: 100%; accent-color: var(--cable); }
+.toggle { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+.toggle input { margin-top: 3px; accent-color: var(--cable); }
+.seg { display: grid; grid-template-columns: repeat(3, 1fr); border: 1px solid var(--line); border-radius: 6px; overflow: hidden; }
+.seg button { border: 0; border-radius: 0; font-size: 13px; padding: 7px 6px; }
+.seg button[aria-pressed="true"] { background: var(--ink); color: var(--card); }
+
+svg { display: block; width: 100%; height: auto; }
+.result { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.result div { background: var(--bg); border-radius: 8px; padding: 10px 12px; min-width: 0; }
+.result b { display: block; font: 800 24px/1.1 var(--display); font-variant-numeric: tabular-nums; }
+.result span { font-size: 12px; color: var(--muted); }
+
+.lb { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.lb th, .lb td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); vertical-align: top; }
+.lb th { font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.lb td.num { text-align: right; font: 600 13px var(--mono); font-variant-numeric: tabular-nums; }
+.lb td.s { overflow-wrap: anywhere; }
+.lb-wrap { overflow-x: auto; }
+
+.chain { display: grid; gap: 0; position: relative; }
+.relay { display: grid; grid-template-columns: 44px minmax(0, 1fr); gap: 12px; position: relative; }
+.relay .node { display: grid; justify-items: center; }
+.relay .node b { width: 36px; height: 36px; border-radius: 50%; display: grid; place-items: center; background: var(--card); border: 2px solid var(--cable); font: 600 13px var(--display); z-index: 1; }
+.relay .node i { width: 3px; flex: 1; background: var(--cable); min-height: 16px; opacity: .6; }
+.relay .body { padding-bottom: 14px; min-width: 0; }
+.relay .card { padding: 12px 14px; display: grid; gap: 8px; }
+.relay.origin .node b { background: var(--cable); color: #fff; }
+.stage-line { display: flex; gap: 6px; flex-wrap: wrap; }
+.pill { font: 600 11px/1 var(--mono); padding: 4px 7px; border-radius: 999px; border: 1px solid var(--line); color: var(--muted); }
+.pill.active { border-color: var(--cable); color: var(--cable); }
+.pill.done { color: var(--ink); }
+.txt { margin: 0; font-size: 15px; overflow-wrap: anywhere; }
+.txt .k { font: 600 11px var(--mono); color: var(--muted); letter-spacing: .06em; text-transform: uppercase; margin-right: 6px; }
+.miss { background: var(--mark); border-radius: 3px; padding: 0 2px; }
+.passed { font: 600 17px/1.4 var(--body); }
+.simrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.sim { font: 600 13px var(--mono); padding: 3px 8px; border-radius: 4px; color: #fff; font-variant-numeric: tabular-nums; }
+.empty-line { color: var(--muted); padding: 24px; text-align: center; }
+details summary { cursor: pointer; font-weight: 600; }
+details p, details li { font-size: 14px; color: var(--muted); }
+details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--card); padding: 8px 14px; border-radius: 6px; font-weight: 600; z-index: 10; }
+@media (prefers-reduced-motion: reduce) { .bar > i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>AI <span>Telephone</span></h1>
+      <p class="tag">Say a sentence and pass it down a line of AI relays. Each one speaks it, sends it over a crackly line, hears it, and retells it in its own words. Watch the meaning drift, round by round, all on this laptop.</p>
+    </div>
+    <div class="engine">
+      <button id="load" class="primary" type="button">Load the line</button>
+      <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+      <div class="status" id="status">Not loaded. Four models (~650 MB in total: a voice, ears, a retelling brain and a meaning matcher) download once, then cache.</div>
+    </div>
+  </header>
+
+  <div class="desk">
+    <div class="left">
+      <section class="card pad" aria-label="The message">
+        <h2>The message</h2>
+        <textarea id="msg" aria-label="Original message">The deploy is blocked until the auth migration finishes on Thursday.</textarea>
+        <div class="row">
+          <button type="button" id="talk" class="talk" aria-pressed="false" disabled>Hold to say it</button>
+          <span class="hint">or type it. Aim for 6+ words.</span>
+        </div>
+        <div class="settings">
+          <div class="f"><label for="rounds">Relays</label><select id="rounds"><option>4</option><option>6</option><option selected>8</option><option>10</option><option>12</option></select></div>
+          <div class="f"><label for="noise">Line quality</label><select id="noise"><option value="0">Clear</option><option value="1" selected>Office phone</option><option value="2">Bad cell</option><option value="3">Tin can</option></select></div>
+          <div class="f wide">
+            <span>How each relay retells it</span>
+            <div class="seg" role="group" aria-label="Retelling style">
+              <button type="button" data-style="faithful" aria-pressed="true">Faithful</button>
+              <button type="button" data-style="gossip" aria-pressed="false">Gossip</button>
+              <button type="button" data-style="french" aria-pressed="false">Via French</button>
+            </div>
+            <span class="hint" id="styleHelp"></span>
+          </div>
+          <label class="toggle wide"><input type="checkbox" id="aloud" checked><span>Play each relay out loud, so the room hears the line</span></label>
+          <div class="f wide"><label for="player">Your name, for the leaderboard</label><input type="text" id="player" maxlength="30" placeholder="e.g. Priya"></div>
+        </div>
+        <div class="row"><button type="button" class="primary" id="go" disabled>Start the chain</button><button type="button" id="stop" disabled>Hang up</button></div>
+      </section>
+
+      <section class="card pad" aria-label="Drift">
+        <h2>Meaning drift</h2>
+        <svg id="chart" viewBox="0 0 360 180" role="img" aria-label="Similarity to the original message after each relay"></svg>
+        <div class="result">
+          <div><b id="rFinal">–</b><span>final similarity to the original</span></div>
+          <div><b id="rSurv">–</b><span>relays before it lost the plot (below 0.50)</span></div>
+        </div>
+        <div class="row"><button type="button" class="small" id="copy" disabled>Copy result</button></div>
+      </section>
+
+      <section class="card pad" aria-label="Leaderboard">
+        <h2>Leaderboard</h2>
+        <div class="seg" role="group" aria-label="Leaderboard type" style="grid-template-columns:1fr 1fr">
+          <button type="button" id="lbSurv" aria-pressed="true">Survivors</button>
+          <button type="button" id="lbChaos" aria-pressed="false">Chaos</button>
+        </div>
+        <p class="hint" id="lbHelp"></p>
+        <div class="lb-wrap"><table class="lb"><thead><tr><th>#</th><th>Who</th><th>Message</th><th class="num">Score</th></tr></thead><tbody id="lbBody"></tbody></table></div>
+        <button type="button" class="small" id="lbClear">Clear leaderboard</button>
+      </section>
+
+      <section class="card pad">
+        <details>
+          <summary>How it works</summary>
+          <ul>
+            <li><b>Speak:</b> Kokoro turns the text into speech, with a different voice for each relay.</li>
+            <li><b>The line:</b> the audio goes through a phone filter (300–3,400 Hz) plus hiss, crackle and, on tin can, dropouts. The noise is seeded, so the same message on the same settings gives the same chain.</li>
+            <li><b>Hear:</b> Whisper transcribes what came down the line. Misheard words are highlighted.</li>
+            <li><b>Retell:</b> a small language model (Qwen2.5 0.5B) passes it on in its own words, with greedy decoding.</li>
+            <li><b>Score:</b> MiniLM embeds the original and each retelling; cosine similarity is the drift chart.</li>
+            <li>The lesson: every step is “pretty good”, but errors compound. It's the same reason long agent pipelines go off the rails.</li>
+          </ul>
+        </details>
+      </section>
+    </div>
+
+    <section aria-label="The line" aria-live="polite">
+      <div class="chain" id="chain"><div class="card empty-line">Load the line, set a message and start the chain. Each relay shows up here as it happens.</div></div>
+    </section>
+  </div>
+</div>
+
+<script>
+// ================= State =================
+const KEY = "ai-telephone-v1";
+let prefs = { rounds: "8", noise: "1", style: "faithful", aloud: true, player: "", board: [], lb: "surv" };
+try { const s = JSON.parse(localStorage.getItem(KEY)); if (s) prefs = Object.assign(prefs, s); } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify(prefs)); } catch {} };
+const $ = id => document.getElementById(id);
+$("rounds").value = prefs.rounds; $("noise").value = prefs.noise; $("aloud").checked = prefs.aloud; $("player").value = prefs.player;
+["rounds", "noise"].forEach(id => $(id).onchange = e => { prefs[id] = e.target.value; save(); });
+$("aloud").onchange = e => { prefs.aloud = e.target.checked; save(); };
+$("player").oninput = e => { prefs.player = e.target.value; save(); };
+const STYLES = {
+  faithful: { help: "Retells the message as accurately as it can, in its own words.", sys: "You are one person in a game of telephone. Retell the message you heard in your own words as a single sentence. Keep every detail you can. Output only the sentence." },
+  gossip: { help: "Passes it on like office gossip: a little more dramatic each time.", sys: "You are one person in a game of telephone who loves gossip. Pass on the message you heard as a single sentence, making it slightly more dramatic. Output only the sentence." },
+  french: { help: "Translates to French and back to English at every relay.", sys: null },
+};
+document.querySelectorAll("[data-style]").forEach(b => b.onclick = () => { prefs.style = b.dataset.style; save(); setStyle(); });
+function setStyle() { document.querySelectorAll("[data-style]").forEach(b => b.setAttribute("aria-pressed", b.dataset.style === prefs.style)); $("styleHelp").textContent = STYLES[prefs.style].help; }
+setStyle();
+
+function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+
+// ================= Models =================
+let T = null, tok = null, llm = null, kokoro = null, asr = null, embedder = null, backend = "";
+function tracker(label) {
+  const files = {};
+  return e => {
+    if (e.status === "progress" && e.total) {
+      files[e.file] = [e.loaded, e.total];
+      const [l, t] = Object.values(files).reduce((a, [x, y]) => [a[0] + x, a[1] + y], [0, 0]);
+      setStatus(`${label}: ${e.file} · ${(l / 1e6).toFixed(0)} / ${(t / 1e6).toFixed(0)} MB`, Math.round(100 * l / t));
+    }
+  };
+}
+$("load").onclick = async () => {
+  const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
+  try {
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    setStatus("Loading the meaning matcher (MiniLM)…", 0);
+    embedder = await T.pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2", { progress_callback: tracker("Matcher") });
+    setStatus("Loading the ears (Whisper)…", 0);
+    asr = await T.pipeline("automatic-speech-recognition", "Xenova/whisper-base.en", { progress_callback: tracker("Ears") });
+    setStatus("Loading the voice (Kokoro)…", 0);
+    const { KokoroTTS } = await import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js");
+    kokoro = await KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", { dtype: "q8", device: "wasm", progress_callback: tracker("Voice") });
+    setStatus("Loading the retelling brain (Qwen2.5 0.5B)…", 0);
+    let hasGPU = false; try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
+    const id = "onnx-community/Qwen2.5-0.5B-Instruct";
+    tok = await T.AutoTokenizer.from_pretrained(id);
+    let err;
+    for (const [device, dtype] of hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]]) {
+      try { llm = await T.AutoModelForCausalLM.from_pretrained(id, { device, dtype, progress_callback: tracker("Brain") }); backend = `${device}/${dtype}`; break; }
+      catch (e) { err = e; console.warn(device, dtype, e); }
+    }
+    if (!llm) throw err;
+    setStatus(`Line ready · brain on ${backend}${hasGPU ? "" : " (no WebGPU, slower)"} · ears: whisper-base.en · voice: Kokoro`, 100);
+    btn.textContent = "Line ready"; $("go").disabled = false; $("talk").disabled = false;
+  } catch (e) {
+    console.error(e); setStatus(`Couldn't load: ${e?.message || e}. Use a recent Chrome or Edge with internet access for the first load.`, 0);
+    btn.disabled = false; btn.textContent = "Retry";
+  }
+};
+
+async function embed(texts) {
+  const out = await embedder(texts, { pooling: "mean", normalize: true });
+  const [n, d] = out.dims; return Array.from({ length: n }, (_, i) => out.data.slice(i * d, (i + 1) * d));
+}
+const cos = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; };
+async function chat(system, user) {
+  const inputs = tok.apply_chat_template([{ role: "system", content: system }, { role: "user", content: user }], { add_generation_prompt: true, return_dict: true });
+  const seq = await llm.generate({ ...inputs, max_new_tokens: 60, do_sample: false });
+  const ids = Array.from(seq.data, Number).slice(inputs.input_ids.dims.at(-1));
+  return clean(tok.decode(ids, { skip_special_tokens: true }));
+}
+const clean = s => (s.split("\n").map(x => x.trim()).find(Boolean) || "").replace(/^["“'`]+|["”'`]+$/g, "").replace(/^(message|retold|sentence)\s*:\s*/i, "").trim();
+async function retell(heard) {
+  if (prefs.style === "french") {
+    const fr = await chat("Translate the user's message into French. Output only the French sentence.", heard);
+    const en = await chat("Translate the user's message into English. Output only the English sentence.", fr);
+    return { text: en, via: fr };
+  }
+  return { text: await chat(STYLES[prefs.style].sys, `The message you heard: ${heard}`) };
+}
+
+// ================= The line (audio degradation) =================
+function rng(seed) { let a = seed >>> 0; return () => { a |= 0; a = a + 0x6D2B79F5 | 0; let t = Math.imul(a ^ a >>> 15, 1 | a); t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t; return ((t ^ t >>> 14) >>> 0) / 4294967296; }; }
+function hashStr(s) { let h = 2166136261; for (const c of s) { h ^= c.codePointAt(0); h = Math.imul(h, 16777619); } return h >>> 0; }
+async function phoneLine(samples, sr, level, seed) {
+  const SR = 16000, len = Math.ceil(samples.length * SR / sr);
+  const oc = new OfflineAudioContext(1, len, SR);
+  const b = oc.createBuffer(1, samples.length, sr); b.copyToChannel(samples, 0);
+  const src = oc.createBufferSource(); src.buffer = b;
+  if (level > 0) {
+    const hp = oc.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 280 + 120 * level;
+    const lp = oc.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 3600 - 600 * level;
+    src.connect(hp).connect(lp).connect(oc.destination);
+  } else src.connect(oc.destination);
+  src.start();
+  const out = (await oc.startRendering()).getChannelData(0).slice();
+  if (level > 0) {
+    const r = rng(seed), hiss = 0.012 * level;
+    for (let i = 0; i < out.length; i++) {
+      out[i] += (r() * 2 - 1) * hiss;
+      if (r() < 0.00015 * level) out[i] += (r() * 2 - 1) * 0.35; // crackle
+    }
+    if (level >= 3) for (let k = 0; k < 2; k++) { const at = Math.floor(r() * (out.length - 2000)), w = 1100 + Math.floor(r() * 900); out.fill(0, at, at + w); } // dropouts
+  }
+  return out;
+}
+let actx = null;
+function play(samples, sr) {
+  actx = actx || new AudioContext();
+  return new Promise(res => {
+    if (actx.state === "suspended") actx.resume();
+    const b = actx.createBuffer(1, samples.length, sr); b.copyToChannel(samples, 0);
+    const s = actx.createBufferSource(); s.buffer = b; s.connect(actx.destination);
+    s.onended = res; s.start(); current.source = s;
+  });
+}
+
+// ================= Diff (highlight misheard words) =================
+const norm = w => w.toLowerCase().replace(/[^a-z0-9']/g, "");
+function diffHTML(spoken, heard) {
+  const a = spoken.split(/\s+/).map(norm).filter(Boolean), raw = heard.split(/\s+/).filter(Boolean), b = raw.map(norm);
+  const dp = Array.from({ length: a.length + 1 }, () => new Array(b.length + 1).fill(0));
+  for (let i = a.length - 1; i >= 0; i--) for (let j = b.length - 1; j >= 0; j--) dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+  const keep = new Set(); let i = 0, j = 0;
+  while (i < a.length && j < b.length) { if (a[i] === b[j]) { keep.add(j); i++; j++; } else if (dp[i + 1][j] >= dp[i][j + 1]) i++; else j++; }
+  const esc = s => s.replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+  const misses = raw.filter((_, k) => !keep.has(k) && b[k]).length;
+  return { html: raw.map((w, k) => keep.has(k) || !b[k] ? esc(w) : `<span class="miss">${esc(w)}</span>`).join(" "), misses };
+}
+
+// ================= Chain =================
+const VOICES = ["af_heart", "am_michael", "bf_emma", "am_adam", "af_bella", "bm_george", "af_nicole", "am_puck", "bf_isabella", "am_eric", "af_sarah", "bm_lewis"];
+let current = { cancelled: true }, run = null;
+const simColor = s => s >= 0.75 ? "var(--good)" : s >= 0.5 ? "var(--warn)" : "var(--bad)";
+
+function relayCard(n, origin) {
+  const wrap = document.createElement("div"); wrap.className = "relay" + (origin ? " origin" : "");
+  wrap.innerHTML = `<div class="node"><b>${origin ? "0" : n}</b><i></i></div><div class="body"><div class="card"></div></div>`;
+  $("chain").appendChild(wrap); wrap.scrollIntoView({ block: "nearest", behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+  return wrap.querySelector(".card");
+}
+function stages(card, active) {
+  const names = ["speaking", "on the line", "listening", "retelling", "scoring"];
+  let el = card.querySelector(".stage-line");
+  if (!el) { el = document.createElement("div"); el.className = "stage-line"; card.prepend(el); }
+  el.innerHTML = names.map((s, i) => `<span class="pill ${i < active ? "done" : i === active ? "active" : ""}">${i < active ? "✓ " : ""}${s}</span>`).join("");
+  if (active >= names.length) el.remove();
+}
+function line(card, key, text, cls = "") { const p = document.createElement("p"); p.className = "txt " + cls; p.innerHTML = `<span class="k"></span>`; p.firstChild.textContent = key; p.append(text); card.appendChild(p); return p; }
+
+async function startChain() {
+  const original = $("msg").value.trim();
+  if (!original) { toast("Type or say a message first."); return; }
+  if (original.split(/\s+/).length < 3) { toast("Use at least a few words, or there's nothing to drift."); return; }
+  current = { cancelled: false }; const job = current;
+  $("go").disabled = true; $("stop").disabled = false; $("talk").disabled = true; $("copy").disabled = true;
+  $("chain").innerHTML = "";
+  const N = +prefs.rounds, level = +prefs.noise, seed0 = hashStr(original + level + prefs.style);
+  const o = relayCard(0, true); line(o, "Original", original, "passed");
+  const [origVec] = await embed([original]);
+  run = { original, sims: [1], texts: [original], settings: { rounds: N, noise: level, style: prefs.style } };
+  drawChart();
+  let text = original;
+  try {
+    for (let r = 1; r <= N; r++) {
+      if (job.cancelled) break;
+      const card = relayCard(r);
+      stages(card, 0);
+      const voice = VOICES[(r - 1) % VOICES.length];
+      const audio = await kokoro.generate(text, { voice, speed: 1 });
+      if (job.cancelled) break;
+      stages(card, 1);
+      const degraded = await phoneLine(audio.audio, audio.sampling_rate, level, seed0 + r);
+      const playing = prefs.aloud ? play(degraded, 16000) : Promise.resolve();
+      stages(card, 2);
+      const heardRaw = ((await asr(degraded)).text || "").replace(/\[[^\]]*\]|\([^)]*\)/g, "").trim() || "(static)";
+      const d = diffHTML(text, heardRaw);
+      const hp = line(card, `Heard${d.misses ? ` · ${d.misses} misheard` : ""}`, ""); hp.insertAdjacentHTML("beforeend", d.html);
+      stages(card, 3);
+      const out = await retell(heardRaw);
+      if (out.via) line(card, "In French", out.via);
+      line(card, "Passed on", out.text || "(silence)", "passed");
+      stages(card, 4);
+      const [v] = await embed([out.text || " "]);
+      const sim = Math.max(0, cos(origVec, v));
+      stages(card, 5);
+      const sr = document.createElement("div"); sr.className = "simrow";
+      sr.innerHTML = `<span class="sim" style="background:${simColor(sim)}">${sim.toFixed(2)}</span><span class="hint">similarity to the original · voice ${voice}</span>`;
+      card.appendChild(sr);
+      run.sims.push(sim); run.texts.push(out.text); drawChart();
+      await playing;
+      text = out.text || heardRaw;
+    }
+  } catch (e) { console.error(e); toast("The line dropped: " + (e?.message || e)); }
+  const complete = !job.cancelled && run.sims.length === N + 1;
+  finish(complete);
+}
+function finish(complete) {
+  $("go").disabled = false; $("stop").disabled = true; $("talk").disabled = false;
+  if (!run || run.sims.length < 2) return;
+  const final = run.sims.at(-1), lost = run.sims.findIndex(s => s < 0.5);
+  run.final = final; run.survived = lost === -1 ? run.sims.length - 1 : lost - 1;
+  $("rFinal").textContent = final.toFixed(2);
+  $("rSurv").textContent = lost === -1 ? `${run.survived} (all)` : run.survived;
+  $("copy").disabled = false;
+  if (complete) {
+    prefs.board.push({ who: prefs.player.trim() || "Anonymous", msg: run.original, final, survived: run.survived, ...run.settings, last: run.texts.at(-1), at: Date.now() });
+    prefs.board = prefs.board.slice(-200); save(); renderBoard();
+  }
+}
+$("go").onclick = startChain;
+$("stop").onclick = () => { current.cancelled = true; try { current.source?.stop(); } catch {} toast("Hung up"); };
+
+// ================= Chart =================
+function drawChart() {
+  const svg = $("chart"), W = 360, H = 180, L = 34, R = 10, Tp = 12, B = 26;
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const N = run ? run.settings.rounds : +prefs.rounds, sims = run ? run.sims : [];
+  const X = i => L + i * (W - L - R) / Math.max(1, N), Y = s => Tp + (1 - s) * (H - Tp - B);
+  let g = "";
+  [0, 0.25, 0.5, 0.75, 1].forEach(s => { g += `<line x1="${L}" x2="${W - R}" y1="${Y(s)}" y2="${Y(s)}" stroke="${css("--line")}" ${s === 0.5 ? `stroke-dasharray="4 4" stroke="${css("--bad")}"` : ""}/><text x="${L - 6}" y="${Y(s) + 4}" text-anchor="end" font-size="10" fill="${css("--muted")}" font-family="IBM Plex Mono, monospace">${s.toFixed(2)}</text>`; });
+  for (let i = 0; i <= N; i++) g += `<text x="${X(i)}" y="${H - 8}" text-anchor="middle" font-size="10" fill="${css("--muted")}" font-family="IBM Plex Mono, monospace">${i}</text>`;
+  g += `<text x="${W - R}" y="${Y(0.5) - 5}" text-anchor="end" font-size="10" fill="${css("--bad")}" font-family="Inter, sans-serif">lost the plot</text>`;
+  if (sims.length > 1) {
+    const pts = sims.map((s, i) => `${X(i)},${Y(s)}`).join(" ");
+    g += `<polygon points="${X(0)},${Y(0)} ${pts} ${X(sims.length - 1)},${Y(0)}" fill="${css("--cable")}" opacity=".12"/>`;
+    g += `<polyline points="${pts}" fill="none" stroke="${css("--cable")}" stroke-width="2.5" stroke-linejoin="round"/>`;
+  }
+  sims.forEach((s, i) => { g += `<circle cx="${X(i)}" cy="${Y(s)}" r="${i === sims.length - 1 ? 5 : 3.5}" fill="${i === 0 ? css("--cable") : s >= 0.75 ? css("--good") : s >= 0.5 ? css("--warn") : css("--bad")}"/>`; });
+  if (!sims.length) g += `<text x="${(W + L) / 2}" y="${H / 2}" text-anchor="middle" font-size="12" fill="${css("--muted")}" font-family="Inter, sans-serif">Similarity to the original, after each relay</text>`;
+  svg.innerHTML = g;
+}
+drawChart();
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", drawChart);
+
+// ================= Leaderboard =================
+function renderBoard() {
+  const surv = prefs.lb === "surv";
+  $("lbSurv").setAttribute("aria-pressed", surv); $("lbChaos").setAttribute("aria-pressed", !surv);
+  $("lbHelp").textContent = surv ? "Highest final similarity: messages that survive the line." : "Lowest final similarity, for messages of 6+ words: the best wreckage.";
+  let rows = prefs.board.slice();
+  if (!surv) rows = rows.filter(r => r.msg.split(/\s+/).length >= 6);
+  rows.sort((a, b) => surv ? b.final - a.final : a.final - b.final);
+  const body = $("lbBody"); body.innerHTML = "";
+  if (!rows.length) { body.innerHTML = `<tr><td colspan="4" class="hint">No finished chains yet.</td></tr>`; return; }
+  rows.slice(0, 10).forEach((r, i) => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${i + 1}</td><td></td><td class="s"></td><td class="num">${r.final.toFixed(2)}</td>`;
+    tr.children[1].textContent = r.who;
+    tr.children[2].textContent = `${r.msg} → ${r.last}`;
+    tr.children[2].title = `${r.rounds} relays · ${["clear", "office", "bad cell", "tin can"][r.noise]} · ${r.style}`;
+    body.appendChild(tr);
+  });
+}
+$("lbSurv").onclick = () => { prefs.lb = "surv"; save(); renderBoard(); };
+$("lbChaos").onclick = () => { prefs.lb = "chaos"; save(); renderBoard(); };
+$("lbClear").onclick = function () {
+  if (!this.dataset.armed) { this.dataset.armed = 1; this.textContent = "Click again to clear"; setTimeout(() => { this.textContent = "Clear leaderboard"; delete this.dataset.armed; }, 3000); return; }
+  prefs.board = []; save(); renderBoard(); this.textContent = "Clear leaderboard"; delete this.dataset.armed;
+};
+renderBoard();
+
+$("copy").onclick = async () => {
+  if (!run) return;
+  const s = run.settings;
+  const txt = `📞 AI Telephone · ${s.rounds} relays · ${["clear line", "office phone", "bad cell", "tin can"][s.noise]} · ${s.style}\nStarted: “${run.original}”\nEnded:   “${run.texts.at(-1)}”\nFinal similarity ${run.final.toFixed(2)} · drift: ${run.sims.map(x => x.toFixed(2)).join(" → ")}`;
+  try { await navigator.clipboard.writeText(txt); } catch { const ta = document.createElement("textarea"); ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand("copy"); ta.remove(); }
+  toast("Result copied");
+};
+
+// ================= Mic for the original message =================
+let rec = null, recChunks = [], recStream = null;
+async function startTalk() {
+  if (rec || !asr) return;
+  try {
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recChunks = []; rec = new MediaRecorder(recStream);
+    rec.ondataavailable = e => recChunks.push(e.data);
+    rec.onstop = async () => {
+      const blob = new Blob(recChunks, { type: rec.mimeType }); rec = null;
+      $("msg").value = "Transcribing…";
+      try {
+        const ctx = new AudioContext({ sampleRate: 16000 });
+        const buf = await ctx.decodeAudioData(await blob.arrayBuffer()); ctx.close();
+        $("msg").value = ((await asr(buf.getChannelData(0))).text || "").trim();
+      } catch (e) { console.error(e); $("msg").value = ""; toast("Couldn't transcribe that. Try again or type it."); }
+    };
+    rec.start(); $("talk").setAttribute("aria-pressed", "true"); $("talk").textContent = "Listening… release when done";
+  } catch (e) { console.error(e); toast("Microphone blocked. Allow it in the address bar, or type the message."); rec = null; }
+}
+function stopTalk() { if (rec && rec.state === "recording") { rec.stop(); recStream.getTracks().forEach(t => t.stop()); } $("talk").setAttribute("aria-pressed", "false"); $("talk").textContent = "Hold to say it"; }
+$("talk").addEventListener("pointerdown", e => { e.preventDefault(); startTalk(); });
+["pointerup", "pointerleave", "pointercancel"].forEach(ev => $("talk").addEventListener(ev, stopTalk));
+</script>
+</body>
+</html>
