@@ -1,0 +1,169 @@
+schema_version = 1
+id = "debate-club"
+url = "http://127.0.0.1:8777/"
+size = "960x540@2"
+timeout = 1500
+
+# Smallest line-up so the take finishes: one tiny model plays both debaters and the judge.
+# The app saves these choices in localStorage, so they hold after returning to the index.
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/debate-club/debate-club.html"
+
+[[setup]]
+type = "select"
+target = {css = "#mA"}
+option = "SmolLM2 135M · ~120 MB"
+
+[[setup]]
+type = "select"
+target = {css = "#mB"}
+option = "SmolLM2 135M · ~120 MB"
+
+[[setup]]
+type = "select"
+target = {css = "#mJ"}
+option = "SmolLM2 135M · ~120 MB"
+
+[[setup]]
+type = "select"
+target = {css = "#rounds"}
+option = "1 · openings only"
+
+[[setup]]
+type = "select"
+target = {css = "#voiceOn"}
+option = "Silent"
+
+[[setup]]
+type = "check"
+target = {css = "#greedy"}
+
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/"
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 1.8
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "home"
+purpose = "Open AI Debate Club from the app gallery"
+caption = "Open AI Debate Club"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 1110
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='debate-club/debate-club.html']"}
+[[beat.expect]]
+type = "url"
+contains = "debate-club/debate-club.html"
+[[beat.expect]]
+type = "visible"
+target = {css = "#load"}
+
+[[beat]]
+id = "motion"
+purpose = "Choose a motion and two personas"
+caption = "Pick a motion and two personas"
+hold = 1.2
+[[beat.action]]
+type = "click"
+target = {css = "#motions button[title*='hot dog']"}
+[[beat.action]]
+type = "select"
+target = {css = "#pA"}
+option = "Pirate Captain"
+[[beat.action]]
+type = "select"
+target = {css = "#pB"}
+option = "Grumpy Senior Engineer"
+[[beat.expect]]
+type = "value"
+target = {css = "#motion"}
+value = "This house believes a hot dog is a sandwich"
+[[beat.expect]]
+type = "value"
+target = {css = "#pA"}
+value = "pirate"
+
+[[beat]]
+id = "load"
+purpose = "The model downloads into the browser tab and is ready"
+caption = "Load a 135M model into the tab"
+hold = 1.5
+min_reading = 2.5
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#status"}
+contains = "Ready"
+timeout = 900000
+
+[[beat]]
+id = "debate"
+purpose = "Both debaters speak, written by the model in the tab"
+caption = "The models argue, live in the browser"
+hold = 0.8
+min_reading = 2.5
+[[beat.action]]
+type = "click"
+target = {css = "#start"}
+[[beat.expect]]
+type = "visible"
+target = {css = ".bubble.B:not(.thinking)"}
+timeout = 300000
+
+[[beat]]
+id = "reply"
+purpose = "The full reply is readable"
+hold = 2.5
+[[beat.action]]
+type = "scroll"
+dy = 200
+[[beat.expect]]
+type = "visible"
+target = {css = ".bubble.B:not(.thinking)"}
+
+[[beat]]
+id = "verdict"
+purpose = "The judge model scores the debate and gives a reason"
+caption = "A judge model scores the debate"
+hold = 3
+min_reading = 2
+[[beat.action]]
+type = "scroll"
+dy = 420
+[[beat.expect]]
+type = "text"
+target = {css = "#runs"}
+contains = "Run 2"
+timeout = 300000
+
+[[beat]]
+id = "room"
+purpose = "The room vote lands and the headline compares it to the judge"
+caption = "The room votes. No server involved."
+hold = 3
+[[beat.action]]
+type = "click"
+target = {css = "#handA"}
+[[beat.expect]]
+type = "text"
+target = {css = "#headline"}
+contains = "wins the room"
+
+[[beat]]
+id = "end"
+hold = 0.5

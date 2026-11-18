@@ -1,0 +1,14 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "Two tiny LLMs debate. In your browser."
+duration = 1.8
+
+[[part]]
+take = 0
+start = 0
+end = "end"
+
+[[export]]
+preset = "readme"   # an 800x450 GIF, checked against GitHub's 10 MB limit

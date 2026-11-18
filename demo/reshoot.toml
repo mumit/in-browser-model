@@ -1,0 +1,17 @@
+schema_version = 1
+timeout = 1800
+
+[app]
+run = "python3 -m http.server 8777 --bind 127.0.0.1 --directory .."
+url = "http://127.0.0.1:8777/debate-club/debate-club.html"
+
+[[take]]
+web = "storyboard.toml"
+out = "takes/demo.mp4"
+[edit]
+file = "edit.toml"
+args = ["takes/demo.mp4"]
+[check]
+sources = ["takes/demo-final.mp4", "takes/demo-final-readme.gif"]
+review = "review"
+scan = true

@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "run_id": "517fdab4bab94d8f8df0ace753f6507d",
+  "binding": "05997ad46a1e4f79e3038be2d53adb5ddcfad2b84a6b6bea07a1e64fe09999b5",
+  "decisions": {
+    "debate-club/debate": "accepted",
+    "debate-club/end": "accepted",
+    "debate-club/gallery": "accepted",
+    "debate-club/home": "accepted",
+    "debate-club/load": "accepted",
+    "debate-club/motion": "accepted",
+    "debate-club/reply": "accepted",
+    "debate-club/room": "accepted",
+    "debate-club/verdict": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-18T17:23:49+00:00"
+}

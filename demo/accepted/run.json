@@ -1,0 +1,139 @@
+{
+  "schema_version": 1,
+  "config": "local source 01b7410a4f82",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demo/storyboard.toml",
+      "ok": true,
+      "seconds": 51.5
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demo/edit.toml",
+      "ok": true,
+      "seconds": 11.1
+    }
+  ],
+  "ok": true,
+  "unchecked": 24,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "91a3023314bb0af9e540a38abf628869044d11267cb7c2d27d7d498fabd836e6",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "9beefe8f1044598912d220e443031c607cc384d760a377e6fdd0f04c7bcea763",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "91a3023314bb0af9e540a38abf628869044d11267cb7c2d27d7d498fabd836e6"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "9beefe8f1044598912d220e443031c607cc384d760a377e6fdd0f04c7bcea763",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "91a3023314bb0af9e540a38abf628869044d11267cb7c2d27d7d498fabd836e6"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "e42f57a933dba7f1bad3c4d9ef192935c756424936edc186fbb58539e2fe83f9",
+    "edit_sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "commit": "ce1ce15eec0bd8d66ba73669a5f94f3f341470fc",
+    "dirty": true,
+    "dirty_index_sha256": "a28eff58be821ca450c5d3a2a6639c3311fd76a763dfffc59f1ce6a42b961524"
+  },
+  "id": "517fdab4bab94d8f8df0ace753f6507d",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/517fdab4bab94d8f8df0ace753f6507d/review",
+  "seconds": 74.8,
+  "finished_at": "2026-11-18T17:21:38.137190+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "e2589fcfdb5137c8701930cde47cc8955793f8a01a111d0b1166a6fda5265d90"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "839ae5e755834e7effaf4da415d78acdf19513645b3dc3c08a32554b98f6a030"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "61823adbe2b2698692c312f880ccfe69fefb8f8af04583916444a5c909da6718"
+    },
+    {
+      "path": "takes/demo.evidence/room.png",
+      "sha256": "5ef607b57348a4e62ab8f5634f7a3ec2f14df019c83eb8276e83001c3a9f84d5"
+    },
+    {
+      "path": "takes/demo.evidence/home.png",
+      "sha256": "a54fb1cf3c1523792bae67c3d91e6fdfc0123dcee53cfbb54918be50c8b8c01a"
+    },
+    {
+      "path": "takes/demo.evidence/reply.png",
+      "sha256": "90df501a8417e7ec2778531ba11427fd080f0d4ba9a4f2d22a0f5cf48aadde15"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "5ef607b57348a4e62ab8f5634f7a3ec2f14df019c83eb8276e83001c3a9f84d5"
+    },
+    {
+      "path": "takes/demo.evidence/motion.png",
+      "sha256": "071554b55d7faa4dcc0756ec962fbbef17d89384fbfc71c48c515b78bfaf8919"
+    },
+    {
+      "path": "takes/demo.evidence/debate.png",
+      "sha256": "7be2142e8a123cd0547bb4aa4715051a98de944dca68dde1fb7638134b473efe"
+    },
+    {
+      "path": "takes/demo.evidence/verdict.png",
+      "sha256": "b379f5413af434a32d7cf1c4eaad9327bb4d50f8121a33d20226f096cf3a2be1"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 10,
+  "record": true
+}

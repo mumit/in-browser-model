@@ -13,6 +13,10 @@ Six small apps and games that run AI models entirely in the browser (WebGPU, wit
 
 `index.html` is the landing page. Each folder has the app (a single HTML file) and a `PROMPT.md` that rebuilds it from scratch. `IDEAS.md` lists more ideas.
 
+![AI Debate Club demo: open it from the gallery, two tiny models debate in the browser, a judge model scores it](docs/demo/demo-final-readme.gif)
+
+AI Debate Club with SmolLM2 135M as both debaters and the judge, recorded in real time ([MP4](docs/demo/demo-final.mp4)). The recording source is in `demo/`; re-record it with [reshoot](https://github.com/mumit/reshoot): `reshoot run demo/reshoot.toml`.
+
 ## Run locally
 
 Open any HTML file in Chrome or Edge. If the microphone or the model cache don't work from `file://`, serve the folder instead:
