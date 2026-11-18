@@ -26,6 +26,71 @@ Audience: AI/ML engineers, product managers and other technical folks.
 | — | Standup facilitator | Tool | Idea |
 | — | Fool the Decider | Game (decision model) | Parked |
 | — | Calibration Duel | Game (decision model) | Parked |
+| 10 | AI Debate Club | Game | First build: `debate-club/` (untested in a browser) |
+| 11 | Grounded text adventure | Game | Idea (next pick) |
+| 12 | Page tone-shifter | Tool | Idea |
+| 13 | Plain-English highlighter | Tool | Idea |
+| 14 | Roast my PR | Game | Idea |
+| 15 | Comment-section filter | Tool | Idea (low priority) |
+| 16 | Model X-ray | Experiment | Idea (extend the Narrator) |
+
+---
+
+## Second batch (inspired by a "fun ideas for in-browser LLMs" search)
+
+### 10. AI Debate Club
+
+**What it is:** Two models argue a topic on a split screen, each with a ridiculous persona (a Victorian ghost against a crypto bro).
+
+**The hook:**
+- The two sides can run on different models, so a small model really debates a bigger one.
+- Each side has its own Kokoro voice.
+- After the debate, a judge model gives its verdict with probabilities, and the room votes by applause, measured with an applause meter on the mic.
+- A league table tracks which model wins the room most often.
+
+**What it teaches:** Persona prompting, sampling temperature, model size versus fluency, and whether a model judge agrees with humans.
+
+**Building blocks:** Two small LLMs (or one shared), Kokoro, mic loudness only (no speech recognition), and the same logits hook as the Narrator for the judge's probabilities.
+
+### 11. Grounded text adventure
+
+**What it is:** A voice or text adventure where a small game engine holds the real world state (rooms, items, locks). The model only narrates and interprets commands as tool calls.
+
+**The hook:** The model can't cheat, forget your inventory, or let you walk through a locked door. A side panel shows the parsed command and the state change.
+
+**What it teaches:** Grounding, tool calling, and separating "what is true" from "how it's described".
+
+**Building blocks:** A small LLM with tools (`go`, `take`, `use`, `look`), a JSON world, Whisper and Kokoro (optional).
+
+### 12. Page tone-shifter
+
+**What it is:** Rewrite a page, or a selection, as a nature documentary, a pirate shanty or a sports commentary.
+
+**Notes:** Best as a bookmarklet or browser extension. Small models do better on short selections than on whole pages.
+
+### 13. Plain-English highlighter
+
+**What it is:** Select jargon on any page and get an instant, private explanation, optionally from a persona (a medieval peasant, a sentient tree).
+
+**Notes:** Same delivery as #12. It works offline on internal docs.
+
+### 14. Roast my PR
+
+**What it is:** Paste a PR description, slide outline or status update and get a playful roast plus one real suggestion.
+
+**Notes:** A work-safe take on the "roast bot" idea. Keep the subject the work, not the person. It's private because it's local.
+
+### 15. Comment-section filter
+
+**What it is:** Sentiment-classify comments and hide toxic ones, or rewrite them absurdly politely.
+
+**Notes:** Useful, but low on wow.
+
+### 16. Model X-ray
+
+**What it is:** Extend the Nervous Narrator with a view of what the model "thinks" at each layer (a logit lens).
+
+**Notes:** It needs hidden states from each layer, which the standard ONNX exports may not expose. Check before promising it.
 
 ---
 

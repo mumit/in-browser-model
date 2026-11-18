@@ -4,11 +4,11 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>In-Browser Model Lab</title>
-<meta name="description" content="Four small apps and games that run AI models entirely in your browser: Prompt Golf, Nervous Narrator, Slides That Follow You and AI Telephone.">
+<meta name="description" content="Small apps and games that run AI models entirely in your browser: Prompt Golf, Nervous Narrator, Slides That Follow You, AI Telephone and AI Debate Club.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
-/* Layout: a lab bench. A short intro, a readiness check for this browser, then one card per app, each carrying its own app's accent colour. */
+/* Layout: a lab bench. A hero with a live check of this browser, then one card per app, each with a small drawing of what makes it tick, in that app's own colour. */
 :root {
   --bg: #f2f4f3;
   --card: #ffffff;
@@ -21,6 +21,7 @@
   --narrator: #c4302b;
   --slides: #178a4c;
   --phone: #e2611b;
+  --debate: #5b4bd6;
   --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -29,87 +30,139 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0e1311; --card: #161d1a; --ink: #e5ece8; --muted: #95a59e; --line: #26302c;
-    --ok: #46c27f; --warn: #f2b830; --golf: #3fa565; --narrator: #ff6b5e; --slides: #3cc47c; --phone: #ff8a4c;
+    --ok: #46c27f; --warn: #f2b830; --golf: #3fa565; --narrator: #ff6b5e; --slides: #3cc47c; --phone: #ff8a4c; --debate: #9d8cff;
     color-scheme: dark;
   }
 }
 * { box-sizing: border-box; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); padding: 40px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px)); }
-.wrap { max-width: 1040px; margin: 0 auto; display: grid; gap: 28px; }
-h1 { font: 800 clamp(36px, 7vw, 64px)/1 var(--display); margin: 0; letter-spacing: -0.03em; text-wrap: balance; }
-.lede { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 12px 0 0; }
+.wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 30px; }
+.hero { display: grid; gap: 14px; }
+.eyebrow { font: 600 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+h1 { font: 800 clamp(40px, 7.5vw, 76px)/.98 var(--display); margin: 0; letter-spacing: -0.035em; text-wrap: balance; max-width: 14ch; }
+h1 em { font-style: normal; background: linear-gradient(90deg, var(--golf), var(--narrator), var(--phone), var(--debate)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+.lede { font-size: 18px; color: var(--muted); max-width: 60ch; margin: 0; }
 .check { display: flex; flex-wrap: wrap; gap: 8px; }
 .chip { font: 600 13px/1 var(--mono); padding: 8px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
 .chip.ok { border-color: var(--ok); color: var(--ok); }
 .chip.warn { border-color: var(--warn); color: var(--warn); }
-.apps { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
-@media (max-width: 760px) { .apps { grid-template-columns: 1fr; } }
-.app { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 12px; align-content: start; border-top: 5px solid var(--accent); min-width: 0; }
-.app .kind { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
-.app h2 { font: 800 28px/1.05 var(--display); margin: 0; }
-.app p { margin: 0; }
-.app ul { margin: 0; padding-left: 18px; color: var(--muted); font-size: 14px; display: grid; gap: 4px; }
+.apps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
+@media (max-width: 980px) { .apps { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 640px) { .apps { grid-template-columns: 1fr; } }
+.app { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 0 0 20px; display: grid; gap: 12px; align-content: start; min-width: 0; overflow: hidden; transition: transform .2s, box-shadow .2s; }
+.app:hover { transform: translateY(-2px); box-shadow: 0 14px 30px -18px color-mix(in srgb, var(--accent) 60%, transparent); }
+.art { height: 116px; background: color-mix(in srgb, var(--accent) 10%, var(--card)); border-bottom: 1px solid color-mix(in srgb, var(--accent) 22%, var(--line)); display: grid; place-items: center; }
+.art svg { width: 100%; height: 100%; display: block; }
+.app > :not(.art) { margin: 0 20px; }
+.app .kind { font: 600 12px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-top: 6px; }
+.app h2 { font: 800 26px/1.05 var(--display); margin: 0; letter-spacing: -0.01em; }
+.app p { margin: 0; font-size: 15px; }
 .meta { display: flex; flex-wrap: wrap; gap: 6px; }
 .meta span { font: 600 12px/1 var(--mono); padding: 5px 8px; border-radius: 4px; background: var(--bg); color: var(--muted); }
-.links { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 4px; }
+.links { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; margin-top: 2px; }
 .open { display: inline-block; background: var(--accent); color: #fff; text-decoration: none; font-weight: 600; padding: 9px 16px; border-radius: 6px; }
 .open:hover { filter: brightness(1.08); }
+@media (prefers-color-scheme: dark) { .open { color: #0e1311; } }
 .src { color: var(--muted); font-size: 14px; }
 a:focus-visible { outline: 2px solid var(--accent, var(--ink)); outline-offset: 3px; }
-.notes { background: var(--card); border: 1px solid var(--line); border-radius: 12px; padding: 22px; display: grid; gap: 10px; }
+.app.more { background: transparent; border-style: dashed; align-content: center; padding: 24px 0; }
+.notes { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: grid; gap: 10px; }
 .notes h2 { font: 800 22px/1.1 var(--display); margin: 0; }
 .notes ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 75ch; }
 code { font-family: var(--mono); font-size: .9em; background: var(--bg); padding: 1px 5px; border-radius: 4px; }
 footer { color: var(--muted); font-size: 14px; }
+footer a { color: inherit; }
+@media (prefers-reduced-motion: reduce) { .app { transition: none; } }
 </style>
 </head>
 <body>
 <div class="wrap">
-  <header>
-    <h1>In-Browser Model Lab</h1>
-    <p class="lede">Four small apps and games where the AI runs on your own laptop, inside the browser tab. No server, no API keys, and nothing you type or say leaves your machine.</p>
-  </header>
-
-  <section aria-label="Browser check">
-    <div class="check" id="check">
+  <header class="hero">
+    <span class="eyebrow">No server · no API keys · runs on your GPU</span>
+    <h1>In-Browser <em>Model Lab</em></h1>
+    <p class="lede">Five small apps and games where the AI runs on your own laptop, inside the browser tab. Nothing you type or say leaves your machine.</p>
+    <div class="check" id="check" aria-label="Browser check">
       <span class="chip" id="cGPU">Checking WebGPU…</span>
       <span class="chip" id="cCache">Checking model cache…</span>
       <span class="chip" id="cMic">Checking microphone support…</span>
     </div>
-  </section>
+  </header>
 
   <section class="apps" aria-label="Apps">
     <article class="app" style="--accent: var(--golf)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <g opacity=".35" fill="var(--golf)"><rect x="0" y="0" width="40" height="116"/><rect x="80" y="0" width="40" height="116"/><rect x="160" y="0" width="40" height="116"/><rect x="240" y="0" width="40" height="116"/></g>
+        <ellipse cx="214" cy="86" rx="64" ry="14" fill="var(--golf)" opacity=".55"/><ellipse cx="214" cy="86" rx="7" ry="3" fill="var(--ink)"/>
+        <line x1="214" y1="30" x2="214" y2="86" stroke="var(--ink)" stroke-width="2.5"/><path d="M215 31 L246 40 L215 49 Z" fill="#e8b400"/>
+        <path d="M60 92 Q 130 10 205 82" fill="none" stroke="var(--ink)" stroke-width="2" stroke-dasharray="3 6" opacity=".6"/><circle cx="60" cy="92" r="5" fill="#fff" stroke="var(--ink)" stroke-width="1.5"/>
+      </svg></div>
       <span class="kind">Game</span>
       <h2>Prompt Golf</h2>
-      <p>Make a tiny language model hit a target output in the fewest characters. Nine holes with banned words, hints that cost strokes, and a course editor for designing your own.</p>
-      <div class="meta"><span>~120–450 MB</span><span>no mic</span></div>
+      <p>Make a tiny language model hit a target output in the fewest characters. Nine holes with banned words, hints that cost strokes, and a course editor.</p>
+      <div class="meta"><span>~120–485 MB</span><span>no mic</span></div>
       <div class="links"><a class="open" href="prompt-golf/prompt-golf.html">Play</a><a class="src" href="prompt-golf/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--narrator)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <g stroke="var(--narrator)" stroke-opacity=".14"><path d="M0 20H320M0 40H320M0 60H320M0 80H320M0 100H320M40 0V116M80 0V116M120 0V116M160 0V116M200 0V116M240 0V116M280 0V116"/></g>
+        <polyline points="10,30 40,28 70,32 100,27 130,30 150,88 162,52 176,96 190,40 210,34 240,31 270,74 285,58 310,33" fill="none" stroke="var(--ink)" stroke-width="2.2" stroke-linejoin="round"/>
+        <circle cx="150" cy="88" r="5" fill="var(--narrator)"/><circle cx="176" cy="96" r="5" fill="var(--narrator)"/><circle cx="270" cy="74" r="5" fill="var(--narrator)"/>
+      </svg></div>
       <span class="kind">Experiment</span>
       <h2>Nervous Narrator</h2>
       <p>Ask a question and the model answers out loud. Its voice slows, quiets and wobbles on the words it's least sure of, using its own token probabilities.</p>
-      <div class="meta"><span>~550 MB – 1.2 GB</span><span>mic optional</span></div>
+      <div class="meta"><span>~575 MB – 1.3 GB</span><span>mic optional</span></div>
       <div class="links"><a class="open" href="nervous-narrator/nervous-narrator.html">Open</a><a class="src" href="nervous-narrator/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--slides)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <rect x="70" y="16" width="150" height="84" rx="6" fill="var(--card)" stroke="var(--line)"/><rect x="86" y="34" width="86" height="9" rx="2" fill="var(--ink)"/><rect x="86" y="47" width="34" height="3" rx="1.5" fill="var(--slides)"/>
+        <rect x="86" y="60" width="104" height="5" rx="2" fill="var(--muted)" opacity=".5"/><rect x="86" y="71" width="90" height="5" rx="2" fill="var(--muted)" opacity=".5"/><rect x="70" y="96" width="70" height="4" fill="var(--slides)"/>
+        <circle cx="258" cy="58" r="14" fill="var(--slides)"/><circle cx="258" cy="58" r="22" fill="none" stroke="var(--slides)" stroke-opacity=".3" stroke-width="6"/>
+      </svg></div>
       <span class="kind">Tool</span>
       <h2>Slides That Follow You</h2>
-      <p>Present without a clicker. It listens, matches what you say to each slide with embeddings, and advances when you get there. Gives per-slide talk notes afterwards.</p>
+      <p>Present without a clicker. It listens, matches what you say to each slide with embeddings, and advances when you get there. Talk notes afterwards.</p>
       <div class="meta"><span>~105 MB</span><span>mic</span></div>
       <div class="links"><a class="open" href="follow-slides/follow-slides.html">Open</a><a class="src" href="follow-slides/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--phone)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <path d="M10 70 C 60 20, 90 100, 140 60 S 220 20, 260 64 S 300 90, 330 40" fill="none" stroke="var(--phone)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
+        <g fill="var(--card)" stroke="var(--phone)" stroke-width="2"><circle cx="40" cy="48" r="11"/><circle cx="140" cy="60" r="11"/><circle cx="260" cy="64" r="11"/></g>
+        <g font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="var(--ink)" text-anchor="middle"><text x="40" y="52">1</text><text x="140" y="64">2</text><text x="260" y="68">3</text></g>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" fill="var(--muted)" text-anchor="middle"><text x="40" y="78">0.86</text><text x="140" y="90">0.71</text><text x="260" y="94">0.48</text></g>
+      </svg></div>
       <span class="kind">Game</span>
       <h2>AI Telephone</h2>
       <p>Pass a sentence down a chain of AI relays that speak, mishear over a crackly line, and retell it. A drift chart shows the meaning falling apart.</p>
-      <div class="meta"><span>~650 MB</span><span>mic optional</span><span>sound on</span></div>
+      <div class="meta"><span>~680 MB</span><span>mic optional</span><span>sound on</span></div>
       <div class="links"><a class="open" href="ai-telephone/ai-telephone.html">Play</a><a class="src" href="ai-telephone/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
+    <article class="app" style="--accent: var(--debate)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <path d="M40 22 h96 a10 10 0 0 1 10 10 v26 a10 10 0 0 1 -10 10 h-70 l-16 14 v-14 h-10 a10 10 0 0 1 -10 -10 v-26 a10 10 0 0 1 10 -10z" fill="#ff4d5e" opacity=".85"/>
+        <path d="M184 44 h96 a10 10 0 0 1 10 10 v26 a10 10 0 0 1 -10 10 h-10 v14 l-16 -14 h-70 a10 10 0 0 1 -10 -10 v-26 a10 10 0 0 1 10 -10z" fill="#4d8dff" opacity=".85"/>
+        <text x="160" y="72" text-anchor="middle" font-family="Impact, Arial Narrow, sans-serif" font-size="22" fill="var(--ink)">VS</text>
+        <g fill="#fff" opacity=".9"><rect x="52" y="36" width="70" height="5" rx="2.5"/><rect x="52" y="48" width="48" height="5" rx="2.5"/><rect x="196" y="58" width="70" height="5" rx="2.5"/><rect x="196" y="70" width="52" height="5" rx="2.5"/></g>
+      </svg></div>
+      <span class="kind">Game</span>
+      <h2>AI Debate Club</h2>
+      <p>Two small models with ridiculous personas argue a motion out loud. A third model judges, with probabilities, and the room votes on an applause meter.</p>
+      <div class="meta"><span>~210 MB – 1.5 GB</span><span>mic optional</span><span>sound on</span></div>
+      <div class="links"><a class="open" href="debate-club/debate-club.html">Play</a><a class="src" href="debate-club/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
+    <article class="app more" style="--accent: var(--muted)">
+      <span class="kind">Next</span>
+      <h2>What should we build?</h2>
+      <p>A grounded text adventure, voice-controlled diagrams, talking to your data, Jargon Bingo and more, with notes on how each would work.</p>
+      <div class="links"><a class="src" href="IDEAS.md">Read the ideas list →</a></div>
     </article>
   </section>
 
@@ -117,14 +170,14 @@ footer { color: var(--muted); font-size: 14px; }
     <h2>Before you start</h2>
     <ul>
       <li><b>Use a recent Chrome or Edge on a laptop.</b> Models run on the graphics card through WebGPU, and fall back to the CPU (slower) without it.</li>
-      <li><b>The first load is a download.</b> Model weights come from Hugging Face and are cached in your browser, so the second visit is fast. The four apps share models where they can.</li>
-      <li><b>Corporate networks</b> sometimes block <code>huggingface.co</code> or <code>cdn.jsdelivr.net</code>. If a model won't load, try another network.</li>
+      <li><b>The first load is a download.</b> Model weights come from Hugging Face and are cached in your browser, so the second visit is fast. The apps share models where they can.</li>
+      <li><b>Corporate networks</b> sometimes block or slow <code>huggingface.co</code> or <code>cdn.jsdelivr.net</code>. If a model stalls, try another network; dropped downloads retry automatically.</li>
       <li><b>Scores and settings</b> stay in your browser only. Clearing site data resets them, and removes the cached models too.</li>
       <li><b>These are experiments.</b> Small models get things wrong, sometimes confidently. That's part of the fun.</li>
     </ul>
   </section>
 
-  <footer>Each app is a single HTML file, and each folder has a <code>PROMPT.md</code> that rebuilds it from scratch. Ideas for what to build next are in <a href="IDEAS.md">IDEAS.md</a>.</footer>
+  <footer>Each app is a single HTML file, and each folder has a <code>PROMPT.md</code> that rebuilds it from scratch. MIT licensed.</footer>
 </div>
 
 <script>

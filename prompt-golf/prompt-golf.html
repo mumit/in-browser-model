@@ -20,6 +20,8 @@
   --flag-soft: #fbf1cc;
   --miss: #b3261e;
   --code-bg: #f2f5ef;
+  --turf-a: #2b7444;
+  --turf-b: #2f7d4a;
   --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -29,6 +31,7 @@
   :root {
     --bg: #0f1612; --card: #16201a; --ink: #e4ece5; --muted: #93a597; --line: #2a3a2f;
     --fairway: #3fa565; --fairway-ink: #08130c; --flag: #f2c535; --flag-soft: #2c2812; --miss: #ff7a6e; --code-bg: #101914;
+    --turf-a: #17432a; --turf-b: #1a4a2e;
     color-scheme: dark;
   }
 }
@@ -39,11 +42,28 @@ body {
   padding: 24px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px));
 }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 20px; }
-header { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 12px 24px; }
-h1 { font: 800 clamp(32px, 6vw, 52px)/1 var(--display); margin: 0; letter-spacing: -0.02em; }
-h1 span { color: var(--fairway); }
-.tag { color: var(--muted); max-width: 52ch; margin: 6px 0 0; }
-.engine { display: grid; gap: 8px; justify-items: end; min-width: 0; }
+/* Header: a freshly mowed fairway, with a flag on the green */
+header {
+  display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 16px 24px;
+  background: repeating-linear-gradient(100deg, var(--turf-a) 0 64px, var(--turf-b) 64px 128px);
+  color: #fff; border-radius: 16px; padding: 26px clamp(18px, 3vw, 32px) 22px; position: relative; overflow: hidden;
+  box-shadow: 0 12px 32px -18px rgb(10 40 20 / .55);
+}
+header::after { content: ""; position: absolute; right: -60px; bottom: -90px; width: 260px; height: 190px; border-radius: 50%; background: rgb(255 255 255 / .07); pointer-events: none; }
+header > * { position: relative; z-index: 1; }
+h1 { font: 800 clamp(36px, 6.5vw, 60px)/1 var(--display); margin: 0; letter-spacing: -0.025em; display: flex; align-items: center; gap: 12px; color: #fff; }
+h1 span { color: var(--flag); }
+h1 svg { width: .8em; height: .9em; flex: none; }
+.tag { color: rgb(255 255 255 / .85); max-width: 52ch; margin: 8px 0 0; }
+header button.small { background: rgb(255 255 255 / .12); color: #fff; border-color: rgb(255 255 255 / .28); }
+header button.small:hover { background: rgb(255 255 255 / .2); }
+header .lbl { color: rgb(255 255 255 / .8); }
+header select { background: #fff; color: #17221b; border-color: transparent; }
+header button.primary { background: var(--flag); color: #1f1a00; border-color: var(--flag); }
+header .status { color: rgb(255 255 255 / .78); }
+header .bar { background: rgb(255 255 255 / .22); }
+header .bar > i { background: var(--flag); }
+.engine { display: grid; gap: 8px; justify-items: end; min-width: 0; background: rgb(0 0 0 / .16); border: 1px solid rgb(255 255 255 / .12); border-radius: 12px; padding: 12px 14px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .engine .row { justify-content: end; }
 select, button, textarea, input { font: inherit; color: inherit; }
@@ -70,11 +90,13 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .coursebar { padding: 14px; display: grid; gap: 8px; border-bottom: 1px solid var(--line); }
 .coursebar select { width: 100%; font-weight: 600; }
 .sc-head, .hole { display: grid; grid-template-columns: 34px 1fr 40px 60px; gap: 8px; align-items: center; padding: 9px 14px; }
-.sc-head { font: 600 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); border-bottom: 1px solid var(--line); }
+.sc-head { font: 600 11px/1 var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--fairway-ink); background: var(--fairway); }
+.hole:nth-child(even) { background: color-mix(in srgb, var(--code-bg) 60%, transparent); }
 .hole { border: 0; border-bottom: 1px solid var(--line); background: none; border-radius: 0; text-align: left; font-weight: 400; width: 100%; }
 .hole:hover { background: var(--code-bg); }
 .hole[aria-current="true"] { background: var(--code-bg); box-shadow: inset 4px 0 0 var(--fairway); }
-.hole .n { font: 800 18px/1 var(--display); color: var(--fairway); }
+.hole .n { font: 800 13px/1 var(--display); color: var(--fairway); width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; border: 2px solid var(--fairway); }
+.hole[aria-current="true"] .n { background: var(--fairway); color: var(--fairway-ink); }
 .hole .t { font-weight: 600; min-width: 0; overflow-wrap: anywhere; }
 .num { font: 600 14px/1 var(--mono); text-align: right; font-variant-numeric: tabular-nums; }
 .score.under { color: var(--fairway); }
@@ -82,7 +104,7 @@ button:disabled { opacity: .5; cursor: not-allowed; }
 .score.none { color: var(--muted); font-weight: 400; }
 .score sup { font: 600 10px var(--mono); color: var(--flag); margin-left: 2px; }
 .sc-empty { padding: 14px; color: var(--muted); font-size: 14px; border-bottom: 1px solid var(--line); }
-.sc-total { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 12px 14px; align-items: center; }
+.sc-total { display: grid; grid-template-columns: 1fr auto; gap: 4px 12px; padding: 14px; align-items: center; background: var(--code-bg); border-top: 2px solid var(--fairway); }
 .sc-total b { font: 800 26px/1 var(--display); }
 .sc-total .sub { color: var(--muted); font-size: 13px; }
 .sc-actions { display: flex; gap: 8px; flex-wrap: wrap; padding: 0 14px 14px; }
@@ -184,7 +206,7 @@ dialog::backdrop { background: rgb(0 0 0 / .45); }
 <div class="wrap">
   <header>
     <div>
-      <h1>Prompt <span>Golf</span></h1>
+      <h1><svg viewBox="0 0 40 46" aria-hidden="true"><line x1="10" y1="4" x2="10" y2="40" stroke="#fff" stroke-width="3" stroke-linecap="round"/><path d="M11 5 L34 12 L11 19 Z" fill="#e8b400"/><ellipse cx="14" cy="41" rx="12" ry="3.5" fill="rgb(0 0 0 / .25)"/></svg><span style="color:#fff">Prompt</span> <span>Golf</span></h1>
       <p class="tag">A tiny language model runs on your own GPU. Get it to hit the target in the fewest characters. Greedy decoding, so every swing is reproducible.</p>
       <div class="row" style="margin-top:10px">
         <button type="button" class="small" id="openDocs">How to play</button>
@@ -197,7 +219,7 @@ dialog::backdrop { background: rgb(0 0 0 / .45); }
         <label for="model" class="lbl">Ball</label>
         <select id="model">
           <option value="HuggingFaceTB/SmolLM2-135M-Instruct">SmolLM2 135M · fast, weird (~120 MB)</option>
-          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · smarter (~450 MB)</option>
+          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · smarter (~485 MB)</option>
         </select>
         <button id="load" class="primary" type="button">Load model</button>
       </div>
@@ -854,6 +876,14 @@ if (!state.seenDocs) { state.seenDocs = true; save(); showDoc("start"); }
 // ================= Model =================
 let gen = null, T = null, busy = false, backend = "";
 function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
+// A dropped connection should retry the same file, not fall back to a different (bigger) model format.
+const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
+async function withRetry(fn, label) {
+  for (let i = 0; ; i++) {
+    try { return await fn(); }
+    catch (e) { if (!isNetErr(e) || i >= 3) throw e; setStatus(`${label}: connection dropped, retrying (${i + 1}/3)…`, null); await new Promise(r => setTimeout(r, 1500 * (i + 1))); }
+  }
+}
 
 $("load").onclick = async () => {
   const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
@@ -874,9 +904,9 @@ $("load").onclick = async () => {
     for (const [device, dtype] of attempts) {
       try {
         setStatus(`Loading on ${device} (${dtype})…`, 0);
-        gen = await T.pipeline("text-generation", state.model, { device, dtype, progress_callback });
+        gen = await withRetry(() => T.pipeline("text-generation", state.model, { device, dtype, progress_callback }), "Download");
         backend = `${device}/${dtype}`; break;
-      } catch (e) { lastErr = e; console.warn(device, dtype, e); }
+      } catch (e) { lastErr = e; console.warn(device, dtype, e); if (isNetErr(e)) throw e; }
     }
     if (!gen) throw lastErr;
     setStatus(`Ready · ${state.model.split("/")[1]} on ${backend}${hasGPU ? "" : " (no WebGPU, slower)"}`, 100);

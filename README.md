@@ -1,13 +1,14 @@
 # In-Browser Model Lab
 
-Four small apps and games that run AI models entirely in the browser (WebGPU, with a CPU fallback) using [Transformers.js](https://github.com/huggingface/transformers.js) and [Kokoro](https://www.npmjs.com/package/kokoro-js). No server, no API keys. Model weights download from Hugging Face on first use and are cached in the browser.
+Five small apps and games that run AI models entirely in the browser (WebGPU, with a CPU fallback) using [Transformers.js](https://github.com/huggingface/transformers.js) and [Kokoro](https://www.npmjs.com/package/kokoro-js). No server, no API keys. Model weights download from Hugging Face on first use and are cached in the browser.
 
 | App | What it is | Download |
 |---|---|---|
-| [Prompt Golf](prompt-golf/prompt-golf.html) | Make a tiny LLM hit a target output in the fewest characters, with hints and a course editor | ~120–450 MB |
-| [Nervous Narrator](nervous-narrator/nervous-narrator.html) | The model answers out loud, and its voice wobbles where its token probabilities are low | ~550 MB – 1.2 GB |
+| [Prompt Golf](prompt-golf/prompt-golf.html) | Make a tiny LLM hit a target output in the fewest characters, with hints and a course editor | ~120–485 MB |
+| [Nervous Narrator](nervous-narrator/nervous-narrator.html) | The model answers out loud, and its voice wobbles where its token probabilities are low | ~575 MB – 1.3 GB |
 | [Slides That Follow You](follow-slides/follow-slides.html) | Hands-free slides that advance by matching your speech to slide content | ~105 MB |
-| [AI Telephone](ai-telephone/ai-telephone.html) | A sentence passes through AI relays (speak → noisy line → hear → retell), with a meaning-drift chart | ~650 MB |
+| [AI Telephone](ai-telephone/ai-telephone.html) | A sentence passes through AI relays (speak → noisy line → hear → retell), with a meaning-drift chart | ~680 MB |
+| [AI Debate Club](debate-club/debate-club.html) | Two models with silly personas debate out loud; a judge model scores it, with probabilities, and the room votes by applause | ~210 MB – 1.5 GB |
 
 `index.html` is the landing page. Each folder has the app (a single HTML file) and a `PROMPT.md` that rebuilds it from scratch. `IDEAS.md` lists more ideas.
 
@@ -33,7 +34,8 @@ python3 -m http.server 8000
 - **Browser:** recent Chrome or Edge on a laptop. Without WebGPU, models run on the CPU, single-threaded on GitHub Pages because it can't set cross-origin isolation headers.
 - **Networks:** corporate networks may block `huggingface.co` or `cdn.jsdelivr.net`.
 - **Storage:** scores, settings and cached models live only in each viewer's browser.
-- **Status:** first builds. Model loading, audio and the microphone have not yet been tested in a real browser.
+- **Status:** Prompt Golf has been tested end to end in Chrome (download, CPU inference, scoring). The other apps are first builds: model loading, audio and the microphone still need a real-browser test.
+- **Downloads:** dropped connections retry the same file automatically (up to 3 times) instead of switching to a bigger model format.
 
 ## License
 
