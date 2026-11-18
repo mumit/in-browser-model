@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>In-Browser Model Lab</title>
-<meta name="description" content="Small apps and games that run AI models entirely in your browser: Prompt Golf, Nervous Narrator, Slides That Follow You, AI Telephone and AI Debate Club.">
+<meta name="description" content="Small apps and games that run AI models entirely in your browser: Prompt Golf, Nervous Narrator, Slides That Follow You, AI Telephone, AI Debate Club and Outage at 3 A.M.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;600&display=swap">
 <style>
@@ -22,6 +22,7 @@
   --slides: #178a4c;
   --phone: #e2611b;
   --debate: #5b4bd6;
+  --outage: #d63a3f;
   --display: "Bricolage Grotesque", "Inter", system-ui, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
   --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
@@ -30,7 +31,7 @@
 @media (prefers-color-scheme: dark) {
   :root {
     --bg: #0e1311; --card: #161d1a; --ink: #e5ece8; --muted: #95a59e; --line: #26302c;
-    --ok: #46c27f; --warn: #f2b830; --golf: #3fa565; --narrator: #ff6b5e; --slides: #3cc47c; --phone: #ff8a4c; --debate: #9d8cff;
+    --ok: #46c27f; --warn: #f2b830; --golf: #3fa565; --narrator: #ff6b5e; --slides: #3cc47c; --phone: #ff8a4c; --debate: #9d8cff; --outage: #ff5a5f;
     color-scheme: dark;
   }
 }
@@ -66,7 +67,7 @@ h1 em { font-style: normal; background: linear-gradient(90deg, var(--golf), var(
 @media (prefers-color-scheme: dark) { .open { color: #0e1311; } }
 .src { color: var(--muted); font-size: 14px; }
 a:focus-visible { outline: 2px solid var(--accent, var(--ink)); outline-offset: 3px; }
-.app.more { background: transparent; border-style: dashed; align-content: center; padding: 24px 0; }
+.app.more { background: transparent; border-style: dashed; align-content: center; padding: 22px 0; grid-column: 1 / -1; }
 .notes { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: 24px; display: grid; gap: 10px; }
 .notes h2 { font: 800 22px/1.1 var(--display); margin: 0; }
 .notes ul { margin: 0; padding-left: 20px; display: grid; gap: 8px; max-width: 75ch; }
@@ -81,7 +82,7 @@ footer a { color: inherit; }
   <header class="hero">
     <span class="eyebrow">No server · no API keys · runs on your GPU</span>
     <h1>In-Browser <em>Model Lab</em></h1>
-    <p class="lede">Five small apps and games where the AI runs on your own laptop, inside the browser tab. Nothing you type or say leaves your machine.</p>
+    <p class="lede">Six small apps and games where the AI runs on your own laptop, inside the browser tab. Nothing you type or say leaves your machine.</p>
     <div class="check" id="check" aria-label="Browser check">
       <span class="chip" id="cGPU">Checking WebGPU…</span>
       <span class="chip" id="cCache">Checking model cache…</span>
@@ -158,10 +159,29 @@ footer a { color: inherit; }
       <div class="links"><a class="open" href="debate-club/debate-club.html">Play</a><a class="src" href="debate-club/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
+    <article class="app" style="--accent: var(--outage)">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+        <g fill="none" stroke="var(--muted)" stroke-width="1.5"><line x1="160" y1="30" x2="160" y2="58"/><line x1="96" y1="72" x2="224" y2="72"/><line x1="160" y1="86" x2="160" y2="100"/></g>
+        <line x1="160" y1="30" x2="160" y2="56" stroke="var(--outage)" stroke-width="3" stroke-dasharray="5 4"/>
+        <g font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600" text-anchor="middle">
+          <rect x="124" y="12" width="72" height="22" rx="6" fill="var(--card)" stroke="var(--outage)"/><text x="160" y="27" fill="var(--outage)">SERVERS</text>
+          <rect x="60" y="61" width="72" height="22" rx="6" fill="var(--card)" stroke="var(--muted)"/><text x="96" y="76" fill="var(--ink)">OPS</text>
+          <rect x="124" y="61" width="72" height="22" rx="6" fill="#ffb547" stroke="#ffb547"/><text x="160" y="76" fill="#1d1300">HALL</text>
+          <rect x="188" y="61" width="72" height="22" rx="6" fill="var(--card)" stroke="var(--muted)"/><text x="224" y="76" fill="var(--ink)">KITCHEN</text>
+        </g>
+        <rect x="16" y="14" width="56" height="18" rx="4" fill="var(--outage)"/><text x="44" y="27" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="10" font-weight="700" fill="#fff">SEV-1</text>
+      </svg></div>
+      <span class="kind">Game</span>
+      <h2>Outage at 3 A.M.</h2>
+      <p>A text adventure for the on-call crowd. The engine owns the truth; a small model parses what you type and narrates it, and a grounding check flags anything it invents.</p>
+      <div class="meta"><span>0 MB to play</span><span>~485 MB for the brain</span><span>mic optional</span></div>
+      <div class="links"><a class="open" href="outage-adventure/outage-adventure.html">Play</a><a class="src" href="outage-adventure/PROMPT.md">Rebuild prompt</a></div>
+    </article>
+
     <article class="app more" style="--accent: var(--muted)">
       <span class="kind">Next</span>
       <h2>What should we build?</h2>
-      <p>A grounded text adventure, voice-controlled diagrams, talking to your data, Jargon Bingo and more, with notes on how each would work.</p>
+      <p>Voice-controlled diagrams, talking to your data, Jargon Bingo, a page tone-shifter and more, with notes on how each would work.</p>
       <div class="links"><a class="src" href="IDEAS.md">Read the ideas list →</a></div>
     </article>
   </section>

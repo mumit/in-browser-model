@@ -1,6 +1,6 @@
 # In-Browser Model Lab
 
-Five small apps and games that run AI models entirely in the browser (WebGPU, with a CPU fallback) using [Transformers.js](https://github.com/huggingface/transformers.js) and [Kokoro](https://www.npmjs.com/package/kokoro-js). No server, no API keys. Model weights download from Hugging Face on first use and are cached in the browser.
+Six small apps and games that run AI models entirely in the browser (WebGPU, with a CPU fallback) using [Transformers.js](https://github.com/huggingface/transformers.js) and [Kokoro](https://www.npmjs.com/package/kokoro-js). No server, no API keys. Model weights download from Hugging Face on first use and are cached in the browser.
 
 | App | What it is | Download |
 |---|---|---|
@@ -8,6 +8,7 @@ Five small apps and games that run AI models entirely in the browser (WebGPU, wi
 | [Nervous Narrator](nervous-narrator/nervous-narrator.html) | The model answers out loud, and its voice wobbles where its token probabilities are low | ~575 MB – 1.3 GB |
 | [Slides That Follow You](follow-slides/follow-slides.html) | Hands-free slides that advance by matching your speech to slide content | ~105 MB |
 | [AI Telephone](ai-telephone/ai-telephone.html) | A sentence passes through AI relays (speak → noisy line → hear → retell), with a meaning-drift chart | ~680 MB |
+| [Outage at 3 A.M.](outage-adventure/outage-adventure.html) | An on-call text adventure: a rules engine owns the truth, a small model parses and narrates, and a grounding check flags invented details | 0 MB to play, ~485 MB for the brain |
 | [AI Debate Club](debate-club/debate-club.html) | Two models with silly personas debate out loud; a judge model scores it, with probabilities, and the room votes by applause | ~210 MB – 1.5 GB |
 
 `index.html` is the landing page. Each folder has the app (a single HTML file) and a `PROMPT.md` that rebuilds it from scratch. `IDEAS.md` lists more ideas.

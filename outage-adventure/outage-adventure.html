@@ -1,0 +1,703 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Outage at 3 A.M.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;800&family=Inter:wght@400;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+/* Layout: an on-call engineer's screen at 3 a.m. An incident banner across the top, the adventure transcript as the main terminal, and a side rail with the floor plan, your pockets, and the engine's ground truth. */
+:root {
+  --bg: #0e131f;
+  --card: #151b2b;
+  --card2: #1b2236;
+  --ink: #e6ebf5;
+  --muted: #8f99b2;
+  --line: #273049;
+  --sev: #ff5a5f;
+  --ok: #3ddc97;
+  --amber: #ffb547;
+  --link: #7fb2ff;
+  --display: "Archivo", "Inter", system-ui, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  color-scheme: dark;
+}
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    --bg: #f1f3f8; --card: #ffffff; --card2: #f5f7fb; --ink: #151a29; --muted: #5d6680; --line: #d8dde9;
+    --sev: #d63a3f; --ok: #12895a; --amber: #a86a00; --link: #2457c5; color-scheme: light;
+  }
+}
+:root[data-theme="light"] { --bg: #f1f3f8; --card: #ffffff; --card2: #f5f7fb; --ink: #151a29; --muted: #5d6680; --line: #d8dde9; --sev: #d63a3f; --ok: #12895a; --amber: #a86a00; --link: #2457c5; color-scheme: light; }
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding: 18px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
+.wrap { max-width: 1200px; margin: 0 auto; display: grid; gap: 16px; }
+select, button, input { font: inherit; color: inherit; }
+select, input[type=text] { background: var(--card2); border: 1px solid var(--line); border-radius: 6px; padding: 8px 10px; min-width: 0; max-width: 100%; }
+button { border: 1px solid var(--line); background: var(--card2); border-radius: 6px; padding: 8px 14px; cursor: pointer; font-weight: 600; }
+button.primary { background: var(--amber); color: #1d1300; border-color: var(--amber); }
+button.small { font-size: 13px; padding: 5px 10px; }
+button:disabled { opacity: .45; cursor: not-allowed; }
+:is(button, select, input):focus-visible { outline: 2px solid var(--amber); outline-offset: 2px; }
+.lbl { font: 600 11.5px/1 var(--body); letter-spacing: .1em; text-transform: uppercase; color: var(--muted); }
+.hint { color: var(--muted); font-size: 13px; margin: 0; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 12px; }
+.pad { padding: 16px; display: grid; gap: 12px; }
+.row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+
+/* Incident banner */
+.incident { display: grid; grid-template-columns: auto 1fr auto; gap: 14px 20px; align-items: center; padding: 14px 18px; border-radius: 12px; background: color-mix(in srgb, var(--sev) 14%, var(--card)); border: 1px solid color-mix(in srgb, var(--sev) 45%, var(--line)); }
+.incident.resolved { background: color-mix(in srgb, var(--ok) 14%, var(--card)); border-color: color-mix(in srgb, var(--ok) 45%, var(--line)); }
+.sev { justify-self: start; font: 700 13px/1 var(--mono); letter-spacing: .08em; background: var(--sev); color: #fff; padding: 7px 10px; border-radius: 6px; display: inline-flex; align-items: center; gap: 8px; }
+.sev::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: #fff; animation: blink 1.2s infinite; }
+.resolved .sev { background: var(--ok); color: #04140c; }
+.resolved .sev::before { background: #04140c; animation: none; }
+@keyframes blink { 50% { opacity: .2; } }
+.incident h1 { font: 800 clamp(22px, 3.6vw, 34px)/1.05 var(--display); margin: 0; letter-spacing: -0.01em; }
+.incident p { margin: 2px 0 0; color: var(--muted); font-size: 14px; }
+.clock { display: flex; gap: 18px; font: 600 13px/1.2 var(--mono); text-align: right; }
+.clock b { display: block; font: 600 22px/1.1 var(--mono); color: var(--ink); font-variant-numeric: tabular-nums; }
+.clock span { color: var(--muted); font-size: 11px; letter-spacing: .08em; text-transform: uppercase; }
+@media (max-width: 720px) { .incident { grid-template-columns: 1fr; } .clock { text-align: left; } }
+
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 16px; align-items: start; }
+@media (max-width: 960px) { .layout { grid-template-columns: 1fr; } .term { min-height: 0; } .feed { max-height: 55vh; min-height: 260px; } }
+
+/* Terminal */
+.term { display: grid; grid-template-rows: auto 1fr auto; min-height: 560px; overflow: hidden; }
+.term-head { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--line); flex-wrap: wrap; }
+.term-head .dots { display: flex; gap: 6px; }
+.term-head .dots i { width: 10px; height: 10px; border-radius: 50%; background: var(--line); }
+.term-head .dots i:first-child { background: var(--sev); }
+.feed { padding: 16px 18px; overflow-y: auto; max-height: 62vh; display: grid; gap: 14px; align-content: start; scroll-behavior: smooth; }
+.turn { display: grid; gap: 6px; }
+.cmd { font: 500 14px/1.4 var(--mono); color: var(--amber); overflow-wrap: anywhere; }
+.cmd::before { content: "> "; opacity: .7; }
+.cmd .via { font: 600 10.5px/1 var(--mono); letter-spacing: .06em; text-transform: uppercase; padding: 3px 6px; border-radius: 4px; border: 1px solid var(--line); color: var(--muted); margin-left: 8px; vertical-align: 2px; }
+.cmd .via.model { border-color: var(--link); color: var(--link); }
+.say { margin: 0; font-size: 16.5px; line-height: 1.6; overflow-wrap: anywhere; }
+.say.room { font-size: 16.5px; }
+.say .rname { display: block; font: 800 15px/1.2 var(--display); letter-spacing: .02em; text-transform: uppercase; color: var(--link); margin-bottom: 2px; }
+.truth { font: 12px/1.45 var(--mono); color: var(--muted); overflow-wrap: anywhere; }
+.flag { font: 600 12px/1.4 var(--mono); color: var(--sev); }
+.flag.ok { color: var(--ok); }
+.win { border: 1px solid var(--ok); border-radius: 10px; padding: 14px 16px; background: color-mix(in srgb, var(--ok) 10%, transparent); }
+.win h3 { margin: 0 0 4px; font: 800 22px/1.1 var(--display); color: var(--ok); }
+.prompt { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--line); background: var(--card2); flex-wrap: wrap; }
+.prompt input { flex: 1; min-width: 180px; font: 500 16px/1.3 var(--mono); background: var(--bg); }
+.talk[aria-pressed="true"] { background: var(--sev); color: #fff; border-color: var(--sev); }
+.quick { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 14px 12px; background: var(--card2); }
+.quick button { font: 500 12.5px/1 var(--mono); padding: 6px 9px; border-radius: 999px; }
+
+/* Rail */
+aside { display: grid; gap: 16px; }
+svg.map { width: 100%; height: auto; display: block; }
+.inv { display: flex; gap: 6px; flex-wrap: wrap; min-height: 30px; }
+.inv span { font: 500 13px/1 var(--mono); padding: 7px 9px; border-radius: 6px; background: var(--card2); border: 1px solid var(--line); }
+.inv .none { color: var(--muted); background: none; border: 0; padding-left: 0; }
+.engine { display: grid; gap: 8px; }
+.status { font: 12px/1.4 var(--mono); color: var(--muted); }
+.bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.bar > i { display: block; height: 100%; width: 0; background: var(--amber); transition: width .2s; }
+.f { display: grid; gap: 4px; min-width: 0; }
+.f label { font-size: 13px; color: var(--muted); }
+.toggle { display: flex; gap: 8px; align-items: flex-start; font-size: 14px; }
+.toggle input { margin-top: 3px; accent-color: var(--amber); }
+pre.under { margin: 0; font: 12px/1.5 var(--mono); background: var(--bg); border: 1px solid var(--line); border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 280px; overflow-y: auto; color: var(--muted); }
+pre.under b { color: var(--ink); font-weight: 600; }
+table { width: 100%; border-collapse: collapse; font-size: 14px; }
+th, td { text-align: left; padding: 6px 4px; border-bottom: 1px solid var(--line); }
+th { font: 600 11px var(--body); letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+td.num { text-align: right; font: 600 13px var(--mono); font-variant-numeric: tabular-nums; }
+details summary { cursor: pointer; font-weight: 600; }
+details li { font-size: 14px; color: var(--muted); }
+details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
+.toast { position: fixed; left: 50%; bottom: 24px; transform: translateX(-50%); background: var(--ink); color: var(--bg); padding: 8px 14px; border-radius: 6px; font-weight: 600; z-index: 10; }
+@media (prefers-reduced-motion: reduce) { .sev::before { animation: none; } .feed { scroll-behavior: auto; } .bar > i { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <section class="incident" id="incident" aria-live="polite">
+    <span class="sev" id="sev">SEV-1</span>
+    <div>
+      <h1>Outage at 3 A.M.</h1>
+      <p id="incidentText">Checkout is down. You're on call. Get into the server room and bring the core switch back up.</p>
+    </div>
+    <div class="clock">
+      <div><span>Elapsed</span><b id="elapsed">00:00</b></div>
+      <div><span>Moves</span><b id="moves">0</b></div>
+    </div>
+  </section>
+
+  <div class="layout">
+    <section class="card term" aria-label="Adventure">
+      <div class="term-head">
+        <div class="row"><span class="dots" aria-hidden="true"><i></i><i></i><i></i></span><span class="lbl">oncall@hq: ~/incident</span></div>
+        <div class="row"><button type="button" class="small" id="newGame">New game</button></div>
+      </div>
+      <div class="feed" id="feed" aria-live="polite"></div>
+      <div>
+        <form class="prompt" id="form" autocomplete="off">
+          <input type="text" id="cmd" placeholder="What do you do? Try: look, open drawer, go north" aria-label="Command" spellcheck="false">
+          <button type="submit" class="primary">Do it</button>
+          <button type="button" id="talk" class="talk" aria-pressed="false" title="Needs the brain and Whisper">Hold to talk</button>
+        </form>
+        <div class="quick" id="quick" aria-label="Quick commands"></div>
+      </div>
+    </section>
+
+    <aside>
+      <section class="card pad" aria-label="Floor plan">
+        <span class="lbl">Floor plan</span>
+        <svg class="map" id="map" viewBox="0 0 300 220" role="img" aria-label="Map of the rooms you've discovered"></svg>
+        <span class="lbl">In your pockets</span>
+        <div class="inv" id="inv"></div>
+      </section>
+
+      <section class="card pad" aria-label="Brain and narrator">
+        <span class="lbl">The brain (optional)</span>
+        <p class="hint">Simple commands work with no download. Load a small model to type anything (“grab the card from the fridge”) and to hear it told in a style.</p>
+        <div class="f"><label for="model">Model</label>
+          <select id="model">
+            <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~485 MB</option>
+            <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.2 GB, follows rules better</option>
+          </select>
+        </div>
+        <button type="button" class="primary" id="load">Load the brain</button>
+        <div class="bar" aria-hidden="true"><i id="bar"></i></div>
+        <div class="status" id="status">Not loaded. Playing with the built-in parser and plain narration.</div>
+        <div class="f"><label for="style">Narrator</label>
+          <select id="style">
+            <option value="plain">Plain (the engine's own words, no model)</option>
+            <option value="noir">Hard-boiled noir detective</option>
+            <option value="pirate">Pirate captain</option>
+            <option value="shakespeare">Shakespearean actor</option>
+            <option value="nature">Nature documentary</option>
+            <option value="sportscast">Sports commentator</option>
+          </select>
+        </div>
+        <label class="toggle"><input type="checkbox" id="aloud"><span>Read the story aloud (browser voice)</span></label>
+      </section>
+
+      <section class="card pad" aria-label="Under the hood">
+        <span class="lbl">Under the hood · last turn</span>
+        <pre class="under" id="under">Every turn shows up here: what you typed, how it was parsed (rules or model), the action the engine ran, what really changed, and whether the narrator stuck to the facts.</pre>
+      </section>
+
+      <section class="card pad" aria-label="Fastest fixes">
+        <span class="lbl">Fastest fixes</span>
+        <div style="overflow-x:auto"><table><thead><tr><th>#</th><th>Who</th><th class="num">Moves</th><th class="num">Time</th></tr></thead><tbody id="board"></tbody></table></div>
+        <div class="f"><label for="who">Your name</label><input type="text" id="who" maxlength="30" placeholder="e.g. Priya"></div>
+      </section>
+
+      <section class="card pad">
+        <details>
+          <summary>How it works</summary>
+          <ul>
+            <li><b>The engine owns the truth.</b> Rooms, items, locks and the puzzle live in plain JavaScript. The model can't add an item, open a door or win the game for you.</li>
+            <li><b>Parsing:</b> a fast rules parser handles common commands. Anything it can't read goes to the model, which must answer with a JSON action. The engine validates it before running it.</li>
+            <li><b>Narration:</b> the model gets only the facts of what just happened and retells them in a style. Plain mode skips the model entirely.</li>
+            <li><b>Grounding check:</b> after each narration, we scan for any item, place or direction the narrator mentioned that isn't actually there, and flag it. That's a hallucination, caught.</li>
+            <li><b>Hints</b> cost 5 moves. Fewest moves wins.</li>
+            <li>Everything runs in this tab. Nothing leaves your machine.</li>
+          </ul>
+        </details>
+      </section>
+    </aside>
+  </div>
+</div>
+
+<script>
+// ================= The world (ground truth) =================
+const WORLD = {
+  start: "lobby",
+  rooms: {
+    lobby: { name: "Lobby", desc: "The lobby is deserted at 3 a.m. A security desk sits under a flickering light.", exits: { north: "hallway" }, items: ["mug"], fixtures: ["desk"] },
+    hallway: { name: "Hallway", desc: "A long hallway hums with air conditioning. A heavy door with a card reader leads north.", exits: { south: "lobby", east: "kitchen", west: "ops", north: "server" }, lock: { north: "keycard" }, items: [], fixtures: ["door"] },
+    kitchen: { name: "Kitchen", desc: "The office kitchen still smells of burnt popcorn.", exits: { west: "hallway" }, items: ["pizza"], fixtures: ["fridge"] },
+    ops: { name: "Ops room", desc: "Dashboards glow red on every wall. Someone left a laptop open on the desk.", exits: { east: "hallway" }, items: ["note"], fixtures: ["laptop"] },
+    server: { name: "Server room", desc: "Rows of racks roar in the cold air. A breaker panel is bolted to the wall, next to the core switch.", dark: true, exits: { south: "hallway" }, items: [], fixtures: ["panel", "switch"] },
+  },
+  items: {
+    mug: { name: "coffee mug", words: ["mug", "coffee", "cup"], desc: "Cold coffee. Still better than nothing." },
+    flashlight: { name: "flashlight", words: ["flashlight", "torch", "light"], desc: "A heavy flashlight. It works." },
+    keycard: { name: "keycard", words: ["keycard", "card", "badge", "key"], desc: "A keycard labelled SERVER ROOM, slightly sticky." },
+    pizza: { name: "cold pizza", words: ["pizza", "slice"], desc: "Pepperoni, from yesterday's launch party." },
+    note: { name: "sticky note", words: ["note", "sticky", "post-it", "postit", "paper"], desc: "In marker: “laptop pw: hunter2”." },
+  },
+  fixtures: {
+    desk: { name: "security desk", words: ["desk", "drawer"], desc: "The security desk has a single drawer.", holds: ["flashlight"], openMsg: "You slide the desk drawer open." },
+    fridge: { name: "fridge", words: ["fridge", "refrigerator"], desc: "A fridge covered in passive-aggressive notes about labelling food.", holds: ["keycard"], openMsg: "You open the fridge. Someone left their keycard next to their lunch." },
+    door: { name: "server room door", words: ["door", "reader"], desc: "A heavy door with a card reader. The light on the reader is red." },
+    laptop: { name: "laptop", words: ["laptop", "computer", "pc", "screen"], desc: "A locked laptop. The lock screen shows the incident channel scrolling." },
+    panel: { name: "breaker panel", words: ["panel", "breaker", "breakers", "b7"], desc: "Forty identical breakers in neat rows." },
+    switch: { name: "core switch", words: ["switch", "router", "core"], desc: "The core switch. Every light on it is off." },
+  },
+};
+const DIRS = { n: "north", s: "south", e: "east", w: "west", north: "north", south: "south", east: "east", west: "west", up: "north", down: "south", forward: "north", back: "south" };
+const HINTS = [
+  [s => !s.inv.includes("flashlight") && !s.opened.includes("desk"), "The security desk in the lobby has a drawer. Try opening it."],
+  [s => !s.inv.includes("flashlight"), "Take the flashlight. The server room will be dark."],
+  [s => !s.inv.includes("keycard") && !s.opened.includes("fridge"), "The server room needs a keycard. People leave all sorts of things in the kitchen fridge."],
+  [s => !s.inv.includes("keycard"), "Take the keycard from the fridge."],
+  [s => !s.flags.runbook && !s.inv.includes("note"), "The laptop in the ops room is locked. Maybe someone wrote the password down nearby."],
+  [s => !s.flags.runbook, "Use the laptop in the ops room while carrying the sticky note."],
+  [s => !s.flags.breaker, "Go north into the server room and reset the breaker the runbook mentioned."],
+  [s => true, "Restart the core switch."],
+];
+
+// ================= Engine (pure) =================
+function newState() {
+  const roomItems = {}; for (const [k, r] of Object.entries(WORLD.rooms)) roomItems[k] = [...r.items];
+  return { room: WORLD.start, inv: [], roomItems, opened: [], unlocked: [], visited: [WORLD.start], flags: {}, moves: 0, hints: 0, won: false, started: null, ended: null, log: [] };
+}
+const canSee = s => !WORLD.rooms[s.room].dark || s.inv.includes("flashlight");
+function visibleThings(s) {
+  if (!canSee(s)) return { items: [], fixtures: [] };
+  return { items: s.roomItems[s.room], fixtures: WORLD.rooms[s.room].fixtures };
+}
+function resolve(s, word) {
+  if (!word) return null;
+  const w = word.toLowerCase().replace(/^(the|a|an|my)\s+/, "").trim();
+  const match = (id, def) => def.words.some(x => w === x || w.split(/\s+/).includes(x)) || w === def.name;
+  const vis = visibleThings(s);
+  for (const id of s.inv) if (match(id, WORLD.items[id])) return { kind: "item", id, where: "inv" };
+  for (const id of vis.items) if (match(id, WORLD.items[id])) return { kind: "item", id, where: "room" };
+  for (const id of vis.fixtures) if (match(id, WORLD.fixtures[id])) return { kind: "fixture", id };
+  for (const [id, def] of Object.entries(WORLD.items)) if (match(id, def)) return { kind: "item", id, where: "elsewhere" };
+  for (const [id, def] of Object.entries(WORLD.fixtures)) if (match(id, def)) return { kind: "fixture", id, where: "elsewhere" };
+  return { kind: "unknown", word: w };
+}
+const nameOf = t => t.kind === "item" ? WORLD.items[t.id].name : t.kind === "fixture" ? WORLD.fixtures[t.id].name : t.word;
+const list = a => a.length === 0 ? "nothing" : a.length === 1 ? a[0] : a.slice(0, -1).join(", ") + " and " + a.at(-1);
+function describeRoom(s) {
+  const r = WORLD.rooms[s.room];
+  if (!canSee(s)) return { text: "It's pitch black. You can hear fans roaring, but you can't see a thing. The only light is the doorway to the south.", facts: { room: r.name, exits: ["south"], items: [], fixtures: [] } };
+  const items = s.roomItems[s.room].map(i => WORLD.items[i].name);
+  const exits = Object.keys(r.exits).map(d => r.lock?.[d] && !s.unlocked.includes(s.room + ":" + d) ? `${d} (locked)` : d);
+  let text = r.desc + (items.length ? ` You can see ${list(items.map(n => "a " + n))}.` : "") + ` Exits: ${list(exits)}.`;
+  return { text, facts: { room: r.name, exits, items, fixtures: r.fixtures.map(f => WORLD.fixtures[f].name) } };
+}
+// Runs one action. Returns {text, facts, changed:boolean, event}
+function act(s, a) {
+  const r = WORLD.rooms[s.room], out = (text, extra = {}) => { const d = describeRoom(s); return { text, facts: { ...d.facts, event: text, ...extra.facts }, changed: !!extra.changed, room: !!extra.room }; };
+  if (s.won && a.action !== "look") return out("The incident is resolved. Start a new game to play again.");
+  if (!canSee(s) && a.object && ["take", "open", "use", "look", "read"].includes(a.action)) return out("It's too dark to find anything in here. You need some light.");
+  switch (a.action) {
+    case "look": {
+      if (!a.object) { const d = describeRoom(s); return { text: d.text, facts: { ...d.facts, event: "looked around" }, room: true }; }
+      const t = resolve(s, a.object);
+      if (!t || t.kind === "unknown") return out(`You don't see any ${a.object} here.`);
+      if (t.where === "elsewhere") return out(`There's no ${nameOf(t)} here.`);
+      const def = t.kind === "item" ? WORLD.items[t.id] : WORLD.fixtures[t.id];
+      let extra = "";
+      if (t.kind === "fixture" && def.holds) extra = s.opened.includes(t.id) ? " It's open." : " It's closed.";
+      if (t.id === "door" && s.unlocked.includes("hallway:north")) extra = " The reader's light is green.";
+      if (t.id === "panel" && s.flags.breaker) extra = " Breaker B7 is back on.";
+      if (t.id === "switch" && s.flags.breaker) extra = " Its lights are amber, waiting for a restart.";
+      return out(def.desc + extra);
+    }
+    case "go": {
+      const dir = DIRS[a.direction] || Object.entries(r.exits).find(([, to]) => WORLD.rooms[to].name.toLowerCase().includes((a.object || "").toLowerCase()) && a.object)?.[0];
+      if (!dir || !r.exits[dir]) return out(`You can't go ${a.direction || a.object || "that way"} from here.`);
+      const key = s.room + ":" + dir, need = r.lock?.[dir];
+      let pre = "";
+      if (need && !s.unlocked.includes(key)) {
+        if (!s.inv.includes(need)) return out("The door won't budge. The card reader blinks red. You need a keycard.");
+        s.unlocked.push(key); pre = "You tap the keycard. The reader turns green and the door clicks open. ";
+      }
+      s.room = r.exits[dir]; if (!s.visited.includes(s.room)) s.visited.push(s.room);
+      const d = describeRoom(s);
+      return { text: pre + d.text, facts: { ...d.facts, event: `${pre}moved ${dir} into the ${WORLD.rooms[s.room].name}` }, changed: true, room: true };
+    }
+    case "take": {
+      if (!a.object) return out("Take what?");
+      if (/^(all|everything)$/i.test(a.object)) {
+        const here = visibleThings(s).items; if (!here.length) return out("There's nothing here to take.");
+        s.inv.push(...here); s.roomItems[s.room] = []; return out(`You take ${list(here.map(i => "the " + WORLD.items[i].name))}.`, { changed: true });
+      }
+      const t = resolve(s, a.object);
+      if (!t || t.kind === "unknown" || t.where === "elsewhere") return out(canSee(s) ? `There's no ${a.object} here.` : "You fumble in the dark and find nothing.");
+      if (t.kind === "fixture") return out(`The ${nameOf(t)} isn't going anywhere.`);
+      if (t.where === "inv") return out(`You already have the ${nameOf(t)}.`);
+      s.roomItems[s.room] = s.roomItems[s.room].filter(i => i !== t.id); s.inv.push(t.id);
+      return out(`You take the ${nameOf(t)}.`, { changed: true });
+    }
+    case "drop": {
+      const t = resolve(s, a.object);
+      if (!t || t.where !== "inv") return out(`You're not carrying ${a.object ? "any " + a.object : "that"}.`);
+      s.inv = s.inv.filter(i => i !== t.id); s.roomItems[s.room].push(t.id);
+      return out(`You put down the ${nameOf(t)}.`, { changed: true });
+    }
+    case "open": {
+      const t = resolve(s, a.object);
+      if (t?.id === "door") return a.object && s.inv.includes("keycard") ? act(s, { action: "go", direction: "north" }) : out("It needs a keycard.");
+      if (!t || t.kind !== "fixture" || t.where === "elsewhere" || !WORLD.fixtures[t.id].holds) return out(`You can't open ${a.object ? "the " + a.object : "that"}.`);
+      if (s.opened.includes(t.id)) return out(`The ${nameOf(t)} is already open.`);
+      const def = WORLD.fixtures[t.id]; s.opened.push(t.id); s.roomItems[s.room].push(...def.holds);
+      return out(`${def.openMsg} Inside: ${list(def.holds.map(i => "a " + WORLD.items[i].name))}.`, { changed: true });
+    }
+    case "read": {
+      const t = resolve(s, a.object || "note");
+      if (t?.id === "note" && t.where !== "elsewhere") return out(WORLD.items.note.desc);
+      if (t?.id === "laptop") return act(s, { action: "use", object: "laptop" });
+      return out("There's nothing to read.");
+    }
+    case "use": {
+      const t = resolve(s, a.object);
+      if (!t || t.kind === "unknown") return out(`You don't have or see any ${a.object || "thing"} like that.`);
+      if (t.where === "elsewhere") return out(`There's no ${nameOf(t)} here.`);
+      switch (t.id) {
+        case "laptop":
+          if (s.flags.runbook) return out("The runbook is still open: reset breaker B7, then restart the core switch.");
+          if (!s.inv.includes("note")) return out("The laptop asks for a password. You don't know it.");
+          s.flags.runbook = true; return out("You type hunter2. It works. The outage runbook is open: “Power fault on core: reset breaker B7, then restart the core switch.”", { changed: true });
+        case "note": return out(WORLD.items.note.desc);
+        case "panel":
+          if (s.flags.breaker) return out("Breaker B7 is already back on.");
+          if (!s.flags.runbook) return out("Forty identical breakers. Flip the wrong one and you take down payroll too. You need the runbook.");
+          s.flags.breaker = true; return out("You find B7 and push it back up. Fans spin up; the core switch's lights turn amber.", { changed: true });
+        case "switch":
+          if (!s.flags.breaker) return out("You press the power button. Nothing. The switch has no power.");
+          s.won = true; s.ended = Date.now(); return out("You hold the restart button. The lights cycle amber, then green. Somewhere, a checkout page loads.", { changed: true, facts: { resolved: true } });
+        case "keycard": return s.room === "hallway" ? act(s, { action: "go", direction: "north" }) : out("There's no card reader here.");
+        case "door": return act(s, { action: "go", direction: "north" });
+        case "flashlight": return out(s.inv.includes("flashlight") ? "The flashlight is on. Its beam cuts a neat circle." : "You need to pick it up first.");
+        case "mug": if (!s.inv.includes("mug")) return out("Pick it up first."); return out("You sip the cold coffee. You feel 4% more awake.");
+        case "pizza": if (!s.inv.includes("pizza")) return out("Pick it up first."); s.inv = s.inv.filter(i => i !== "pizza"); return out("You eat the cold pizza. Morale improves.", { changed: true });
+        case "desk": case "fridge": return act(s, { action: "open", object: t.id });
+      }
+      return out("Nothing happens.");
+    }
+    case "inventory": return out(s.inv.length ? `You're carrying ${list(s.inv.map(i => "a " + WORLD.items[i].name))}.` : "Your pockets are empty, apart from your phone, which won't stop buzzing.");
+    case "hint": { s.hints++; s.moves += 5; const h = HINTS.find(([c]) => c(s))[1]; return out(`Hint (+5 moves): ${h}`); }
+    case "help": return out("Try: look, go north, open drawer, take flashlight, use laptop, read note, inventory, hint. Load the brain to type anything.");
+  }
+  return out("That doesn't do anything here.");
+}
+
+// ================= Rules parser =================
+const VERBS = [
+  [/^(?:go|walk|move|head|run|enter|go to|walk to)\b\s*(.*)$/, m => { const d = DIRS[m[1].replace(/^(to|the)\s+/, "").trim()]; return d ? { action: "go", direction: d } : m[1] ? { action: "go", object: m[1].replace(/^(?:(?:to|into|in|the)\s+)+/, "").trim() } : null; }],
+  [/^(n|s|e|w|north|south|east|west)$/, m => ({ action: "go", direction: DIRS[m[1]] })],
+  [/^(?:take|get|grab|pick up|pick|collect)\s+(?:up\s+)?(.+)$/, m => ({ action: "take", object: m[1] })],
+  [/^(?:drop|put down|leave)\s+(.+)$/, m => ({ action: "drop", object: m[1] })],
+  [/^(?:open|unlock)\s+(.+)$/, m => ({ action: "open", object: m[1] })],
+  [/^(?:look|l|look around)$/, () => ({ action: "look" })],
+  [/^(?:look at|look in|examine|x|inspect|check|search)\s+(.+)$/, m => ({ action: "look", object: m[1] })],
+  [/^read\s*(.*)$/, m => ({ action: "read", object: m[1] || null })],
+  [/^(?:use|flip|press|push|reset|restart|reboot|turn on|switch on|log into|login to|log in to|unlock)\s+(.+?)(?:\s+(?:on|with)\s+.+)?$/, m => ({ action: "use", object: m[1] })],
+  [/^(?:eat)\s+(.+)$/, m => ({ action: "use", object: m[1] })],
+  [/^(?:drink)\s+(.+)$/, m => ({ action: "use", object: m[1] })],
+  [/^(?:i|inv|inventory|pockets)$/, () => ({ action: "inventory" })],
+  [/^(?:hint|help me|i'm stuck|im stuck)$/, () => ({ action: "hint" })],
+  [/^(?:help|\?)$/, () => ({ action: "help" })],
+];
+function rulesParse(text) {
+  const t = text.toLowerCase().replace(/[.!?,]+$/g, "").replace(/\s+/g, " ").replace(/^(please|i want to|i'd like to|let's|lets)\s+/, "").trim();
+  for (const [re, f] of VERBS) { const m = t.match(re); if (m) { const a = f(m); if (a) return a; } }
+  return null;
+}
+
+// ================= Grounding check =================
+const VOCAB = (() => {
+  const v = new Map();
+  for (const [id, d] of Object.entries(WORLD.items)) d.words.filter(w => w.length > 3 && w !== "light").forEach(w => v.set(w, d.name));
+  for (const [id, d] of Object.entries(WORLD.fixtures)) d.words.filter(w => w.length > 3).forEach(w => v.set(w, d.name));
+  for (const r of Object.values(WORLD.rooms)) v.set(r.name.toLowerCase().split(" ")[0], r.name);
+  ["north", "south", "east", "west"].forEach(d => v.set(d, d));
+  v.delete("server"); v.delete("room");
+  return v;
+})();
+function groundCheck(narration, facts, s) {
+  const allowed = new Set([facts.room, ...(facts.items || []), ...(facts.fixtures || []), ...(facts.exits || []).map(e => e.split(" ")[0]), ...s.inv.map(i => WORLD.items[i].name), facts.prevRoom].filter(Boolean).map(x => x.toLowerCase()));
+  const eventText = (facts.event || "").toLowerCase();
+  const bad = new Set();
+  for (const [w, canon] of VOCAB) {
+    if (!new RegExp(`\\b${w}s?\\b`, "i").test(narration)) continue;
+    const c = canon.toLowerCase();
+    if ([...allowed].some(a => a.includes(c) || c.includes(a)) || eventText.includes(w) || eventText.includes(c)) continue;
+    bad.add(canon);
+  }
+  return [...bad];
+}
+
+// ================= Brain (optional) =================
+let T = null, tok = null, llm = null, backend = "", brainBusy = false;
+const $ = id => document.getElementById(id);
+function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
+function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
+async function withRetry(fn, label) {
+  for (let i = 0; ; i++) {
+    try { return await fn(); }
+    catch (e) { if (!isNetErr(e) || i >= 3) throw e; setStatus(`${label}: connection dropped, retrying (${i + 1}/3)…`, null); await new Promise(r => setTimeout(r, 1500 * (i + 1))); }
+  }
+}
+function tracker(label) {
+  const files = {};
+  return e => {
+    if (e.status === "progress" && e.total) {
+      files[e.file] = [e.loaded, e.total];
+      const [l, t] = Object.values(files).reduce((a, [x, y]) => [a[0] + x, a[1] + y], [0, 0]);
+      setStatus(`${label}: ${e.file} · ${(l / 1e6).toFixed(0)} / ${(t / 1e6).toFixed(0)} MB`, Math.round(100 * l / t));
+    }
+  };
+}
+$("load").onclick = async () => {
+  const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
+  try {
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    const id = prefs.model;
+    let hasGPU = false; try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
+    tok = await withRetry(() => T.AutoTokenizer.from_pretrained(id), "Brain");
+    let err;
+    for (const [device, dtype] of hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]]) {
+      try { llm = await withRetry(() => T.AutoModelForCausalLM.from_pretrained(id, { device, dtype, progress_callback: tracker("Brain") }), "Brain"); backend = `${device}/${dtype}`; break; }
+      catch (e) { err = e; console.warn(device, dtype, e); if (isNetErr(e)) throw e; }
+    }
+    if (!llm) throw err;
+    setStatus(`Ready · ${id.split("/")[1]} on ${backend}. Type anything; pick a narrator.`, 100);
+    btn.textContent = "Brain loaded";
+    if (prefs.style === "plain") { prefs.style = "noir"; $("style").value = "noir"; save(); }
+  } catch (e) {
+    console.error(e); setStatus(`Couldn't load: ${e?.message || e}. The game still works with simple commands.`, 0);
+    btn.disabled = false; btn.textContent = "Retry";
+  }
+};
+async function chat(system, user, { maxTokens = 60, sample = false } = {}) {
+  const inputs = tok.apply_chat_template([{ role: "system", content: system }, { role: "user", content: user }], { add_generation_prompt: true, return_dict: true });
+  const seq = await llm.generate({ ...inputs, max_new_tokens: maxTokens, ...(sample ? { do_sample: true, temperature: 0.7, top_k: 40 } : { do_sample: false }), repetition_penalty: 1.1 });
+  return tok.decode(Array.from(seq.data, Number).slice(inputs.input_ids.dims.at(-1)), { skip_special_tokens: true }).trim();
+}
+const ACTIONS = ["go", "take", "drop", "open", "look", "read", "use", "inventory", "hint", "help"];
+async function modelParse(text) {
+  const vis = visibleThings(S);
+  const nouns = [...S.inv.map(i => WORLD.items[i].name), ...vis.items.map(i => WORLD.items[i].name), ...vis.fixtures.map(f => WORLD.fixtures[f].name)];
+  const system = `You turn a player's command in a text adventure into one JSON action.
+Actions: go, take, drop, open, look, read, use, inventory, hint.
+Directions: north, south, east, west. Exits here: ${Object.keys(WORLD.rooms[S.room].exits).join(", ")}.
+Things the player can refer to: ${nouns.join(", ") || "nothing visible"}.
+Reply with only JSON: {"action": "...", "object": "..." or null, "direction": "..." or null}`;
+  const raw = await chat(system, `Command: ${text}`, { maxTokens: 40 });
+  const m = raw.match(/\{[\s\S]*?\}/);
+  let a = null;
+  try { a = m && JSON.parse(m[0]); } catch {}
+  if (!a || !ACTIONS.includes(a.action)) return { a: null, raw };
+  if (a.direction) a.direction = DIRS[String(a.direction).toLowerCase()] || null;
+  if (a.object === "null" || a.object === "") a.object = null;
+  return { a, raw };
+}
+const STYLES = {
+  noir: "a hard-boiled 1940s noir detective narrating in the second person",
+  pirate: "a salty pirate captain narrating in the second person",
+  shakespeare: "a Shakespearean actor narrating in the second person, in mock Elizabethan English",
+  nature: "a hushed nature documentary narrator describing the on-call engineer as a creature in the wild",
+  sportscast: "an excited sports commentator calling the play-by-play",
+};
+async function narrate(facts) {
+  const system = `You are the narrator of a text adventure, speaking as ${STYLES[prefs.style]}. Retell what just happened in one to three short sentences. Use ONLY the facts given. Do not invent any items, exits, rooms, people or events that are not listed.`;
+  const user = `What happened: ${facts.event}
+Room: ${facts.room}
+Exits: ${(facts.exits || []).join(", ") || "none"}
+Things here: ${[...(facts.items || []), ...(facts.fixtures || [])].join(", ") || "nothing"}
+Player carries: ${S.inv.map(i => WORLD.items[i].name).join(", ") || "nothing"}`;
+  let t = await chat(system, user, { maxTokens: 80, sample: true });
+  t = t.replace(/^["“]|["”]$/g, "").replace(/\*[^*]*\*/g, "").replace(/\s+/g, " ").trim();
+  const sentences = t.match(/[^.!?]+[.!?]+["”]?/g) || [t];
+  return sentences.slice(0, 3).map(x => x.trim()).join(" ");
+}
+
+// ================= Game loop & UI =================
+const KEY = "outage-adventure-v1";
+let prefs = { model: "onnx-community/Qwen2.5-0.5B-Instruct", style: "plain", aloud: false, who: "", board: [] };
+let S = newState();
+try { const saved = JSON.parse(localStorage.getItem(KEY)); if (saved) { prefs = Object.assign(prefs, saved.prefs || {}); if (saved.state && !saved.state.won) S = saved.state; } } catch {}
+const save = () => { try { localStorage.setItem(KEY, JSON.stringify({ prefs, state: S })); } catch {} };
+$("model").value = prefs.model; $("style").value = prefs.style; $("aloud").checked = prefs.aloud; $("who").value = prefs.who;
+$("model").onchange = e => { prefs.model = e.target.value; save(); llm = null; $("load").disabled = false; $("load").textContent = "Load the brain"; setStatus("Model changed. Load it to use free-form commands.", 0); };
+$("style").onchange = e => { prefs.style = e.target.value; save(); if (prefs.style !== "plain" && !llm) toast("Load the brain to hear this narrator. Using plain until then."); };
+$("aloud").onchange = e => { prefs.aloud = e.target.checked; save(); if (!prefs.aloud) try { speechSynthesis.cancel(); } catch {} };
+$("who").oninput = e => { prefs.who = e.target.value; save(); };
+
+const esc = s => String(s).replace(/[&<>]/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;" }[c]));
+function addTurn(cmd, via) {
+  const d = document.createElement("div"); d.className = "turn";
+  if (cmd) { const c = document.createElement("div"); c.className = "cmd"; c.textContent = cmd; if (via) { const b = document.createElement("span"); b.className = "via" + (via === "model" ? " model" : ""); b.textContent = via === "model" ? "parsed by model" : "rules"; c.appendChild(b); } d.appendChild(c); }
+  $("feed").appendChild(d); return d;
+}
+function sayInto(turn, text, roomName) {
+  const p = document.createElement("p"); p.className = "say";
+  if (roomName) { const r = document.createElement("span"); r.className = "rname"; r.textContent = roomName; p.appendChild(r); }
+  p.appendChild(document.createTextNode(text)); turn.appendChild(p);
+  $("feed").scrollTop = $("feed").scrollHeight;
+  if (prefs.aloud) try { const u = new SpeechSynthesisUtterance(text); u.rate = 1.03; speechSynthesis.speak(u); } catch {}
+  return p;
+}
+const fmt = ms => { const s = Math.max(0, Math.round(ms / 1000)); return `${String(Math.floor(s / 60)).padStart(2, "0")}:${String(s % 60).padStart(2, "0")}`; };
+function renderHUD() {
+  $("moves").textContent = S.moves;
+  $("elapsed").textContent = fmt(S.started ? (S.ended || Date.now()) - S.started : 0);
+  $("incident").classList.toggle("resolved", S.won);
+  $("sev").textContent = S.won ? "RESOLVED" : "SEV-1";
+  $("incidentText").textContent = S.won ? `Checkout is back. Fixed in ${S.moves} moves${S.hints ? ` (${S.hints} hint${S.hints > 1 ? "s" : ""})` : ""}. Go back to bed.` : "Checkout is down. You're on call. Get into the server room and bring the core switch back up.";
+  const inv = $("inv"); inv.innerHTML = "";
+  if (!S.inv.length) inv.innerHTML = `<span class="none">Just your phone, buzzing.</span>`;
+  S.inv.forEach(i => { const sp = document.createElement("span"); sp.textContent = WORLD.items[i].name; inv.appendChild(sp); });
+  drawMap(); renderQuick();
+}
+setInterval(() => { if (S.started && !S.won) $("elapsed").textContent = fmt(Date.now() - S.started); }, 1000);
+
+const POS = { server: [150, 34], ops: [56, 108], hallway: [150, 108], kitchen: [244, 108], lobby: [150, 182] };
+function drawMap() {
+  const css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const ink = css("--ink"), muted = css("--muted"), line = css("--line"), amber = css("--amber"), sev = css("--sev"), card = css("--card2"), ok = css("--ok");
+  const known = new Set(S.visited); S.visited.forEach(r => Object.values(WORLD.rooms[r].exits).forEach(x => known.add(x)));
+  let g = "";
+  const drawn = new Set();
+  S.visited.forEach(r => Object.entries(WORLD.rooms[r].exits).forEach(([d, to]) => {
+    const k = [r, to].sort().join("-"); if (drawn.has(k)) return; drawn.add(k);
+    const [x1, y1] = POS[r], [x2, y2] = POS[to];
+    const locked = WORLD.rooms[r].lock?.[d] && !S.unlocked.includes(r + ":" + d);
+    g += `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${locked ? sev : line}" stroke-width="${locked ? 3 : 2}" ${locked ? 'stroke-dasharray="5 4"' : ""}/>`;
+  }));
+  Object.entries(POS).forEach(([id, [x, y]]) => {
+    if (!known.has(id)) return;
+    const seen = S.visited.includes(id), here = S.room === id;
+    const fill = here ? amber : seen ? card : "none";
+    const label = seen ? WORLD.rooms[id].name : "?";
+    g += `<rect x="${x - 44}" y="${y - 17}" width="88" height="34" rx="8" fill="${fill}" stroke="${here ? amber : seen ? muted : line}" stroke-width="1.5" ${seen ? "" : 'stroke-dasharray="4 4"'}/>`;
+    g += `<text x="${x}" y="${y + 4}" text-anchor="middle" font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="${here ? "#1d1300" : seen ? ink : muted}">${esc(label)}</text>`;
+    if (id === "server" && S.won) g += `<circle cx="${x + 36}" cy="${y - 11}" r="5" fill="${ok}"/>`;
+  });
+  $("map").innerHTML = g;
+}
+function renderQuick() {
+  const q = $("quick"); q.innerHTML = "";
+  const r = WORLD.rooms[S.room], vis = visibleThings(S);
+  const opts = ["look", ...Object.keys(r.exits).map(d => "go " + d)];
+  vis.fixtures.forEach(f => { const d = WORLD.fixtures[f]; if (d.holds && !S.opened.includes(f)) opts.push("open " + d.words[0]); else if (["laptop", "panel", "switch"].includes(f)) opts.push("use " + d.words[0]); });
+  vis.items.forEach(i => opts.push("take " + WORLD.items[i].words[0]));
+  opts.push("inventory", "hint");
+  [...new Set(opts)].slice(0, 10).forEach(o => { const b = document.createElement("button"); b.type = "button"; b.textContent = o; b.onclick = () => run(o); q.appendChild(b); });
+}
+
+async function run(text) {
+  text = text.trim(); if (!text || brainBusy) return;
+  if (!S.started) S.started = Date.now();
+  const prevRoom = WORLD.rooms[S.room].name;
+  let a = rulesParse(text), via = "rules", raw = null;
+  const turn = addTurn(text, null);
+  if (!a && llm) {
+    brainBusy = true; const p = sayInto(turn, "…");
+    p.className = "truth"; p.textContent = "Reading your command…";
+    try { const r = await modelParse(text); a = r.a; raw = r.raw; via = "model"; } catch (e) { console.error(e); }
+    p.remove(); brainBusy = false;
+  }
+  const c = turn.querySelector(".cmd");
+  if (a) { const b = document.createElement("span"); b.className = "via" + (via === "model" ? " model" : ""); b.textContent = via === "model" ? "parsed by model" : "rules"; c.appendChild(b); }
+  if (!a) {
+    sayInto(turn, llm ? "The model couldn't turn that into an action. Try rephrasing, or type help." : "I don't understand that. Try look, go north, open drawer, take flashlight, use laptop or hint. Load the brain to type anything.");
+    under({ text, via: llm ? "model (failed)" : "rules (no match)", raw }); return;
+  }
+  const before = JSON.stringify({ room: S.room, inv: S.inv, opened: S.opened, flags: S.flags });
+  if (!["help", "hint"].includes(a.action)) S.moves++; // a hint adds its own 5-move penalty
+  const res = act(S, a);
+  res.facts.prevRoom = prevRoom;
+  const after = JSON.stringify({ room: S.room, inv: S.inv, opened: S.opened, flags: S.flags });
+  let story = res.text, flags = [], styled = false;
+  if (prefs.style !== "plain" && llm && !["help", "inventory", "hint"].includes(a.action)) {
+    brainBusy = true;
+    const tmp = document.createElement("p"); tmp.className = "truth"; tmp.textContent = "The narrator is thinking…"; turn.appendChild(tmp);
+    try { story = await narrate(res.facts); styled = true; flags = groundCheck(story, res.facts, S); } catch (e) { console.error(e); story = res.text; }
+    tmp.remove(); brainBusy = false;
+  }
+  sayInto(turn, story, res.room ? WORLD.rooms[S.room].name : null);
+  if (styled) {
+    const truth = document.createElement("div"); truth.className = "truth"; truth.textContent = "engine: " + res.text; turn.appendChild(truth);
+    const f = document.createElement("div"); f.className = "flag" + (flags.length ? "" : " ok");
+    f.textContent = flags.length ? `⚠ Grounding check: the narrator mentioned ${list(flags)}, which ${flags.length > 1 ? "aren't" : "isn't"} here.` : "✓ Grounding check: stuck to the facts.";
+    turn.appendChild(f);
+  }
+  under({ text, via, raw, action: a, changed: before !== after, before, after, engine: res.text, story: styled ? story : null, flags });
+  if (S.won) celebrate();
+  renderHUD(); save();
+}
+function under(t) {
+  const lines = [`<b>you typed</b>   ${esc(t.text)}`, `<b>parsed by</b>   ${esc(t.via)}`];
+  if (t.raw) lines.push(`<b>model said</b>  ${esc(t.raw)}`);
+  if (t.action) lines.push(`<b>action</b>      ${esc(JSON.stringify(t.action))}`);
+  if (t.action) lines.push(`<b>state</b>       ${t.changed ? "changed" : "unchanged"}`);
+  if (t.changed) { const b = JSON.parse(t.before), a = JSON.parse(t.after); for (const k of Object.keys(a)) if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) lines.push(`  ${k}: ${esc(JSON.stringify(b[k]))} → ${esc(JSON.stringify(a[k]))}`); }
+  if (t.engine) lines.push(`<b>engine</b>      ${esc(t.engine)}`);
+  if (t.story) lines.push(`<b>narrator</b>    ${esc(t.story)}`, `<b>grounding</b>   ${t.flags.length ? "invented: " + esc(t.flags.join(", ")) : "ok"}`);
+  $("under").innerHTML = lines.join("\n");
+}
+function celebrate() {
+  const d = document.createElement("div"); d.className = "win";
+  d.innerHTML = `<h3>Incident resolved</h3><p class="hint" style="margin:0"></p>`;
+  d.querySelector("p").textContent = `${S.moves} moves · ${fmt(S.ended - S.started)}${S.hints ? ` · ${S.hints} hint${S.hints > 1 ? "s" : ""}` : ""}. Your score is on the board. Type “new” or press New game to go again.`;
+  $("feed").appendChild(d); $("feed").scrollTop = $("feed").scrollHeight;
+  prefs.board.push({ who: prefs.who.trim() || "Anonymous", moves: S.moves, ms: S.ended - S.started, hints: S.hints, at: Date.now() });
+  prefs.board = prefs.board.sort((a, b) => a.moves - b.moves || a.ms - b.ms).slice(0, 50); save(); renderBoard();
+}
+function renderBoard() {
+  const b = $("board"); b.innerHTML = "";
+  if (!prefs.board.length) { b.innerHTML = `<tr><td colspan="4" class="hint">No fixes yet. The best possible is 14 moves.</td></tr>`; return; }
+  prefs.board.slice(0, 8).forEach((r, i) => { const tr = document.createElement("tr"); tr.innerHTML = `<td>${i + 1}</td><td></td><td class="num">${r.moves}</td><td class="num">${fmt(r.ms)}</td>`; tr.children[1].textContent = r.who + (r.hints ? ` (${r.hints} hint${r.hints > 1 ? "s" : ""})` : ""); b.appendChild(tr); });
+}
+function intro() {
+  $("feed").innerHTML = "";
+  const t = addTurn(null);
+  sayInto(t, "Your phone buzzes you awake. PagerDuty: “SEV-1 · checkout returning 503s.” The VPN is down too, so you drive in. It's 3:07 a.m. and the office is empty.");
+  const t2 = addTurn("look", "rules");
+  const d = describeRoom(S); sayInto(t2, d.text, WORLD.rooms[S.room].name);
+}
+function replayLog() { // rebuild the transcript after a reload
+  $("feed").innerHTML = ""; const t = addTurn(null);
+  sayInto(t, "Welcome back. Your incident is still open.");
+  const t2 = addTurn("look", "rules"); sayInto(t2, describeRoom(S).text, WORLD.rooms[S.room].name);
+}
+$("form").onsubmit = e => { e.preventDefault(); const v = $("cmd").value; $("cmd").value = ""; if (/^(new|new game|restart game)$/i.test(v.trim())) return newGame(); run(v); };
+function newGame() { S = newState(); save(); intro(); renderHUD(); $("cmd").focus(); }
+$("newGame").onclick = function () {
+  if (S.moves && !S.won && !this.dataset.armed) { this.dataset.armed = 1; this.textContent = "Click again to restart"; setTimeout(() => { this.textContent = "New game"; delete this.dataset.armed; }, 3000); return; }
+  delete this.dataset.armed; this.textContent = "New game"; newGame();
+};
+
+// ================= Voice input (needs the brain loaded, then loads Whisper) =================
+let asr = null, rec = null, recChunks = [], recStream = null;
+async function startTalk() {
+  if (rec) return;
+  if (!T) { toast("Load the brain first; speech recognition (~80 MB) loads after it."); return; }
+  try {
+    recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    recChunks = []; rec = new MediaRecorder(recStream); rec.ondataavailable = e => recChunks.push(e.data);
+    rec.onstop = async () => {
+      const blob = new Blob(recChunks, { type: rec.mimeType }); rec = null;
+      $("cmd").value = "Transcribing…";
+      try {
+        asr = asr || await withRetry(() => T.pipeline("automatic-speech-recognition", "Xenova/whisper-base.en", { progress_callback: tracker("Ears") }), "Ears");
+        const ctx = new AudioContext({ sampleRate: 16000 }); const buf = await ctx.decodeAudioData(await blob.arrayBuffer()); ctx.close();
+        const text = ((await asr(buf.getChannelData(0))).text || "").replace(/\[[^\]]*\]/g, "").trim();
+        $("cmd").value = ""; if (text) run(text); else toast("Didn't catch that.");
+      } catch (e) { console.error(e); $("cmd").value = ""; toast("Speech recognition failed."); }
+    };
+    rec.start(); $("talk").setAttribute("aria-pressed", "true"); $("talk").textContent = "Listening…";
+  } catch (e) { toast("Microphone blocked. Type instead."); rec = null; }
+}
+function stopTalk() { if (rec && rec.state === "recording") { rec.stop(); recStream.getTracks().forEach(t => t.stop()); } $("talk").setAttribute("aria-pressed", "false"); $("talk").textContent = "Hold to talk"; }
+$("talk").addEventListener("pointerdown", e => { e.preventDefault(); startTalk(); });
+["pointerup", "pointerleave", "pointercancel"].forEach(ev => $("talk").addEventListener(ev, stopTalk));
+
+// ================= Boot =================
+if (S.moves) replayLog(); else intro();
+renderHUD(); renderBoard();
+matchMedia("(prefers-color-scheme: dark)").addEventListener?.("change", drawMap);
+</script>
+</body>
+</html>

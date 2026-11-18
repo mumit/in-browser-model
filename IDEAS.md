@@ -27,7 +27,7 @@ Audience: AI/ML engineers, product managers and other technical folks.
 | — | Fool the Decider | Game (decision model) | Parked |
 | — | Calibration Duel | Game (decision model) | Parked |
 | 10 | AI Debate Club | Game | First build: `debate-club/` (untested in a browser) |
-| 11 | Grounded text adventure | Game | Idea (next pick) |
+| 11 | Grounded text adventure | Game | First build: `outage-adventure/` (“Outage at 3 A.M.”; engine tested, model untested in a browser) |
 | 12 | Page tone-shifter | Tool | Idea |
 | 13 | Plain-English highlighter | Tool | Idea |
 | 14 | Roast my PR | Game | Idea |
