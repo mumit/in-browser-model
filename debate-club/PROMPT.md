@@ -13,10 +13,10 @@ Build **AI Debate Club**: a single self-contained HTML game where two small lang
 - **Brains**, any of these per side and for the judge. Load each unique model once into a `Map` (`AutoTokenizer` + `AutoModelForCausalLM`):
   - `HuggingFaceTB/SmolLM2-135M-Instruct` (~120 MB)
   - `HuggingFaceTB/SmolLM2-360M-Instruct` (~275 MB)
-  - `onnx-community/Qwen2.5-0.5B-Instruct` (~485 MB)
-  - `onnx-community/Qwen2.5-1.5B-Instruct` (~1.2 GB)
+  - `onnx-community/Qwen2.5-0.5B-Instruct` (~790 MB)
+  - `onnx-community/Qwen2.5-1.5B-Instruct` (~1.8 GB)
 - **Defaults:** FOR on Qwen2.5 0.5B, AGAINST on SmolLM2 360M, judge on Qwen2.5 0.5B.
-- **Backend fallback:** `webgpu/q4f16` → `webgpu/q4` → `wasm/q4`. Wrap every download in a retry: on a network error (message matching network, fetch, ERR_, connection or timeout), retry the same file up to 3 times with backoff, and never fall back to a different format because of a network error.
+- **Backend fallback:** `webgpu/q4f16` → `webgpu/q4` → `wasm/q4` (SmolLM2). Qwen2.5 skips `q4f16`, which outputs garbage on Apple (Metal) GPUs without raising an error: `webgpu/q4` → `wasm/q4`. Wrap every download in a retry: on a network error (message matching network, fetch, ERR_, connection or timeout), retry the same file up to 3 times with backoff, and never fall back to a different format because of a network error.
 - **Voices:** Kokoro via `import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js")`, then `KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {dtype:"q8", device:"wasm"})`. Fall back to browser `speechSynthesis` (two English voices, pitch 0.9 versus 1.15), or Silent.
 - **Persistence:** prefs, the league table and history in `localStorage` (key `debate-club-v1`), with every read and write wrapped in try/catch.
 - Show a size hint for the chosen line-up. Changing models after loading re-enables "Load the new line-up".

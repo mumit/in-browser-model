@@ -36,6 +36,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body {
   background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body);
@@ -63,6 +64,8 @@ header button.primary { background: var(--flag); color: #1f1a00; border-color: v
 header .status { color: rgb(255 255 255 / .78); }
 header .bar { background: rgb(255 255 255 / .22); }
 header .bar > i { background: var(--flag); }
+.engine .row select { flex: 1 1 220px; min-width: 0; }
+@media (max-width: 820px) { header .engine { width: 100%; } }
 .engine { display: grid; gap: 8px; justify-items: end; min-width: 0; background: rgb(0 0 0 / .16); border: 1px solid rgb(255 255 255 / .12); border-radius: 12px; padding: 12px 14px; }
 .row { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
 .engine .row { justify-content: end; }
@@ -219,7 +222,7 @@ dialog::backdrop { background: rgb(0 0 0 / .45); }
         <label for="model" class="lbl">Ball</label>
         <select id="model">
           <option value="HuggingFaceTB/SmolLM2-135M-Instruct">SmolLM2 135M · fast, weird (~120 MB)</option>
-          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · smarter (~485 MB)</option>
+          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · smarter (~790 MB)</option>
         </select>
         <button id="load" class="primary" type="button">Load model</button>
       </div>
@@ -877,6 +880,8 @@ if (!state.seenDocs) { state.seenDocs = true; save(); showDoc("start"); }
 let gen = null, T = null, busy = false, backend = "";
 function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
 // A dropped connection should retry the same file, not fall back to a different (bigger) model format.
+// Qwen2.5 in q4f16 produces garbage on Apple (Metal) GPUs without raising an error, so Qwen uses q4 on the GPU.
+const attemptsFor = (id, hasGPU) => !hasGPU ? [["wasm", "q4"]] : /qwen/i.test(id) ? [["webgpu", "q4"], ["wasm", "q4"]] : [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]];
 const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
 async function withRetry(fn, label) {
   for (let i = 0; ; i++) {
@@ -899,7 +904,7 @@ $("load").onclick = async () => {
         setStatus(`Downloading ${e.file} · ${(l / 1e6).toFixed(0)} / ${(t / 1e6).toFixed(0)} MB`, Math.round(100 * l / t));
       } else if (e.status === "ready") setStatus("Compiling…", 100);
     };
-    const attempts = hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]];
+    const attempts = attemptsFor(state.model, hasGPU);
     let lastErr;
     for (const [device, dtype] of attempts) {
       try {

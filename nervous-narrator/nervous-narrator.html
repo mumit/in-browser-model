@@ -30,6 +30,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body {
   background: var(--paper); color: var(--ink); font: 15px/1.5 var(--body);
@@ -127,8 +128,8 @@ details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
       <div class="row">
         <label for="llm" class="lbl">Brain</label>
         <select id="llm">
-          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~485 MB</option>
-          <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.2 GB, knows more</option>
+          <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~790 MB</option>
+          <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.8 GB, knows more</option>
         </select>
       </div>
       <div class="row">
@@ -257,6 +258,8 @@ let busy = false, last = null, selWord = -1, speaking = null;
 
 function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
 // A dropped connection should retry the same file, not fall back to a different (bigger) model format.
+// Qwen2.5 in q4f16 produces garbage on Apple (Metal) GPUs without raising an error, so Qwen uses q4 on the GPU.
+const attemptsFor = (id, hasGPU) => !hasGPU ? [["wasm", "q4"]] : /qwen/i.test(id) ? [["webgpu", "q4"], ["wasm", "q4"]] : [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]];
 const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
 async function withRetry(fn, label) {
   for (let i = 0; ; i++) {
@@ -283,7 +286,7 @@ async function loadLLM() {
   let hasGPU = false;
   try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
   tok = await withRetry(() => T.AutoTokenizer.from_pretrained(prefs.llm), "Brain");
-  const attempts = hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]];
+  const attempts = attemptsFor(prefs.llm, hasGPU);
   let err;
   for (const [device, dtype] of attempts) {
     try {

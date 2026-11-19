@@ -34,6 +34,7 @@
   --red: #d62839; --blue: #1f5fd6; --gold: #a87c00; color-scheme: light;
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding: 22px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
 .wrap { max-width: 1180px; margin: 0 auto; display: grid; gap: 18px; }
@@ -67,6 +68,9 @@ h2 { font: 400 26px/1 var(--display); text-transform: uppercase; letter-spacing:
 .sides { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
 @media (max-width: 700px) { .sides { grid-template-columns: 1fr; } }
 .side { border: 1px solid var(--line); border-radius: 10px; padding: 14px; display: grid; gap: 10px; border-top: 4px solid var(--c); background: var(--card2); min-width: 0; }
+.side { grid-template-columns: 1fr 1fr; }
+.side .who { grid-column: 1 / -1; }
+@media (max-width: 420px) { .side { grid-template-columns: 1fr; } }
 .side .who { font: 400 20px/1 var(--display); text-transform: uppercase; color: var(--c); letter-spacing: .03em; }
 .f { display: grid; gap: 4px; min-width: 0; }
 .f label { font-size: 13px; color: var(--muted); }
@@ -253,8 +257,8 @@ details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
 const MODELS = [
   { id: "HuggingFaceTB/SmolLM2-135M-Instruct", name: "SmolLM2 135M", mb: 120 },
   { id: "HuggingFaceTB/SmolLM2-360M-Instruct", name: "SmolLM2 360M", mb: 275 },
-  { id: "onnx-community/Qwen2.5-0.5B-Instruct", name: "Qwen2.5 0.5B", mb: 485 },
-  { id: "onnx-community/Qwen2.5-1.5B-Instruct", name: "Qwen2.5 1.5B", mb: 1220 },
+  { id: "onnx-community/Qwen2.5-0.5B-Instruct", name: "Qwen2.5 0.5B", mb: 790 },
+  { id: "onnx-community/Qwen2.5-1.5B-Instruct", name: "Qwen2.5 1.5B", mb: 1790 },
 ];
 const PERSONAS = [
   ["ghost", "Victorian Ghost", "a melodramatic Victorian ghost who haunts a manor and finds modern life appalling"],
@@ -322,6 +326,8 @@ renderPodiums(); sizeHint();
 
 function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
 // A dropped connection should retry the same file, not fall back to a different (bigger) model format.
+// Qwen2.5 in q4f16 produces garbage on Apple (Metal) GPUs without raising an error, so Qwen uses q4 on the GPU.
+const attemptsFor = (id, hasGPU) => !hasGPU ? [["wasm", "q4"]] : /qwen/i.test(id) ? [["webgpu", "q4"], ["wasm", "q4"]] : [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]];
 const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
 async function withRetry(fn, label) {
   for (let i = 0; ; i++) {
@@ -354,7 +360,7 @@ async function loadBrain(id) {
   let hasGPU = false; try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
   const tok = await withRetry(() => T.AutoTokenizer.from_pretrained(id), short(id));
   let err;
-  for (const [device, dtype] of hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]]) {
+  for (const [device, dtype] of attemptsFor(id, hasGPU)) {
     try { const model = await withRetry(() => T.AutoModelForCausalLM.from_pretrained(id, { device, dtype, progress_callback: tracker(short(id)) }), short(id)); brains.set(id, { tok, model }); backend = `${device}/${dtype}`; return; }
     catch (e) { err = e; console.warn(id, device, dtype, e); if (isNetErr(e)) throw e; }
   }

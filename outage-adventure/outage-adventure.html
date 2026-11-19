@@ -32,6 +32,7 @@
 }
 :root[data-theme="light"] { --bg: #f1f3f8; --card: #ffffff; --card2: #f5f7fb; --ink: #151a29; --muted: #5d6680; --line: #d8dde9; --sev: #d63a3f; --ok: #12895a; --amber: #a86a00; --link: #2457c5; color-scheme: light; }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 15px/1.5 var(--body); padding: 18px max(16px, env(safe-area-inset-right, 0px)) 48px max(16px, env(safe-area-inset-left, 0px)); }
 .wrap { max-width: 1200px; margin: 0 auto; display: grid; gap: 16px; }
@@ -99,6 +100,10 @@ svg.map { width: 100%; height: auto; display: block; }
 .inv span { font: 500 13px/1 var(--mono); padding: 7px 9px; border-radius: 6px; background: var(--card2); border: 1px solid var(--line); }
 .inv .none { color: var(--muted); background: none; border: 0; padding-left: 0; }
 .engine { display: grid; gap: 8px; }
+.brainrow { display: flex; gap: 12px; align-items: center; justify-content: space-between; padding: 10px 12px; border: 1px solid var(--line); border-radius: 8px; background: var(--card2); }
+.brainrow b { display: block; font-size: 14px; }
+.brainrow .hint { display: block; font-size: 12.5px; }
+.cmd .via.meaning { border-color: var(--ok); color: var(--ok); }
 .status { font: 12px/1.4 var(--mono); color: var(--muted); }
 .bar { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
 .bar > i { display: block; height: 100%; width: 0; background: var(--amber); transition: width .2s; }
@@ -159,17 +164,24 @@ details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
       </section>
 
       <section class="card pad" aria-label="Brain and narrator">
-        <span class="lbl">The brain (optional)</span>
-        <p class="hint">Simple commands work with no download. Load a small model to type anything (“grab the card from the fridge”) and to hear it told in a style.</p>
-        <div class="f"><label for="model">Model</label>
+        <span class="lbl">Models (optional)</span>
+        <p class="hint">Simple commands work with no download. Add the two models separately:</p>
+        <div class="brainrow">
+          <div><b>Understand anything you type</b><span class="hint">MiniLM embeddings · ~23 MB. Matches “raid the fridge” to a real action.</span></div>
+          <button type="button" class="primary small" id="loadEars">Load</button>
+        </div>
+        <div class="brainrow">
+          <div><b>Styled narrator</b><span class="hint">A small language model retells each line in a voice.</span></div>
+          <button type="button" class="small" id="load">Load</button>
+        </div>
+        <div class="f"><label for="model">Narrator model</label>
           <select id="model">
-            <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~485 MB</option>
-            <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.2 GB, follows rules better</option>
+            <option value="onnx-community/Qwen2.5-0.5B-Instruct">Qwen2.5 0.5B · ~790 MB, often embellishes</option>
+            <option value="onnx-community/Qwen2.5-1.5B-Instruct">Qwen2.5 1.5B · ~1.8 GB, sticks to facts better</option>
           </select>
         </div>
-        <button type="button" class="primary" id="load">Load the brain</button>
         <div class="bar" aria-hidden="true"><i id="bar"></i></div>
-        <div class="status" id="status">Not loaded. Playing with the built-in parser and plain narration.</div>
+        <div class="status" id="status">Nothing loaded. Playing with the built-in parser and plain narration.</div>
         <div class="f"><label for="style">Narrator</label>
           <select id="style">
             <option value="plain">Plain (the engine's own words, no model)</option>
@@ -199,9 +211,9 @@ details ul { padding-left: 18px; margin: 8px 0 0; display: grid; gap: 6px; }
           <summary>How it works</summary>
           <ul>
             <li><b>The engine owns the truth.</b> Rooms, items, locks and the puzzle live in plain JavaScript. The model can't add an item, open a door or win the game for you.</li>
-            <li><b>Parsing:</b> a fast rules parser handles common commands. Anything it can't read goes to the model, which must answer with a JSON action. The engine validates it before running it.</li>
-            <li><b>Narration:</b> the model gets only the facts of what just happened and retells them in a style. Plain mode skips the model entirely.</li>
-            <li><b>Grounding check:</b> after each narration, we scan for any item, place or direction the narrator mentioned that isn't actually there, and flag it. That's a hallucination, caught.</li>
+            <li><b>Understanding:</b> a fast rules parser handles common commands. Anything else goes to a small embedding model (MiniLM), which compares what you typed with every action that is valid right now and picks the closest, if it scores above 0.48. It can only ever choose a real action.</li><li><b>Why not a chat model?</b> We tested Qwen2.5 0.5B in Chrome: it rarely produced valid JSON and picked from a lettered list little better than chance. Meaning-matching with a 23 MB model was far more reliable.</li>
+            <li><b>Narration:</b> the narrator model is given the engine's own line and asked to rewrite it in a voice, with one example. Plain mode skips the model entirely. Small models still embellish, which is why the engine's line is always shown underneath.</li>
+            <li><b>Grounding check:</b> after each narration, we scan for any item, place or direction from the game world that the narrator mentioned but isn't actually there, and flag it. It only knows the game's own vocabulary, so an invented suitcase slips through: checking against a closed list has limits too.</li>
             <li><b>Hints</b> cost 5 moves. Fewest moves wins.</li>
             <li>Everything runs in this tab. Nothing leaves your machine.</li>
           </ul>
@@ -310,7 +322,7 @@ function act(s, a) {
         if (!s.inv.includes(need)) return out("The door won't budge. The card reader blinks red. You need a keycard.");
         s.unlocked.push(key); pre = "You tap the keycard. The reader turns green and the door clicks open. ";
       }
-      s.room = r.exits[dir]; if (!s.visited.includes(s.room)) s.visited.push(s.room);
+      s.prev = s.room; s.room = r.exits[dir]; if (!s.visited.includes(s.room)) s.visited.push(s.room);
       const d = describeRoom(s);
       return { text: pre + d.text, facts: { ...d.facts, event: `${pre}moved ${dir} into the ${WORLD.rooms[s.room].name}` }, changed: true, room: true };
     }
@@ -375,14 +387,14 @@ function act(s, a) {
     }
     case "inventory": return out(s.inv.length ? `You're carrying ${list(s.inv.map(i => "a " + WORLD.items[i].name))}.` : "Your pockets are empty, apart from your phone, which won't stop buzzing.");
     case "hint": { s.hints++; s.moves += 5; const h = HINTS.find(([c]) => c(s))[1]; return out(`Hint (+5 moves): ${h}`); }
-    case "help": return out("Try: look, go north, open drawer, take flashlight, use laptop, read note, inventory, hint. Load the brain to type anything.");
+    case "help": return out("Try: look, go north, open drawer, take flashlight, use laptop, read note, inventory, hint. Load the 23 MB matcher to type anything.");
   }
   return out("That doesn't do anything here.");
 }
 
 // ================= Rules parser =================
 const VERBS = [
-  [/^(?:go|walk|move|head|run|enter|go to|walk to)\b\s*(.*)$/, m => { const d = DIRS[m[1].replace(/^(to|the)\s+/, "").trim()]; return d ? { action: "go", direction: d } : m[1] ? { action: "go", object: m[1].replace(/^(?:(?:to|into|in|the)\s+)+/, "").trim() } : null; }],
+  [/^(?:go|walk|move|head|run|enter|go to|walk to)\b\s*(.*)$/, m => goParse(m[1])],
   [/^(n|s|e|w|north|south|east|west)$/, m => ({ action: "go", direction: DIRS[m[1]] })],
   [/^(?:take|get|grab|pick up|pick|collect)\s+(?:up\s+)?(.+)$/, m => ({ action: "take", object: m[1] })],
   [/^(?:drop|put down|leave)\s+(.+)$/, m => ({ action: "drop", object: m[1] })],
@@ -397,9 +409,20 @@ const VERBS = [
   [/^(?:hint|help me|i'm stuck|im stuck)$/, () => ({ action: "hint" })],
   [/^(?:help|\?)$/, () => ({ action: "help" })],
 ];
+// "head up to the hallway", "go back", "walk north to the kitchen": find a real direction first, else a room name.
+function goParse(rest) {
+  const words = rest.split(/\s+/).filter(Boolean);
+  for (const w of words) if (DIRS[w] && !["up", "down", "back", "forward"].includes(w)) return { action: "go", direction: DIRS[w] };
+  const obj = rest.replace(/\b(up|down|over|back|forward|to|into|in|the|towards|toward)\b/g, " ").replace(/\s+/g, " ").trim();
+  if (!obj) { const d = DIRS[words[0]]; return d ? { action: "go", direction: d } : null; }
+  return { action: "go", object: obj };
+}
 function rulesParse(text) {
   const t = text.toLowerCase().replace(/[.!?,]+$/g, "").replace(/\s+/g, " ").replace(/^(please|i want to|i'd like to|let's|lets)\s+/, "").trim();
-  for (const [re, f] of VERBS) { const m = t.match(re); if (m) { const a = f(m); if (a) return a; } }
+  for (const [re, f] of VERBS) {
+    const m = t.match(re);
+    if (m) { const a = f(m); if (a) { if (a.object) a.object = a.object.replace(/^(?:the|a|an|my|some|that|this)\s+/, "").trim(); return a; } }
+  }
   return null;
 }
 
@@ -431,6 +454,8 @@ let T = null, tok = null, llm = null, backend = "", brainBusy = false;
 const $ = id => document.getElementById(id);
 function setStatus(msg, pct) { $("status").textContent = msg; if (pct != null) $("bar").style.width = pct + "%"; }
 function toast(msg) { const t = document.createElement("div"); t.className = "toast"; t.textContent = msg; document.body.appendChild(t); setTimeout(() => t.remove(), 2200); }
+// Qwen2.5 in q4f16 produces garbage on Apple (Metal) GPUs without raising an error, so Qwen uses q4 on the GPU.
+const attemptsFor = (id, hasGPU) => !hasGPU ? [["wasm", "q4"]] : /qwen/i.test(id) ? [["webgpu", "q4"], ["wasm", "q4"]] : [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]];
 const isNetErr = e => /network|fetch|ERR_|load failed|connection|timed? ?out/i.test(String(e?.message || e));
 async function withRetry(fn, label) {
   for (let i = 0; ; i++) {
@@ -456,60 +481,103 @@ $("load").onclick = async () => {
     let hasGPU = false; try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
     tok = await withRetry(() => T.AutoTokenizer.from_pretrained(id), "Brain");
     let err;
-    for (const [device, dtype] of hasGPU ? [["webgpu", "q4f16"], ["webgpu", "q4"], ["wasm", "q4"]] : [["wasm", "q4"]]) {
+    for (const [device, dtype] of attemptsFor(id, hasGPU)) {
       try { llm = await withRetry(() => T.AutoModelForCausalLM.from_pretrained(id, { device, dtype, progress_callback: tracker("Brain") }), "Brain"); backend = `${device}/${dtype}`; break; }
       catch (e) { err = e; console.warn(device, dtype, e); if (isNetErr(e)) throw e; }
     }
     if (!llm) throw err;
-    setStatus(`Ready · ${id.split("/")[1]} on ${backend}. Type anything; pick a narrator.`, 100);
-    btn.textContent = "Brain loaded";
+    setStatus(`Narrator ready · ${id.split("/")[1]} on ${backend}.${embedder ? "" : " Load the 23 MB matcher too, to type anything."}`, 100);
+    btn.textContent = "Loaded";
     if (prefs.style === "plain") { prefs.style = "noir"; $("style").value = "noir"; save(); }
   } catch (e) {
     console.error(e); setStatus(`Couldn't load: ${e?.message || e}. The game still works with simple commands.`, 0);
     btn.disabled = false; btn.textContent = "Retry";
   }
 };
-async function chat(system, user, { maxTokens = 60, sample = false } = {}) {
-  const inputs = tok.apply_chat_template([{ role: "system", content: system }, { role: "user", content: user }], { add_generation_prompt: true, return_dict: true });
-  const seq = await llm.generate({ ...inputs, max_new_tokens: maxTokens, ...(sample ? { do_sample: true, temperature: 0.7, top_k: 40 } : { do_sample: false }), repetition_penalty: 1.1 });
+
+// ----- Understanding free-form commands: embeddings over the actions that are valid right now -----
+// Tested in Chrome: a 0.5B chat model was poor at both JSON output and picking from a list, while MiniLM
+// matched commands like "raid the fridge" or "head back" reliably. The model can only ever choose a real action.
+let embedder = null;
+const embCache = new Map();
+const cos = (a, b) => { let s = 0; for (let i = 0; i < a.length; i++) s += a[i] * b[i]; return s; };
+async function embedAll(texts) {
+  const todo = [...new Set(texts.filter(t => !embCache.has(t)))];
+  if (todo.length) { const o = await embedder(todo, { pooling: "mean", normalize: true }); const d = o.dims[1]; todo.forEach((t, i) => embCache.set(t, o.data.slice(i * d, (i + 1) * d))); }
+  return texts.map(t => embCache.get(t));
+}
+$("loadEars").onclick = async () => {
+  const btn = $("loadEars"); btn.disabled = true; btn.textContent = "Loading…";
+  try {
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    embedder = await withRetry(() => T.pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2", { progress_callback: tracker("Matcher") }), "Matcher");
+    await embedAll(candidates(S).flatMap(c => c.phr));
+    setStatus(`Matcher ready · type anything.${llm ? "" : " Load the narrator for styled storytelling."}`, 100);
+    btn.textContent = "Loaded";
+  } catch (e) { console.error(e); setStatus(`Couldn't load the matcher: ${e?.message || e}.`, 0); btn.disabled = false; btn.textContent = "Retry"; }
+};
+// Every action that makes sense in the current state, with a few natural phrasings each.
+function candidates(s) {
+  const out = [], add = (a, phr) => out.push({ a, label: phr[0], phr });
+  const r = WORLD.rooms[s.room], vis = visibleThings(s);
+  add({ action: "look" }, ["look around", "describe the room", "where am I", "what's here"]);
+  add({ action: "inventory" }, ["check my inventory", "what am I carrying", "what's in my pockets"]);
+  add({ action: "hint" }, ["give me a hint", "I'm stuck, help me", "what should I do next"]);
+  for (const [d, to] of Object.entries(r.exits)) {
+    if (!canSee(s) && d !== "south") continue;
+    const n = WORLD.rooms[to].name;
+    add({ action: "go", direction: d }, [`go ${d}`, `walk to the ${n}`, `go into the ${n}`, `leave the ${r.name}`, ...(to === s.prev ? ["go back", "head back the way I came"] : [])]);
+  }
+  for (const i of vis.items) {
+    const it = WORLD.items[i];
+    add({ action: "take", object: i }, [`take the ${it.name}`, `pick up the ${it.name}`, ...it.words.slice(0, 2).map(w => `grab the ${w}`)]);
+    add({ action: "look", object: i }, [`look at the ${it.name}`, `examine the ${it.name}`]);
+  }
+  for (const f of vis.fixtures) {
+    const fx = WORLD.fixtures[f];
+    if (fx.holds && !s.opened.includes(f)) add({ action: "open", object: f }, [`open the ${fx.name}`, ...fx.words.map(w => `open the ${w}`), `look inside the ${fx.words.at(-1)}`, `search the ${fx.name}`, `check what's inside the ${fx.words.at(-1)}`]);
+    add({ action: "look", object: f }, [`look at the ${fx.name}`, `examine the ${fx.name}`]);
+  }
+  const has = i => s.inv.includes(i), sees = f => vis.fixtures.includes(f);
+  if (sees("laptop")) add({ action: "use", object: "laptop" }, ["use the laptop", "log into the laptop", "type the password into the laptop", "check the computer"]);
+  if (sees("panel")) add({ action: "use", object: "panel" }, ["flip the breaker", "reset breaker B7", "use the breaker panel", "turn the power back on"]);
+  if (sees("switch")) add({ action: "use", object: "switch" }, ["restart the core switch", "reboot the switch", "turn the switch back on", "power cycle the router"]);
+  if (has("mug") || vis.items.includes("mug")) add({ action: "use", object: "mug" }, ["drink the coffee", "sip the coffee", "have some coffee"]);
+  if (has("pizza") || vis.items.includes("pizza")) add({ action: "use", object: "pizza" }, ["eat the pizza", "have a bite of pizza", "eat a slice"]);
+  if (has("note")) add({ action: "read", object: "note" }, ["read the sticky note", "what does the note say"]);
+  if (has("keycard") && s.room === "hallway") add({ action: "go", direction: "north" }, ["use the keycard", "swipe the card on the reader", "badge into the server room"]);
+  for (const i of s.inv) add({ action: "drop", object: i }, [`drop the ${WORLD.items[i].name}`, `put down the ${WORLD.items[i].name}`]);
+  return out;
+}
+const MATCH_MIN = 0.48;
+async function meaningParse(text) {
+  const cands = candidates(S);
+  const [q, ...vecs] = await embedAll([text.toLowerCase(), ...cands.flatMap(c => c.phr)]);
+  let k = 0; const scored = cands.map(c => { let best = -1; for (const _ of c.phr) best = Math.max(best, cos(q, vecs[k++])); return { ...c, score: best }; });
+  scored.sort((a, b) => b.score - a.score);
+  return { a: scored[0].score >= MATCH_MIN ? scored[0].a : null, top: scored.slice(0, 3) };
+}
+
+// ----- Styled narration: the model rewrites the engine's own line, one-shot per style -----
+async function chat(messages, { maxTokens = 60, temperature = 0.5 } = {}) {
+  const inputs = tok.apply_chat_template(messages, { add_generation_prompt: true, return_dict: true });
+  const seq = await llm.generate({ ...inputs, max_new_tokens: maxTokens, do_sample: true, temperature, top_k: 30, repetition_penalty: 1.15 });
   return tok.decode(Array.from(seq.data, Number).slice(inputs.input_ids.dims.at(-1)), { skip_special_tokens: true }).trim();
 }
-const ACTIONS = ["go", "take", "drop", "open", "look", "read", "use", "inventory", "hint", "help"];
-async function modelParse(text) {
-  const vis = visibleThings(S);
-  const nouns = [...S.inv.map(i => WORLD.items[i].name), ...vis.items.map(i => WORLD.items[i].name), ...vis.fixtures.map(f => WORLD.fixtures[f].name)];
-  const system = `You turn a player's command in a text adventure into one JSON action.
-Actions: go, take, drop, open, look, read, use, inventory, hint.
-Directions: north, south, east, west. Exits here: ${Object.keys(WORLD.rooms[S.room].exits).join(", ")}.
-Things the player can refer to: ${nouns.join(", ") || "nothing visible"}.
-Reply with only JSON: {"action": "...", "object": "..." or null, "direction": "..." or null}`;
-  const raw = await chat(system, `Command: ${text}`, { maxTokens: 40 });
-  const m = raw.match(/\{[\s\S]*?\}/);
-  let a = null;
-  try { a = m && JSON.parse(m[0]); } catch {}
-  if (!a || !ACTIONS.includes(a.action)) return { a: null, raw };
-  if (a.direction) a.direction = DIRS[String(a.direction).toLowerCase()] || null;
-  if (a.object === "null" || a.object === "") a.object = null;
-  return { a, raw };
-}
 const STYLES = {
-  noir: "a hard-boiled 1940s noir detective narrating in the second person",
-  pirate: "a salty pirate captain narrating in the second person",
-  shakespeare: "a Shakespearean actor narrating in the second person, in mock Elizabethan English",
-  nature: "a hushed nature documentary narrator describing the on-call engineer as a creature in the wild",
-  sportscast: "an excited sports commentator calling the play-by-play",
+  noir: ["a hard-boiled 1940s noir detective", "You lift the coffee mug. It's cold, like the city outside."],
+  pirate: ["a salty pirate captain", "Ye grab the coffee mug, cold as the North Sea."],
+  shakespeare: ["a Shakespearean actor, in mock Elizabethan English", "Thou takest up the coffee mug, its contents cold as winter's breath."],
+  nature: ["a hushed nature documentary narrator", "Here, the on-call engineer gathers a coffee mug, a vital source of nourishment at this hour."],
+  sportscast: ["an excited sports commentator", "And you scoop up the coffee mug, what a pickup!"],
 };
-async function narrate(facts) {
-  const system = `You are the narrator of a text adventure, speaking as ${STYLES[prefs.style]}. Retell what just happened in one to three short sentences. Use ONLY the facts given. Do not invent any items, exits, rooms, people or events that are not listed.`;
-  const user = `What happened: ${facts.event}
-Room: ${facts.room}
-Exits: ${(facts.exits || []).join(", ") || "none"}
-Things here: ${[...(facts.items || []), ...(facts.fixtures || [])].join(", ") || "nothing"}
-Player carries: ${S.inv.map(i => WORLD.items[i].name).join(", ") || "nothing"}`;
-  let t = await chat(system, user, { maxTokens: 80, sample: true });
-  t = t.replace(/^["“]|["”]$/g, "").replace(/\*[^*]*\*/g, "").replace(/\s+/g, " ").trim();
+async function narrate(engineText) {
+  const [voice, example] = STYLES[prefs.style];
+  const system = `You rewrite one line of a text adventure in the voice of ${voice}. Keep exactly the same meaning and facts. Mention only the things in the line. Write one or two short sentences, speaking to the player as "you".`;
+  let t = await chat([{ role: "system", content: system }, { role: "user", content: "Line: You take the coffee mug." }, { role: "assistant", content: example }, { role: "user", content: "Line: " + engineText }]);
+  t = t.replace(/^line:\s*/i, "").replace(/^["“]|["”]$/g, "").replace(/\*[^*]*\*/g, "").replace(/\s+/g, " ").trim();
   const sentences = t.match(/[^.!?]+[.!?]+["”]?/g) || [t];
-  return sentences.slice(0, 3).map(x => x.trim()).join(" ");
+  return sentences.slice(0, 2).map(x => x.trim()).join(" ");
 }
 
 // ================= Game loop & UI =================
@@ -519,8 +587,8 @@ let S = newState();
 try { const saved = JSON.parse(localStorage.getItem(KEY)); if (saved) { prefs = Object.assign(prefs, saved.prefs || {}); if (saved.state && !saved.state.won) S = saved.state; } } catch {}
 const save = () => { try { localStorage.setItem(KEY, JSON.stringify({ prefs, state: S })); } catch {} };
 $("model").value = prefs.model; $("style").value = prefs.style; $("aloud").checked = prefs.aloud; $("who").value = prefs.who;
-$("model").onchange = e => { prefs.model = e.target.value; save(); llm = null; $("load").disabled = false; $("load").textContent = "Load the brain"; setStatus("Model changed. Load it to use free-form commands.", 0); };
-$("style").onchange = e => { prefs.style = e.target.value; save(); if (prefs.style !== "plain" && !llm) toast("Load the brain to hear this narrator. Using plain until then."); };
+$("model").onchange = e => { prefs.model = e.target.value; save(); llm = null; $("load").disabled = false; $("load").textContent = "Load"; setStatus("Narrator model changed. Load it to hear styled narration.", 0); };
+$("style").onchange = e => { prefs.style = e.target.value; save(); if (prefs.style !== "plain" && !llm) toast("Load the narrator model to hear this style. Using plain until then."); };
 $("aloud").onchange = e => { prefs.aloud = e.target.checked; save(); if (!prefs.aloud) try { speechSynthesis.cancel(); } catch {} };
 $("who").oninput = e => { prefs.who = e.target.value; save(); };
 
@@ -590,19 +658,18 @@ async function run(text) {
   text = text.trim(); if (!text || brainBusy) return;
   if (!S.started) S.started = Date.now();
   const prevRoom = WORLD.rooms[S.room].name;
-  let a = rulesParse(text), via = "rules", raw = null;
+  let a = rulesParse(text), via = "rules", top = null;
   const turn = addTurn(text, null);
-  if (!a && llm) {
-    brainBusy = true; const p = sayInto(turn, "…");
-    p.className = "truth"; p.textContent = "Reading your command…";
-    try { const r = await modelParse(text); a = r.a; raw = r.raw; via = "model"; } catch (e) { console.error(e); }
-    p.remove(); brainBusy = false;
+  if (!a && embedder) {
+    brainBusy = true;
+    try { const r = await meaningParse(text); a = r.a; top = r.top; via = "meaning"; } catch (e) { console.error(e); }
+    brainBusy = false;
   }
   const c = turn.querySelector(".cmd");
-  if (a) { const b = document.createElement("span"); b.className = "via" + (via === "model" ? " model" : ""); b.textContent = via === "model" ? "parsed by model" : "rules"; c.appendChild(b); }
+  if (a) { const b = document.createElement("span"); b.className = "via" + (via === "meaning" ? " meaning" : ""); b.textContent = via === "meaning" ? `matched “${top[0].label}” · ${top[0].score.toFixed(2)}` : "rules"; c.appendChild(b); }
   if (!a) {
-    sayInto(turn, llm ? "The model couldn't turn that into an action. Try rephrasing, or type help." : "I don't understand that. Try look, go north, open drawer, take flashlight, use laptop or hint. Load the brain to type anything.");
-    under({ text, via: llm ? "model (failed)" : "rules (no match)", raw }); return;
+    sayInto(turn, top ? `Not sure what you mean. The closest action is “${top[0].label}” (${top[0].score.toFixed(2)}), which isn't close enough. Try rephrasing, or type hint.` : "I don't understand that. Try look, go north, open drawer, take flashlight, use laptop or hint. Load the 23 MB matcher to type anything.");
+    under({ text, via: top ? "meaning (no match)" : "rules (no match)", top }); return;
   }
   const before = JSON.stringify({ room: S.room, inv: S.inv, opened: S.opened, flags: S.flags });
   if (!["help", "hint"].includes(a.action)) S.moves++; // a hint adds its own 5-move penalty
@@ -613,7 +680,7 @@ async function run(text) {
   if (prefs.style !== "plain" && llm && !["help", "inventory", "hint"].includes(a.action)) {
     brainBusy = true;
     const tmp = document.createElement("p"); tmp.className = "truth"; tmp.textContent = "The narrator is thinking…"; turn.appendChild(tmp);
-    try { story = await narrate(res.facts); styled = true; flags = groundCheck(story, res.facts, S); } catch (e) { console.error(e); story = res.text; }
+    try { story = await narrate(res.text); styled = true; flags = groundCheck(story, res.facts, S); } catch (e) { console.error(e); story = res.text; }
     tmp.remove(); brainBusy = false;
   }
   sayInto(turn, story, res.room ? WORLD.rooms[S.room].name : null);
@@ -623,13 +690,13 @@ async function run(text) {
     f.textContent = flags.length ? `⚠ Grounding check: the narrator mentioned ${list(flags)}, which ${flags.length > 1 ? "aren't" : "isn't"} here.` : "✓ Grounding check: stuck to the facts.";
     turn.appendChild(f);
   }
-  under({ text, via, raw, action: a, changed: before !== after, before, after, engine: res.text, story: styled ? story : null, flags });
+  under({ text, via, top, action: a, changed: before !== after, before, after, engine: res.text, story: styled ? story : null, flags });
   if (S.won) celebrate();
   renderHUD(); save();
 }
 function under(t) {
   const lines = [`<b>you typed</b>   ${esc(t.text)}`, `<b>parsed by</b>   ${esc(t.via)}`];
-  if (t.raw) lines.push(`<b>model said</b>  ${esc(t.raw)}`);
+  if (t.top) lines.push(`<b>closest</b>     ${t.top.map(c => `${esc(c.label)} ${c.score.toFixed(2)}`).join("  ·  ")}`, `<b>threshold</b>   ${MATCH_MIN}`);
   if (t.action) lines.push(`<b>action</b>      ${esc(JSON.stringify(t.action))}`);
   if (t.action) lines.push(`<b>state</b>       ${t.changed ? "changed" : "unchanged"}`);
   if (t.changed) { const b = JSON.parse(t.before), a = JSON.parse(t.after); for (const k of Object.keys(a)) if (JSON.stringify(a[k]) !== JSON.stringify(b[k])) lines.push(`  ${k}: ${esc(JSON.stringify(b[k]))} → ${esc(JSON.stringify(a[k]))}`); }
@@ -673,7 +740,7 @@ $("newGame").onclick = function () {
 let asr = null, rec = null, recChunks = [], recStream = null;
 async function startTalk() {
   if (rec) return;
-  if (!T) { toast("Load the brain first; speech recognition (~80 MB) loads after it."); return; }
+  if (!T) { toast("Load the matcher first; speech recognition (~80 MB) loads after it."); return; }
   try {
     recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
     recChunks = []; rec = new MediaRecorder(recStream); rec.ondataavailable = e => recChunks.push(e.data);

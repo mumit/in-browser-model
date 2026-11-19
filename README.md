@@ -4,12 +4,12 @@ Six small apps and games that run AI models entirely in the browser (WebGPU, wit
 
 | App | What it is | Download |
 |---|---|---|
-| [Prompt Golf](prompt-golf/prompt-golf.html) | Make a tiny LLM hit a target output in the fewest characters, with hints and a course editor | ~120–485 MB |
-| [Nervous Narrator](nervous-narrator/nervous-narrator.html) | The model answers out loud, and its voice wobbles where its token probabilities are low | ~575 MB – 1.3 GB |
+| [Prompt Golf](prompt-golf/prompt-golf.html) | Make a tiny LLM hit a target output in the fewest characters, with hints and a course editor | ~120–790 MB |
+| [Nervous Narrator](nervous-narrator/nervous-narrator.html) | The model answers out loud, and its voice wobbles where its token probabilities are low | ~880 MB – 1.9 GB |
 | [Slides That Follow You](follow-slides/follow-slides.html) | Hands-free slides that advance by matching your speech to slide content | ~105 MB |
-| [AI Telephone](ai-telephone/ai-telephone.html) | A sentence passes through AI relays (speak → noisy line → hear → retell), with a meaning-drift chart | ~680 MB |
-| [Outage at 3 A.M.](outage-adventure/outage-adventure.html) | An on-call text adventure: a rules engine owns the truth, a small model parses and narrates, and a grounding check flags invented details | 0 MB to play, ~485 MB for the brain |
-| [AI Debate Club](debate-club/debate-club.html) | Two models with silly personas debate out loud; a judge model scores it, with probabilities, and the room votes by applause | ~210 MB – 1.5 GB |
+| [AI Telephone](ai-telephone/ai-telephone.html) | A sentence passes through AI relays (speak → noisy line → hear → retell), with a meaning-drift chart | ~980 MB |
+| [Outage at 3 A.M.](outage-adventure/outage-adventure.html) | An on-call text adventure: a rules engine owns the truth, a small model parses and narrates, and a grounding check flags invented details | 0 MB to play, +23 MB to type anything, +790 MB for the narrator |
+| [AI Debate Club](debate-club/debate-club.html) | Two models with silly personas debate out loud; a judge model scores it, with probabilities, and the room votes by applause | ~210 MB – 2 GB |
 
 `index.html` is the landing page. Each folder has the app (a single HTML file) and a `PROMPT.md` that rebuilds it from scratch. `IDEAS.md` lists more ideas.
 

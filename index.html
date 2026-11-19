@@ -36,6 +36,7 @@
   }
 }
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html, body { margin: 0; }
 body { background: var(--bg); color: var(--ink); font: 16px/1.55 var(--body); padding: 40px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px)); }
 .wrap { max-width: 1120px; margin: 0 auto; display: grid; gap: 30px; }
@@ -45,7 +46,8 @@ h1 { font: 800 clamp(40px, 7.5vw, 76px)/.98 var(--display); margin: 0; letter-sp
 h1 em { font-style: normal; background: linear-gradient(90deg, var(--golf), var(--narrator), var(--phone), var(--debate)); -webkit-background-clip: text; background-clip: text; color: transparent; }
 .lede { font-size: 18px; color: var(--muted); max-width: 60ch; margin: 0; }
 .check { display: flex; flex-wrap: wrap; gap: 8px; }
-.chip { font: 600 13px/1 var(--mono); padding: 8px 10px; border-radius: 999px; border: 1px solid var(--line); background: var(--card); }
+.chip { font: 600 13px/1.35 var(--mono); padding: 7px 11px; border-radius: 10px; border: 1px solid var(--line); background: var(--card); }
+@media (max-width: 520px) { .chip { font-size: 12px; } .eyebrow { letter-spacing: .08em; } }
 .chip.ok { border-color: var(--ok); color: var(--ok); }
 .chip.warn { border-color: var(--warn); color: var(--warn); }
 .apps { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; }
@@ -101,7 +103,7 @@ footer a { color: inherit; }
       <span class="kind">Game</span>
       <h2>Prompt Golf</h2>
       <p>Make a tiny language model hit a target output in the fewest characters. Nine holes with banned words, hints that cost strokes, and a course editor.</p>
-      <div class="meta"><span>~120–485 MB</span><span>no mic</span></div>
+      <div class="meta"><span>~120–790 MB</span><span>no mic</span></div>
       <div class="links"><a class="open" href="prompt-golf/prompt-golf.html">Play</a><a class="src" href="prompt-golf/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
@@ -114,12 +116,12 @@ footer a { color: inherit; }
       <span class="kind">Experiment</span>
       <h2>Nervous Narrator</h2>
       <p>Ask a question and the model answers out loud. Its voice slows, quiets and wobbles on the words it's least sure of, using its own token probabilities.</p>
-      <div class="meta"><span>~575 MB – 1.3 GB</span><span>mic optional</span></div>
+      <div class="meta"><span>~880 MB – 1.9 GB</span><span>mic optional</span></div>
       <div class="links"><a class="open" href="nervous-narrator/nervous-narrator.html">Open</a><a class="src" href="nervous-narrator/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--slides)">
-      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid meet">
         <rect x="70" y="16" width="150" height="84" rx="6" fill="var(--card)" stroke="var(--line)"/><rect x="86" y="34" width="86" height="9" rx="2" fill="var(--ink)"/><rect x="86" y="47" width="34" height="3" rx="1.5" fill="var(--slides)"/>
         <rect x="86" y="60" width="104" height="5" rx="2" fill="var(--muted)" opacity=".5"/><rect x="86" y="71" width="90" height="5" rx="2" fill="var(--muted)" opacity=".5"/><rect x="70" y="96" width="70" height="4" fill="var(--slides)"/>
         <circle cx="258" cy="58" r="14" fill="var(--slides)"/><circle cx="258" cy="58" r="22" fill="none" stroke="var(--slides)" stroke-opacity=".3" stroke-width="6"/>
@@ -132,7 +134,7 @@ footer a { color: inherit; }
     </article>
 
     <article class="app" style="--accent: var(--phone)">
-      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid meet">
         <path d="M10 70 C 60 20, 90 100, 140 60 S 220 20, 260 64 S 300 90, 330 40" fill="none" stroke="var(--phone)" stroke-width="3" stroke-linecap="round" opacity=".6"/>
         <g fill="var(--card)" stroke="var(--phone)" stroke-width="2"><circle cx="40" cy="48" r="11"/><circle cx="140" cy="60" r="11"/><circle cx="260" cy="64" r="11"/></g>
         <g font-family="IBM Plex Mono, monospace" font-size="11" font-weight="600" fill="var(--ink)" text-anchor="middle"><text x="40" y="52">1</text><text x="140" y="64">2</text><text x="260" y="68">3</text></g>
@@ -141,26 +143,26 @@ footer a { color: inherit; }
       <span class="kind">Game</span>
       <h2>AI Telephone</h2>
       <p>Pass a sentence down a chain of AI relays that speak, mishear over a crackly line, and retell it. A drift chart shows the meaning falling apart.</p>
-      <div class="meta"><span>~680 MB</span><span>mic optional</span><span>sound on</span></div>
+      <div class="meta"><span>~980 MB</span><span>mic optional</span><span>sound on</span></div>
       <div class="links"><a class="open" href="ai-telephone/ai-telephone.html">Play</a><a class="src" href="ai-telephone/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--debate)">
-      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid meet">
         <path d="M40 22 h96 a10 10 0 0 1 10 10 v26 a10 10 0 0 1 -10 10 h-70 l-16 14 v-14 h-10 a10 10 0 0 1 -10 -10 v-26 a10 10 0 0 1 10 -10z" fill="#ff4d5e" opacity=".85"/>
         <path d="M184 44 h96 a10 10 0 0 1 10 10 v26 a10 10 0 0 1 -10 10 h-10 v14 l-16 -14 h-70 a10 10 0 0 1 -10 -10 v-26 a10 10 0 0 1 10 -10z" fill="#4d8dff" opacity=".85"/>
-        <text x="160" y="72" text-anchor="middle" font-family="Impact, Arial Narrow, sans-serif" font-size="22" fill="var(--ink)">VS</text>
+        <text x="160" y="40" text-anchor="middle" font-family="Impact, Arial Narrow, sans-serif" font-size="18" fill="var(--ink)">VS</text>
         <g fill="#fff" opacity=".9"><rect x="52" y="36" width="70" height="5" rx="2.5"/><rect x="52" y="48" width="48" height="5" rx="2.5"/><rect x="196" y="58" width="70" height="5" rx="2.5"/><rect x="196" y="70" width="52" height="5" rx="2.5"/></g>
       </svg></div>
       <span class="kind">Game</span>
       <h2>AI Debate Club</h2>
       <p>Two small models with ridiculous personas argue a motion out loud. A third model judges, with probabilities, and the room votes on an applause meter.</p>
-      <div class="meta"><span>~210 MB – 1.5 GB</span><span>mic optional</span><span>sound on</span></div>
+      <div class="meta"><span>~210 MB – 2 GB</span><span>mic optional</span><span>sound on</span></div>
       <div class="links"><a class="open" href="debate-club/debate-club.html">Play</a><a class="src" href="debate-club/PROMPT.md">Rebuild prompt</a></div>
     </article>
 
     <article class="app" style="--accent: var(--outage)">
-      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid slice">
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 320 116" preserveAspectRatio="xMidYMid meet">
         <g fill="none" stroke="var(--muted)" stroke-width="1.5"><line x1="160" y1="30" x2="160" y2="58"/><line x1="96" y1="72" x2="224" y2="72"/><line x1="160" y1="86" x2="160" y2="100"/></g>
         <line x1="160" y1="30" x2="160" y2="56" stroke="var(--outage)" stroke-width="3" stroke-dasharray="5 4"/>
         <g font-family="IBM Plex Mono, monospace" font-size="10" font-weight="600" text-anchor="middle">
@@ -173,8 +175,8 @@ footer a { color: inherit; }
       </svg></div>
       <span class="kind">Game</span>
       <h2>Outage at 3 A.M.</h2>
-      <p>A text adventure for the on-call crowd. The engine owns the truth; a small model parses what you type and narrates it, and a grounding check flags anything it invents.</p>
-      <div class="meta"><span>0 MB to play</span><span>~485 MB for the brain</span><span>mic optional</span></div>
+      <p>A text adventure for the on-call crowd. The engine owns the truth; a tiny embedding model understands what you type, a small LLM narrates, and a grounding check flags what it invents.</p>
+      <div class="meta"><span>0 MB to play</span><span>+23 MB to type anything</span><span>+790 MB narrator</span><span>mic optional</span></div>
       <div class="links"><a class="open" href="outage-adventure/outage-adventure.html">Play</a><a class="src" href="outage-adventure/PROMPT.md">Rebuild prompt</a></div>
     </article>
 

@@ -14,7 +14,7 @@ Build **AI Telephone**: a single self-contained HTML game where a message is pas
   - **Matcher:** `pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2")`, called with `{pooling:"mean", normalize:true}`.
   - **Ears:** `pipeline("automatic-speech-recognition", "Xenova/whisper-base.en")`.
   - **Voice:** Kokoro via `import("https://cdn.jsdelivr.net/npm/kokoro-js@1.2.1/dist/kokoro.web.js")`, then `KokoroTTS.from_pretrained("onnx-community/Kokoro-82M-v1.0-ONNX", {dtype:"q8", device:"wasm"})`. `generate(text, {voice, speed})` returns `{audio: Float32Array, sampling_rate}`.
-  - **Brain:** `onnx-community/Qwen2.5-0.5B-Instruct` via `AutoTokenizer` + `AutoModelForCausalLM`, with fallback `webgpu/q4f16` → `webgpu/q4` → `wasm/q4`.
+  - **Brain:** `onnx-community/Qwen2.5-0.5B-Instruct` via `AutoTokenizer` + `AutoModelForCausalLM`, with fallback `webgpu/q4f16` → `webgpu/q4` → `wasm/q4` (SmolLM2). Qwen2.5 skips `q4f16`, which outputs garbage on Apple (Metal) GPUs without raising an error: `webgpu/q4` → `wasm/q4`.
 - **Persistence:** settings and the leaderboard in `localStorage` (key `ai-telephone-v1`), with every read and write wrapped in try/catch.
 
 ## One relay (repeat N times)

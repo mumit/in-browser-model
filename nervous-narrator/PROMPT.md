@@ -14,8 +14,8 @@ Build **Nervous Narrator**: a single self-contained HTML file where you ask a qu
 - **Speech recognition:** `pipeline("automatic-speech-recognition", "Xenova/whisper-base.en")`, loaded lazily on the first mic use.
 - **LLM picker ("Brain"):**
   - `onnx-community/Qwen2.5-0.5B-Instruct` (default, ~450 MB).
-  - `onnx-community/Qwen2.5-1.5B-Instruct` (~1.1 GB).
-- **Model loading:** `AutoTokenizer` + `AutoModelForCausalLM`. Backend fallback: `webgpu/q4f16` → `webgpu/q4` → `wasm/q4` (wasm only if `navigator.gpu.requestAdapter()` fails).
+  - `onnx-community/Qwen2.5-1.5B-Instruct` (~1.8 GB).
+- **Model loading:** `AutoTokenizer` + `AutoModelForCausalLM`. Backend fallback: `webgpu/q4f16` → `webgpu/q4` → `wasm/q4` (SmolLM2). Qwen2.5 skips `q4f16`, which outputs garbage on Apple (Metal) GPUs without raising an error: `webgpu/q4` → `wasm/q4` (wasm only if `navigator.gpu.requestAdapter()` fails).
 - **Voice picker:**
   - Kokoro (wobbles).
   - Browser `speechSynthesis` (instant, no wobble; prefer a local English voice).

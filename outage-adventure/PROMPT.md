@@ -4,15 +4,16 @@ Paste everything below the line into Claude (or another capable coding model) to
 
 ---
 
-Build **Outage at 3 A.M.**: a single self-contained HTML text adventure for on-call engineers. A deterministic JavaScript engine owns the truth (rooms, items, locks, puzzle state). An optional small language model, running in the browser, does two jobs only: turning free-form commands into JSON actions, and narrating what happened in a chosen style. A grounding check flags anything the narrator invents. The game must be fully playable with no download, using the rules parser and plain narration. Audience: AI/ML engineers and PMs. The lesson is grounding, tool calling, and catching hallucinations.
+Build **Outage at 3 A.M.**: a single self-contained HTML text adventure for on-call engineers. A deterministic JavaScript engine owns the truth (rooms, items, locks, puzzle state). Two optional models, running in the browser, each do one job: a small embedding model (MiniLM) turns free-form commands into one of the actions that are valid right now, and a small language model rewrites the engine's narration in a chosen style. A grounding check flags anything the narrator invents. The game must be fully playable with no download, using the rules parser and plain narration. Audience: AI/ML engineers and PMs. The lesson is grounding, tool calling, and catching hallucinations.
 
 ## Hard constraints
 
 - **One `.html` file** with inline CSS and JS, opened locally or on GitHub Pages. Not a hosted Claude artifact, because those block model weight downloads.
-- **The brain (optional):** load `onnx-community/Qwen2.5-0.5B-Instruct` (default, ~485 MB) or `onnx-community/Qwen2.5-1.5B-Instruct` (~1.2 GB) with Transformers.js 3.7.6 via a dynamic `import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6")`, using `AutoTokenizer` + `AutoModelForCausalLM`.
-  - Backend fallback: `webgpu/q4f16` → `webgpu/q4` → `wasm/q4`.
+- **Matcher (optional, ~23 MB):** `pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2")` with `{pooling:"mean", normalize:true}`, loaded by its own button.
+- **Narrator (optional):** load `onnx-community/Qwen2.5-0.5B-Instruct` (default, ~790 MB) or `onnx-community/Qwen2.5-1.5B-Instruct` (~1.8 GB) with Transformers.js 3.7.6 via a dynamic `import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6")`, using `AutoTokenizer` + `AutoModelForCausalLM`.
+  - Backend fallback: `webgpu/q4f16` → `webgpu/q4` → `wasm/q4` (SmolLM2). Qwen2.5 skips `q4f16`, which outputs garbage on Apple (Metal) GPUs without raising an error: `webgpu/q4` → `wasm/q4`.
   - Wrap downloads in a retry: on a network error, retry the same file up to 3 times with backoff, and never fall back to another format because of a network error.
-- **Voice input (optional):** hold to talk, recording with MediaRecorder and transcribing with `Xenova/whisper-base.en`, loaded lazily after the brain. **Read aloud** uses the browser's `speechSynthesis`.
+- **Voice input (optional):** hold to talk, recording with MediaRecorder and transcribing with `Xenova/whisper-base.en`, loaded lazily once Transformers.js is loaded. **Read aloud** uses the browser's `speechSynthesis`.
 - **Persistence:** prefs, the in-progress game state and the leaderboard in `localStorage` (key `outage-adventure-v1`), with every read and write wrapped in try/catch. Reloading resumes an unfinished game with "Welcome back".
 
 ## World
@@ -49,15 +50,21 @@ Build **Outage at 3 A.M.**: a single self-contained HTML text adventure for on-c
 ## Parsing
 
 1. **Rules parser first.** Lowercase the input and strip politeness ("please", "I want to"). Match regexes for: go, walk, head, enter + a direction or a room name (strip leading "to/into/in/the"); n, s, e, w; take, get, grab, pick up; drop; open, unlock; look; look at, examine, x, inspect, check, search; read; use, flip, press, push, reset, restart, reboot, turn on, log into; eat, drink; i, inventory; hint; help.
-2. **If no rule matches and the brain is loaded, ask the model.** The system prompt lists the actions, the directions, the current exits and the nouns the player can refer to. It asks for "only JSON: {"action", "object", "direction"}" (greedy, 40 tokens). Extract the first `{…}`, `JSON.parse` it, check the action is in the allowed list and normalise the direction. The engine validates everything else.
+2. **If no rule matches and the matcher is loaded, match by meaning.** Build `candidates(state)`: every action that makes sense right now, each with a few natural phrasings:
+   - look, inventory and hint;
+   - each exit ("go north", "walk to the Kitchen", "leave the Lobby", plus "go back" toward the previous room);
+   - take and look for visible items, and open (unopened containers) and look for fixtures;
+   - use the laptop, panel and switch when visible; drink coffee and eat pizza; read the note; badge in with the keycard in the Hallway; drop for carried items.
+   In the dark room, offer only look, inventory, hint and south. Embed the command and every phrasing (cache the phrase vectors), score each action by its best cosine, and run the top action if it scores at least 0.48. Otherwise reply "Not sure what you mean…" naming the closest action and its score.
+   - **Why not a chat model:** tested in Chrome, Qwen2.5 0.5B rarely produced valid JSON and picked from a lettered list little better than chance, while MiniLM matched "raid the fridge", "head back" and "sip of that coffee" correctly and rejected "dance wildly".
 3. **Otherwise** say it couldn't understand and suggest commands.
 
-Each command line in the transcript shows a badge: "rules" or "parsed by model".
+Each command line in the transcript shows a badge: "rules", or "matched “open the fridge” · 0.60".
 
 ## Narration and grounding
 
 - **Narrators:** Plain (engine text, no model), Noir detective, Pirate captain, Shakespearean actor, Nature documentary, Sports commentator. Loading the brain switches Plain to Noir.
-- **Prompt:** the system prompt says "Use ONLY the facts given. Do not invent any items, exits, rooms, people or events." The user message lists the event, room, exits, things here, and what the player carries. Sample at temperature 0.7, 80 tokens, at most 3 sentences.
+- **Prompt:** "rewrite one line" framing. The system prompt says: "You rewrite one line of a text adventure in the voice of {style}. Keep exactly the same meaning and facts. Mention only the things in the line. Write one or two short sentences, speaking to the player as \"you\"." Add one example turn per style ("Line: You take the coffee mug." → a styled version), then "Line: {engine text}". Sample at temperature 0.5, top_k 30, repetition penalty 1.15, 60 tokens, at most 2 sentences. Small models still embellish, so always show the engine's line underneath.
 - **Grounding check:** build a vocabulary from item and fixture words (over 3 letters, excluding "light"), room first words and the four directions. Flag any vocabulary word in the narration whose canonical name isn't among the current room, exits, visible items or fixtures, inventory, previous room or event text.
   - Show "✓ Grounding check: stuck to the facts." or "⚠ … mentioned X, which isn't here."
   - Show the engine's own sentence under the styled one, as `engine: …`.
@@ -72,8 +79,8 @@ Each command line in the transcript shows a badge: "rules" or "parsed by model".
 - **Side rail:**
   - **Floor plan (SVG):** visited rooms are filled, the current room is amber, adjacent unknown rooms are dashed "?", and the locked link is a red dashed line until unlocked.
   - **Pockets:** inventory chips.
-  - **The brain:** model select, load, progress, status, narrator select, read-aloud toggle.
-  - **"Under the hood · last turn":** input, parser, raw model output, action JSON, state changed or unchanged with a per-field before → after, engine text, narration and grounding result.
+  - **Models:** two rows, each with its own Load button ("Understand anything you type" for the matcher, "Styled narrator" for the LLM), plus the narrator model select, progress, status, narrator style select and read-aloud toggle.
+  - **"Under the hood · last turn":** input, parser, the top three matched actions with scores and the threshold, action JSON, state changed or unchanged with a per-field before → after, engine text, narration and grounding result.
   - **"Fastest fixes" leaderboard:** sorted by moves, then time, noting hints. The empty state says "The best possible is 14 moves."
   - **How it works.**
 - **Design:** dark-first 3 a.m. palette: `--bg #0e131f`, `--card #151b2b`, `--card2 #1b2236`, `--ink #e6ebf5`, `--muted #8f99b2`, `--line #273049`, `--sev #ff5a5f`, `--ok #3ddc97`, `--amber #ffb547`, `--link #7fb2ff`. Provide a light override.
