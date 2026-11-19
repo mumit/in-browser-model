@@ -1,0 +1,7493 @@
+{
+  "schema_version": 1,
+  "previous": "517fdab4bab94d8f8df0ace753f6507d",
+  "current": "3eacf714310a428c9c30dda2b8094e0e",
+  "beats": [
+    {
+      "beat": "debate-club/gallery",
+      "change": "matched",
+      "previous": {
+        "id": "gallery",
+        "purpose": "Start on the app gallery",
+        "caption": "A gallery of in-browser AI apps",
+        "definition_sha256": "5810caf034205c8591bf14507e9d25d021aae6f2f04fb0a385015dd10cb26249",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "h1"
+            },
+            "contains": "In-Browser Model Lab"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "In-Browser Model Lab",
+            "at": 0.018140905420295894
+          }
+        ],
+        "verified_at": 0.01814278040546924,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/gallery.png",
+        "start": 0,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                38,
+                362.8828125,
+                16
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                16,
+                58,
+                340.984375,
+                86.5
+              ],
+              "font_px": 72
+            },
+            {
+              "box": [
+                16,
+                128.5546875,
+                314.3828125,
+                86.5
+              ],
+              "font_px": 72
+            },
+            {
+              "box": [
+                16,
+                223.609375,
+                636.5390625,
+                49.8984375
+              ],
+              "font_px": 18
+            },
+            {
+              "box": [
+                27,
+                297.90625,
+                327.6328125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                384.6328125,
+                297.90625,
+                358.828125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                27,
+                336.90625,
+                358.828125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                37,
+                522.40625,
+                39.5546875,
+                14.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                510,
+                524.40625,
+                87.015625,
+                14.5
+              ],
+              "font_px": 12
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              16,
+              66,
+              621.2109375,
+              141.109375
+            ]
+          ]
+        },
+        "end": 1.8632754473946989,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "gallery",
+        "purpose": "Start on the app gallery",
+        "caption": "A gallery of in-browser AI apps",
+        "definition_sha256": "5810caf034205c8591bf14507e9d25d021aae6f2f04fb0a385015dd10cb26249",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "h1"
+            },
+            "contains": "In-Browser Model Lab"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "In-Browser Model Lab",
+            "at": 0.03516819473588839
+          }
+        ],
+        "verified_at": 0.035170736722648144,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/gallery.png",
+        "start": 0.009107653750106692,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                38,
+                362.8828125,
+                16
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                16,
+                58,
+                340.984375,
+                86.5
+              ],
+              "font_px": 72
+            },
+            {
+              "box": [
+                16,
+                128.5546875,
+                314.3828125,
+                86.5
+              ],
+              "font_px": 72
+            },
+            {
+              "box": [
+                16,
+                223.609375,
+                636.5390625,
+                49.8984375
+              ],
+              "font_px": 18
+            },
+            {
+              "box": [
+                28,
+                298.90625,
+                327.6328125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                387.6328125,
+                298.90625,
+                358.828125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                28,
+                340.453125,
+                358.828125,
+                17
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                37,
+                527.5,
+                39.5546875,
+                14.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                510,
+                529.5,
+                87.015625,
+                14.5
+              ],
+              "font_px": 12
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              16,
+              66,
+              621.2109375,
+              141.109375
+            ]
+          ]
+        },
+        "end": 1.875394569709897,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.003,
+      "evidence_changed": true,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/home",
+      "change": "matched",
+      "previous": {
+        "id": "home",
+        "purpose": "Open AI Debate Club from the app gallery",
+        "caption": "Open AI Debate Club",
+        "definition_sha256": "fd4a2dd2dee3475a23a6f6e8ef3d68420270be44380ac1f3bc67a6f6b4deae9e",
+        "checks": [
+          {
+            "type": "url",
+            "contains": "debate-club/debate-club.html"
+          },
+          {
+            "type": "visible",
+            "target": {
+              "css": "#load"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "url",
+            "status": "passed",
+            "actual": "remote source 74996e732064",
+            "at": 3.081755530438386
+          },
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 3.0848603633930907
+          }
+        ],
+        "verified_at": 3.0848624884383753,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/home.png",
+        "start": 1.9114840723923407,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                3,
+                65.609375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                81.609375,
+                3,
+                182.984375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                281.015625,
+                3,
+                125.234375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                16,
+                95.8359375,
+                550.7265625,
+                63
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                349.75,
+                184.3359375,
+                131.25,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                35.203125,
+                236.3359375,
+                460.796875,
+                32.296875
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                35,
+                304.9296875,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                384.828125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                384.828125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                384.828125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                422.328125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                422.328125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                422.328125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                459.828125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                510.328125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                510.328125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              334.75,
+              173.3359375,
+              161.25,
+              40.5
+            ]
+          ]
+        },
+        "end": 3.916956488392316,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "home",
+        "purpose": "Open AI Debate Club from the app gallery",
+        "caption": "Open AI Debate Club",
+        "definition_sha256": "fd4a2dd2dee3475a23a6f6e8ef3d68420270be44380ac1f3bc67a6f6b4deae9e",
+        "checks": [
+          {
+            "type": "url",
+            "contains": "debate-club/debate-club.html"
+          },
+          {
+            "type": "visible",
+            "target": {
+              "css": "#load"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "url",
+            "status": "passed",
+            "actual": "remote source 74996e732064",
+            "at": 3.039389736717567
+          },
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 3.042144528706558
+          }
+        ],
+        "verified_at": 3.042145819752477,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/home.png",
+        "start": 1.9332581947091967,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                3,
+                65.609375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                81.609375,
+                3,
+                182.984375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                281.015625,
+                3,
+                125.234375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                16,
+                95.8359375,
+                550.7265625,
+                63
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                349.75,
+                184.3359375,
+                131.25,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                35.203125,
+                236.3359375,
+                460.796875,
+                32.296875
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                35,
+                304.9296875,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                384.828125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                384.828125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                384.828125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                422.328125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                422.328125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                422.328125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                459.828125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                510.328125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                510.328125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              334.75,
+              173.3359375,
+              161.25,
+              40.5
+            ]
+          ]
+        },
+        "end": 3.8829928197083063,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": -0.056,
+      "evidence_changed": true,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/motion",
+      "change": "matched",
+      "previous": {
+        "id": "motion",
+        "purpose": "Choose a motion and two personas",
+        "caption": "Pick a motion and two personas",
+        "definition_sha256": "01ef62db68d4339ecd6e55929f7c35020524c7f9687d2e0c855cdbf6fa09b52d",
+        "checks": [
+          {
+            "type": "value",
+            "target": {
+              "css": "#motion"
+            },
+            "value": "This house believes a hot dog is a sandwich"
+          },
+          {
+            "type": "value",
+            "target": {
+              "css": "#pA"
+            },
+            "value": "pirate"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "value",
+            "status": "passed",
+            "actual": "This house believes a hot dog is a sandwich",
+            "at": 6.830886822426692
+          },
+          {
+            "type": "value",
+            "status": "passed",
+            "actual": "pirate",
+            "at": 6.836392072436865
+          }
+        ],
+        "verified_at": 6.8363929883926176,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/motion.png",
+        "start": 3.9577325304271653,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                -13.0703125,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                66.828125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                66.828125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                66.828125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                104.328125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                104.328125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                104.328125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                141.828125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                192.328125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                50,
+                229.328125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                300.828125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                374.828125,
+                31.53125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                446.328125,
+                34.265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                192.328125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                229.328125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                300.828125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                374.828125,
+                31.53125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                446.328125,
+                34.265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                35,
+                536.828125,
+                46.1640625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                278.5,
+                536.828125,
+                38.625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                521.5,
+                536.828125,
+                39.46875,
+                15.5
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              35,
+              5.4296875,
+              890,
+              49.3984375
+            ],
+            [
+              50,
+              250.828125,
+              408,
+              38
+            ]
+          ]
+        },
+        "end": 8.077876780414954,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "motion",
+        "purpose": "Choose a motion and two personas",
+        "caption": "Pick a motion and two personas",
+        "definition_sha256": "01ef62db68d4339ecd6e55929f7c35020524c7f9687d2e0c855cdbf6fa09b52d",
+        "checks": [
+          {
+            "type": "value",
+            "target": {
+              "css": "#motion"
+            },
+            "value": "This house believes a hot dog is a sandwich"
+          },
+          {
+            "type": "value",
+            "target": {
+              "css": "#pA"
+            },
+            "value": "pirate"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "value",
+            "status": "passed",
+            "actual": "This house believes a hot dog is a sandwich",
+            "at": 6.889315194741357
+          },
+          {
+            "type": "value",
+            "status": "passed",
+            "actual": "pirate",
+            "at": 6.897308319748845
+          }
+        ],
+        "verified_at": 6.897309194726404,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/motion.png",
+        "start": 3.922805236710701,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                -14.5703125,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                65.328125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                65.328125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                65.328125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                102.828125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                102.828125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                102.828125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                140.328125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                190.828125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                50,
+                227.828125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                259,
+                227.828125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                301.828125,
+                31.53125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                259,
+                301.828125,
+                34.265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                190.828125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                227.828125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                711,
+                227.828125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                301.828125,
+                31.53125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                711,
+                301.828125,
+                34.265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                35,
+                392.328125,
+                46.1640625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                278.5,
+                392.328125,
+                38.625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                521.5,
+                392.328125,
+                39.46875,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                63,
+                469.828125,
+                227.1484375,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                50,
+                513.828125,
+                116.578125,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                204.578125,
+                513.828125,
+                33.40625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                260.984375,
+                515.328125,
+                282.3671875,
+                15.5
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              35,
+              3.9296875,
+              890,
+              49.3984375
+            ],
+            [
+              50,
+              250.578125,
+              199,
+              39.25
+            ]
+          ]
+        },
+        "end": 8.140642028709408,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.098,
+      "evidence_changed": true,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/load",
+      "change": "matched",
+      "previous": {
+        "id": "load",
+        "purpose": "The model downloads into the browser tab and is ready",
+        "caption": "Load a 135M model into the tab",
+        "definition_sha256": "dabd1c89a63c378dce8ea87dafcce4d83e976416ec969462ff3ca61e3600a7e5",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#status"
+            },
+            "contains": "Ready"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "Ready \u00b7 SmolLM2 135M on webgpu/q4f16 \u00b7 sound: off",
+            "at": 12.824213113402948
+          }
+        ],
+        "verified_at": 12.824215988395736,
+        "trim_wait": false,
+        "min_reading": 2.5,
+        "screenshot": "takes/demo.evidence/load.png",
+        "start": 8.114687113440596,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                3,
+                65.609375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                81.609375,
+                3,
+                182.984375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                281.015625,
+                3,
+                125.234375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                16,
+                95.8359375,
+                550.7265625,
+                63
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                299.8203125,
+                184.3359375,
+                53.9765625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                16,
+                236.3359375,
+                352.796875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                35,
+                288.1328125,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                368.03125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                368.03125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                368.03125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                405.53125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                405.53125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                405.53125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                443.03125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                493.53125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                50,
+                530.53125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                493.53125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                530.53125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              16,
+              236.3359375,
+              36,
+              15.5
+            ]
+          ]
+        },
+        "end": 15.35734257241711,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "load",
+        "purpose": "The model downloads into the browser tab and is ready",
+        "caption": "Load a 135M model into the tab",
+        "definition_sha256": "dabd1c89a63c378dce8ea87dafcce4d83e976416ec969462ff3ca61e3600a7e5",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#status"
+            },
+            "contains": "Ready"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "Ready \u00b7 SmolLM2 135M on webgpu/q4f16 \u00b7 sound: off",
+            "at": 12.820899153710343
+          }
+        ],
+        "verified_at": 12.82090073672589,
+        "trim_wait": false,
+        "min_reading": 2.5,
+        "screenshot": "takes/demo.evidence/load.png",
+        "start": 8.182416319730692,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                16,
+                3,
+                65.609375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                81.609375,
+                3,
+                182.984375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                281.015625,
+                3,
+                125.234375,
+                101
+              ],
+              "font_px": 67.2
+            },
+            {
+              "box": [
+                16,
+                95.8359375,
+                550.7265625,
+                63
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                299.8203125,
+                184.3359375,
+                53.9765625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                16,
+                236.3359375,
+                352.796875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                35,
+                288.1328125,
+                96.0390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                368.03125,
+                233.59375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                307.59375,
+                368.03125,
+                252.953125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                588.546875,
+                368.03125,
+                210.609375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                405.53125,
+                150.7890625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                224.7890625,
+                405.53125,
+                202.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                455.3515625,
+                405.53125,
+                234.203125,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                46,
+                443.03125,
+                248.390625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                50,
+                493.53125,
+                127.9140625,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                50,
+                530.53125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                259,
+                530.53125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                502,
+                493.53125,
+                163.8203125,
+                30
+              ],
+              "font_px": 20
+            },
+            {
+              "box": [
+                502,
+                530.53125,
+                50.34375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                711,
+                530.53125,
+                132.6484375,
+                15.5
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              16,
+              236.3359375,
+              36,
+              15.5
+            ]
+          ]
+        },
+        "end": 15.358570778742433,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": -0.067,
+      "evidence_changed": true,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/debate",
+      "change": "matched",
+      "previous": {
+        "id": "debate",
+        "purpose": "Both debaters speak, written by the model in the tab",
+        "caption": "The models argue, live in the browser",
+        "definition_sha256": "6d6322a75616d3aa4df2a8bd5a0b45bfc84cde742566475ad440c2797e08e52f",
+        "checks": [
+          {
+            "type": "visible",
+            "target": {
+              "css": ".bubble.B:not(.thinking)"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 18.16380582243437
+          }
+        ],
+        "verified_at": 18.16380673839012,
+        "trim_wait": false,
+        "min_reading": 2.5,
+        "screenshot": "takes/demo.evidence/debate.png",
+        "start": 15.39979032240808,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                63,
+                -7.46875,
+                227.1484375,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                50,
+                36.53125,
+                116.578125,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                204.578125,
+                36.53125,
+                33.40625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                260.984375,
+                38.03125,
+                282.3671875,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                52,
+                137.03125,
+                25.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                52,
+                151.53125,
+                172.625,
+                43.5
+              ],
+              "font_px": 28.8
+            },
+            {
+              "box": [
+                52,
+                195.828125,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                464.171875,
+                167.6796875,
+                31.6484375,
+                51
+              ],
+              "font_px": 34
+            },
+            {
+              "box": [
+                530.8203125,
+                137.03125,
+                58.8046875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                530.8203125,
+                151.53125,
+                287.65625,
+                43.5
+              ],
+              "font_px": 28.8
+            },
+            {
+              "box": [
+                530.8203125,
+                195.828125,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                359.0390625,
+                283.328125,
+                241.921875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                327.328125,
+                110.8828125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                349.328125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                89.671875,
+                349.328125,
+                50.625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                140.296875,
+                349.328125,
+                32.1484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                172.4453125,
+                349.328125,
+                32.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                204.8203125,
+                349.328125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                248.5546875,
+                349.328125,
+                19.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                267.859375,
+                349.328125,
+                32.3984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                300.2578125,
+                349.328125,
+                26.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                326.6328125,
+                349.328125,
+                38.265625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                364.8984375,
+                349.328125,
+                24.2890625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                389.1875,
+                349.328125,
+                25.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                414.3046875,
+                349.328125,
+                47.5625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                461.8671875,
+                349.328125,
+                41.03125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                502.8984375,
+                349.328125,
+                29.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                532.796875,
+                349.328125,
+                32.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                565.390625,
+                349.328125,
+                48.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.859375,
+                349.328125,
+                37.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                374.078125,
+                42.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                97.296875,
+                374.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                111.203125,
+                374.078125,
+                34.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                145.3203125,
+                374.078125,
+                33.046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                178.3671875,
+                374.078125,
+                22.6171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                200.984375,
+                374.078125,
+                32.5078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                233.4921875,
+                374.078125,
+                38.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                272.1484375,
+                374.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                306.8203125,
+                374.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                357.5234375,
+                374.078125,
+                41.9921875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                399.515625,
+                374.078125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                443.25,
+                374.078125,
+                65.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.609375,
+                374.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                539.546875,
+                374.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                553.453125,
+                374.078125,
+                42.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                596.109375,
+                374.078125,
+                14.6015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                398.828125,
+                59.1015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                114.1015625,
+                398.828125,
+                21.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                136,
+                398.828125,
+                73.828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                209.828125,
+                398.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                243.5859375,
+                398.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                273.0078125,
+                398.828125,
+                46.515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                319.5234375,
+                398.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                363.2578125,
+                398.828125,
+                55.546875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                418.8046875,
+                398.828125,
+                50.390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                469.1953125,
+                398.828125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                500.1328125,
+                398.828125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                514.0390625,
+                398.828125,
+                49.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                563.796875,
+                398.828125,
+                29.6953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.4921875,
+                398.828125,
+                19.2421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                612.734375,
+                398.828125,
+                24.78125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                423.578125,
+                56.640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                482.328125,
+                174.2421875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                302,
+                504.328125,
+                28.4765625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                330.4765625,
+                504.328125,
+                29.6875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                360.1640625,
+                504.328125,
+                38.6640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                398.828125,
+                504.328125,
+                9.078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                407.90625,
+                504.328125,
+                49.203125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                457.109375,
+                504.328125,
+                37.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                494.40625,
+                504.328125,
+                34.4609375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                528.8671875,
+                504.328125,
+                32.0078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                560.875,
+                504.328125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                581.5234375,
+                504.328125,
+                86.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                668.1171875,
+                504.328125,
+                69.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                737.421875,
+                504.328125,
+                23.8828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                761.3046875,
+                504.328125,
+                31.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                792.953125,
+                504.328125,
+                14.0390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                806.9921875,
+                504.328125,
+                36.125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                843.1171875,
+                504.328125,
+                39.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                529.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                332.9375,
+                529.078125,
+                47.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                380.671875,
+                529.078125,
+                39.796875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                420.46875,
+                529.078125,
+                53.84375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                474.3125,
+                529.078125,
+                49.0625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                523.375,
+                529.078125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                552.796875,
+                529.078125,
+                61,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.796875,
+                529.078125,
+                42.953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                656.75,
+                529.078125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                677.3984375,
+                529.078125,
+                53.40625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                730.8046875,
+                529.078125,
+                44.328125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                775.1328125,
+                529.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                809.8046875,
+                529.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                860.5078125,
+                529.078125,
+                37.3515625,
+                20
+              ],
+              "font_px": 16.5
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              285,
+              471.328125,
+              640,
+              118.25
+            ]
+          ]
+        },
+        "end": 20.699023863417096,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "debate",
+        "purpose": "Both debaters speak, written by the model in the tab",
+        "caption": "The models argue, live in the browser",
+        "definition_sha256": "6d6322a75616d3aa4df2a8bd5a0b45bfc84cde742566475ad440c2797e08e52f",
+        "checks": [
+          {
+            "type": "visible",
+            "target": {
+              "css": ".bubble.B:not(.thinking)"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 18.171971111733
+          }
+        ],
+        "verified_at": 18.171972486714367,
+        "trim_wait": false,
+        "min_reading": 2.5,
+        "screenshot": "takes/demo.evidence/debate.png",
+        "start": 15.400488778715953,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                63,
+                -7.46875,
+                227.1484375,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                50,
+                36.53125,
+                116.578125,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                204.578125,
+                36.53125,
+                33.40625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                260.984375,
+                38.03125,
+                282.3671875,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                52,
+                137.03125,
+                25.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                52,
+                151.53125,
+                172.625,
+                43.5
+              ],
+              "font_px": 28.8
+            },
+            {
+              "box": [
+                52,
+                195.828125,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                464.171875,
+                167.6796875,
+                31.6484375,
+                51
+              ],
+              "font_px": 34
+            },
+            {
+              "box": [
+                530.8203125,
+                137.03125,
+                58.8046875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                530.8203125,
+                151.53125,
+                287.65625,
+                43.5
+              ],
+              "font_px": 28.8
+            },
+            {
+              "box": [
+                530.8203125,
+                195.828125,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                359.0390625,
+                283.328125,
+                241.921875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                327.328125,
+                110.8828125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                349.328125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                89.671875,
+                349.328125,
+                50.625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                140.296875,
+                349.328125,
+                32.1484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                172.4453125,
+                349.328125,
+                32.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                204.8203125,
+                349.328125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                248.5546875,
+                349.328125,
+                19.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                267.859375,
+                349.328125,
+                32.3984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                300.2578125,
+                349.328125,
+                26.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                326.6328125,
+                349.328125,
+                38.265625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                364.8984375,
+                349.328125,
+                24.2890625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                389.1875,
+                349.328125,
+                25.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                414.3046875,
+                349.328125,
+                47.5625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                461.8671875,
+                349.328125,
+                41.03125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                502.8984375,
+                349.328125,
+                29.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                532.796875,
+                349.328125,
+                32.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                565.390625,
+                349.328125,
+                48.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.859375,
+                349.328125,
+                37.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                374.078125,
+                42.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                97.296875,
+                374.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                111.203125,
+                374.078125,
+                34.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                145.3203125,
+                374.078125,
+                33.046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                178.3671875,
+                374.078125,
+                22.6171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                200.984375,
+                374.078125,
+                32.5078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                233.4921875,
+                374.078125,
+                38.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                272.1484375,
+                374.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                306.8203125,
+                374.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                357.5234375,
+                374.078125,
+                41.9921875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                399.515625,
+                374.078125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                443.25,
+                374.078125,
+                65.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.609375,
+                374.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                539.546875,
+                374.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                553.453125,
+                374.078125,
+                42.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                596.109375,
+                374.078125,
+                14.6015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                398.828125,
+                59.1015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                114.1015625,
+                398.828125,
+                21.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                136,
+                398.828125,
+                73.828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                209.828125,
+                398.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                243.5859375,
+                398.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                273.0078125,
+                398.828125,
+                46.515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                319.5234375,
+                398.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                363.2578125,
+                398.828125,
+                55.546875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                418.8046875,
+                398.828125,
+                50.390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                469.1953125,
+                398.828125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                500.1328125,
+                398.828125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                514.0390625,
+                398.828125,
+                49.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                563.796875,
+                398.828125,
+                29.6953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.4921875,
+                398.828125,
+                19.2421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                612.734375,
+                398.828125,
+                24.78125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                423.578125,
+                56.640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                482.328125,
+                174.2421875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                302,
+                504.328125,
+                28.4765625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                330.4765625,
+                504.328125,
+                29.6875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                360.1640625,
+                504.328125,
+                38.6640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                398.828125,
+                504.328125,
+                9.078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                407.90625,
+                504.328125,
+                49.203125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                457.109375,
+                504.328125,
+                37.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                494.40625,
+                504.328125,
+                34.4609375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                528.8671875,
+                504.328125,
+                32.0078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                560.875,
+                504.328125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                581.5234375,
+                504.328125,
+                86.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                668.1171875,
+                504.328125,
+                69.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                737.421875,
+                504.328125,
+                23.8828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                761.3046875,
+                504.328125,
+                31.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                792.953125,
+                504.328125,
+                14.0390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                806.9921875,
+                504.328125,
+                36.125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                843.1171875,
+                504.328125,
+                39.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                529.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                332.9375,
+                529.078125,
+                47.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                380.671875,
+                529.078125,
+                39.796875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                420.46875,
+                529.078125,
+                53.84375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                474.3125,
+                529.078125,
+                49.0625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                523.375,
+                529.078125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                552.796875,
+                529.078125,
+                61,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.796875,
+                529.078125,
+                42.953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                656.75,
+                529.078125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                677.3984375,
+                529.078125,
+                53.40625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                730.8046875,
+                529.078125,
+                44.328125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                775.1328125,
+                529.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                809.8046875,
+                529.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                860.5078125,
+                529.078125,
+                37.3515625,
+                20
+              ],
+              "font_px": 16.5
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              285,
+              471.328125,
+              640,
+              118.25
+            ]
+          ]
+        },
+        "end": 20.71266169473529,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.013,
+      "evidence_changed": false,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/reply",
+      "change": "matched",
+      "previous": {
+        "id": "reply",
+        "purpose": "The full reply is readable",
+        "caption": null,
+        "definition_sha256": "5ebe8abd385525f3035f82d11113b8ef9bcd60d1cd584521dedc037f51a5f596",
+        "checks": [
+          {
+            "type": "visible",
+            "target": {
+              "css": ".bubble.B:not(.thinking)"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 21.16213936341228
+          }
+        ],
+        "verified_at": 21.162141530425288,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/reply.png",
+        "start": 20.742728780431207,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                52,
+                -4.171875,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                464.171875,
+                -32.3203125,
+                31.6484375,
+                51
+              ],
+              "font_px": 34
+            },
+            {
+              "box": [
+                530.8203125,
+                -4.171875,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                359.0390625,
+                83.328125,
+                241.921875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                127.328125,
+                110.8828125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                149.328125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                89.671875,
+                149.328125,
+                50.625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                140.296875,
+                149.328125,
+                32.1484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                172.4453125,
+                149.328125,
+                32.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                204.8203125,
+                149.328125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                248.5546875,
+                149.328125,
+                19.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                267.859375,
+                149.328125,
+                32.3984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                300.2578125,
+                149.328125,
+                26.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                326.6328125,
+                149.328125,
+                38.265625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                364.8984375,
+                149.328125,
+                24.2890625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                389.1875,
+                149.328125,
+                25.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                414.3046875,
+                149.328125,
+                47.5625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                461.8671875,
+                149.328125,
+                41.03125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                502.8984375,
+                149.328125,
+                29.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                532.796875,
+                149.328125,
+                32.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                565.390625,
+                149.328125,
+                48.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.859375,
+                149.328125,
+                37.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                174.078125,
+                42.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                97.296875,
+                174.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                111.203125,
+                174.078125,
+                34.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                145.3203125,
+                174.078125,
+                33.046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                178.3671875,
+                174.078125,
+                22.6171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                200.984375,
+                174.078125,
+                32.5078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                233.4921875,
+                174.078125,
+                38.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                272.1484375,
+                174.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                306.8203125,
+                174.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                357.5234375,
+                174.078125,
+                41.9921875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                399.515625,
+                174.078125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                443.25,
+                174.078125,
+                65.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.609375,
+                174.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                539.546875,
+                174.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                553.453125,
+                174.078125,
+                42.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                596.109375,
+                174.078125,
+                14.6015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                198.828125,
+                59.1015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                114.1015625,
+                198.828125,
+                21.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                136,
+                198.828125,
+                73.828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                209.828125,
+                198.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                243.5859375,
+                198.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                273.0078125,
+                198.828125,
+                46.515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                319.5234375,
+                198.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                363.2578125,
+                198.828125,
+                55.546875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                418.8046875,
+                198.828125,
+                50.390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                469.1953125,
+                198.828125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                500.1328125,
+                198.828125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                514.0390625,
+                198.828125,
+                49.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                563.796875,
+                198.828125,
+                29.6953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.4921875,
+                198.828125,
+                19.2421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                612.734375,
+                198.828125,
+                24.78125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                223.578125,
+                56.640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                282.328125,
+                174.2421875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                302,
+                304.328125,
+                28.4765625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                330.4765625,
+                304.328125,
+                29.6875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                360.1640625,
+                304.328125,
+                38.6640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                398.828125,
+                304.328125,
+                9.078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                407.90625,
+                304.328125,
+                49.203125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                457.109375,
+                304.328125,
+                37.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                494.40625,
+                304.328125,
+                34.4609375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                528.8671875,
+                304.328125,
+                32.0078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                560.875,
+                304.328125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                581.5234375,
+                304.328125,
+                86.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                668.1171875,
+                304.328125,
+                69.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                737.421875,
+                304.328125,
+                23.8828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                761.3046875,
+                304.328125,
+                31.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                792.953125,
+                304.328125,
+                14.0390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                806.9921875,
+                304.328125,
+                36.125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                843.1171875,
+                304.328125,
+                39.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                329.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                332.9375,
+                329.078125,
+                47.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                380.671875,
+                329.078125,
+                39.796875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                420.46875,
+                329.078125,
+                53.84375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                474.3125,
+                329.078125,
+                49.0625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                523.375,
+                329.078125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                552.796875,
+                329.078125,
+                61,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.796875,
+                329.078125,
+                42.953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                656.75,
+                329.078125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                677.3984375,
+                329.078125,
+                53.40625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                730.8046875,
+                329.078125,
+                44.328125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                775.1328125,
+                329.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                809.8046875,
+                329.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                860.5078125,
+                329.078125,
+                37.3515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                353.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                345.734375,
+                353.828125,
+                49.3515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                395.0859375,
+                353.828125,
+                50.140625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                445.2265625,
+                353.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                478.984375,
+                353.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.40625,
+                353.828125,
+                32.859375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                541.265625,
+                353.828125,
+                52.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.734375,
+                353.828125,
+                52.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                646.109375,
+                353.828125,
+                43.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                689.46875,
+                353.828125,
+                23.25,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                712.71875,
+                353.828125,
+                63.7421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                776.4609375,
+                353.828125,
+                38.234375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                35,
+                439.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                499.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                527.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                527.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                499.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                524.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              285,
+              271.328125,
+              640,
+              118.25
+            ]
+          ]
+        },
+        "end": 23.69042894738959,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "reply",
+        "purpose": "The full reply is readable",
+        "caption": null,
+        "definition_sha256": "5ebe8abd385525f3035f82d11113b8ef9bcd60d1cd584521dedc037f51a5f596",
+        "checks": [
+          {
+            "type": "visible",
+            "target": {
+              "css": ".bubble.B:not(.thinking)"
+            }
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "visible",
+            "status": "passed",
+            "actual": "True",
+            "at": 21.173005028744228
+          }
+        ],
+        "verified_at": 21.17300777870696,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/reply.png",
+        "start": 20.75621715374291,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                52,
+                -4.171875,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                464.171875,
+                -32.3203125,
+                31.6484375,
+                51
+              ],
+              "font_px": 34
+            },
+            {
+              "box": [
+                530.8203125,
+                -4.171875,
+                86.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                359.0390625,
+                83.328125,
+                241.921875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                127.328125,
+                110.8828125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                55,
+                149.328125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                89.671875,
+                149.328125,
+                50.625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                140.296875,
+                149.328125,
+                32.1484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                172.4453125,
+                149.328125,
+                32.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                204.8203125,
+                149.328125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                248.5546875,
+                149.328125,
+                19.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                267.859375,
+                149.328125,
+                32.3984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                300.2578125,
+                149.328125,
+                26.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                326.6328125,
+                149.328125,
+                38.265625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                364.8984375,
+                149.328125,
+                24.2890625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                389.1875,
+                149.328125,
+                25.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                414.3046875,
+                149.328125,
+                47.5625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                461.8671875,
+                149.328125,
+                41.03125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                502.8984375,
+                149.328125,
+                29.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                532.796875,
+                149.328125,
+                32.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                565.390625,
+                149.328125,
+                48.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.859375,
+                149.328125,
+                37.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                174.078125,
+                42.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                97.296875,
+                174.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                111.203125,
+                174.078125,
+                34.1171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                145.3203125,
+                174.078125,
+                33.046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                178.3671875,
+                174.078125,
+                22.6171875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                200.984375,
+                174.078125,
+                32.5078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                233.4921875,
+                174.078125,
+                38.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                272.1484375,
+                174.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                306.8203125,
+                174.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                357.5234375,
+                174.078125,
+                41.9921875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                399.515625,
+                174.078125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                443.25,
+                174.078125,
+                65.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.609375,
+                174.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                539.546875,
+                174.078125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                553.453125,
+                174.078125,
+                42.65625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                596.109375,
+                174.078125,
+                14.6015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                198.828125,
+                59.1015625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                114.1015625,
+                198.828125,
+                21.8984375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                136,
+                198.828125,
+                73.828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                209.828125,
+                198.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                243.5859375,
+                198.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                273.0078125,
+                198.828125,
+                46.515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                319.5234375,
+                198.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                363.2578125,
+                198.828125,
+                55.546875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                418.8046875,
+                198.828125,
+                50.390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                469.1953125,
+                198.828125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                500.1328125,
+                198.828125,
+                13.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                514.0390625,
+                198.828125,
+                49.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                563.796875,
+                198.828125,
+                29.6953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.4921875,
+                198.828125,
+                19.2421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                612.734375,
+                198.828125,
+                24.78125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                55,
+                223.578125,
+                56.640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                282.328125,
+                174.2421875,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                302,
+                304.328125,
+                28.4765625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                330.4765625,
+                304.328125,
+                29.6875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                360.1640625,
+                304.328125,
+                38.6640625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                398.828125,
+                304.328125,
+                9.078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                407.90625,
+                304.328125,
+                49.203125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                457.109375,
+                304.328125,
+                37.296875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                494.40625,
+                304.328125,
+                34.4609375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                528.8671875,
+                304.328125,
+                32.0078125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                560.875,
+                304.328125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                581.5234375,
+                304.328125,
+                86.59375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                668.1171875,
+                304.328125,
+                69.3046875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                737.421875,
+                304.328125,
+                23.8828125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                761.3046875,
+                304.328125,
+                31.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                792.953125,
+                304.328125,
+                14.0390625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                806.9921875,
+                304.328125,
+                36.125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                843.1171875,
+                304.328125,
+                39.90625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                329.078125,
+                30.9375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                332.9375,
+                329.078125,
+                47.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                380.671875,
+                329.078125,
+                39.796875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                420.46875,
+                329.078125,
+                53.84375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                474.3125,
+                329.078125,
+                49.0625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                523.375,
+                329.078125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                552.796875,
+                329.078125,
+                61,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                613.796875,
+                329.078125,
+                42.953125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                656.75,
+                329.078125,
+                20.6484375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                677.3984375,
+                329.078125,
+                53.40625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                730.8046875,
+                329.078125,
+                44.328125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                775.1328125,
+                329.078125,
+                34.671875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                809.8046875,
+                329.078125,
+                50.703125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                860.5078125,
+                329.078125,
+                37.3515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                302,
+                353.828125,
+                43.734375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                345.734375,
+                353.828125,
+                49.3515625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                395.0859375,
+                353.828125,
+                50.140625,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                445.2265625,
+                353.828125,
+                33.7578125,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                478.984375,
+                353.828125,
+                29.421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                508.40625,
+                353.828125,
+                32.859375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                541.265625,
+                353.828125,
+                52.46875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                593.734375,
+                353.828125,
+                52.375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                646.109375,
+                353.828125,
+                43.359375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                689.46875,
+                353.828125,
+                23.25,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                712.71875,
+                353.828125,
+                63.7421875,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                776.4609375,
+                353.828125,
+                38.234375,
+                20
+              ],
+              "font_px": 16.5
+            },
+            {
+              "box": [
+                35,
+                439.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                499.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                527.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                527.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                499.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                524.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              285,
+              271.328125,
+              640,
+              118.25
+            ]
+          ]
+        },
+        "end": 23.70587973674992,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.002,
+      "evidence_changed": false,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/verdict",
+      "change": "matched",
+      "previous": {
+        "id": "verdict",
+        "purpose": "The judge model scores the debate and gives a reason",
+        "caption": "A judge model scores the debate",
+        "definition_sha256": "0817ecfd1a64cf6605c9a8f654dee7c3c08ae72a0ddc94fcb5306dce449066db",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#runs"
+            },
+            "contains": "Run 2"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "Run 1 (FOR labelled A): 61% FOR \u00b7 Run 2 (FOR labelled B): 38% FOR \u00b7 position bias toward \u201cA\u201d: +23 pts \u00b7 SmolLM2 135M",
+            "at": 24.15859990543686
+          }
+        ],
+        "verified_at": 24.15860157244606,
+        "trim_wait": false,
+        "min_reading": 2,
+        "screenshot": "takes/demo.evidence/verdict.png",
+        "start": 23.731183322437573,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                35,
+                353.578125,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                402.078125,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                460.078125,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                107.921875,
+                460.078125,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                203.5234375,
+                460.078125,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                326.796875,
+                460.078125,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                39,
+                490.078125,
+                149.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                536.578125,
+                109.2734375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                268.8671875,
+                536.578125,
+                37.75,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                358.5390625,
+                536.578125,
+                41.71875,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                520.8984375,
+                362.078125,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                392.578125,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                392.578125,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                440.578125,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                440.578125,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                509.578125,
+                72.375,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                509.578125,
+                392.4375,
+                38
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              294.7890625,
+              183.578125,
+              36.0078125,
+              15.5
+            ]
+          ]
+        },
+        "end": 27.19945273839403,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "verdict",
+        "purpose": "The judge model scores the debate and gives a reason",
+        "caption": "A judge model scores the debate",
+        "definition_sha256": "0817ecfd1a64cf6605c9a8f654dee7c3c08ae72a0ddc94fcb5306dce449066db",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#runs"
+            },
+            "contains": "Run 2"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "Run 1 (FOR labelled A): 61% FOR \u00b7 Run 2 (FOR labelled B): 38% FOR \u00b7 position bias toward \u201cA\u201d: +23 pts \u00b7 SmolLM2 135M",
+            "at": 24.177988819719758
+          }
+        ],
+        "verified_at": 24.17799140373245,
+        "trim_wait": false,
+        "min_reading": 2,
+        "screenshot": "takes/demo.evidence/verdict.png",
+        "start": 23.74768311175285,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                35,
+                353.578125,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                402.078125,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                460.078125,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                107.921875,
+                460.078125,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                203.5234375,
+                460.078125,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                326.796875,
+                460.078125,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                39,
+                490.078125,
+                149.5625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                536.578125,
+                109.2734375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                268.8671875,
+                536.578125,
+                37.75,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                358.5390625,
+                536.578125,
+                41.71875,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                520.8984375,
+                362.078125,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                392.578125,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                392.578125,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                440.578125,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                440.578125,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                509.578125,
+                72.375,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                509.578125,
+                392.4375,
+                38
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              294.7890625,
+              183.578125,
+              36.0078125,
+              15.5
+            ]
+          ]
+        },
+        "end": 27.22003848676104,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.004,
+      "evidence_changed": false,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/room",
+      "change": "matched",
+      "previous": {
+        "id": "room",
+        "purpose": "The room vote lands and the headline compares it to the judge",
+        "caption": "The room votes. No server involved.",
+        "definition_sha256": "4f2e5e27d2beb97fe50be27de1839e11336859018c656f2158d26f08803f0692",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#headline"
+            },
+            "contains": "wins the room"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "PIRATE CAPTAIN WINS THE ROOM \u00b7 THE JUDGE DISAGREES",
+            "at": 28.216365405416582
+          }
+        ],
+        "verified_at": 28.216366197390016,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/room.png",
+        "start": 27.24198486341629,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                92.3359375,
+                309.578125,
+                215.78125,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                308.1171875,
+                309.578125,
+                559.5390625,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                35,
+                405.375,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                453.875,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                511.875,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                172.015625,
+                511.875,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                250.015625,
+                511.875,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                350.59375,
+                511.875,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                234.2109375,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                334.7890625,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                440.1953125,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                520.8984375,
+                413.875,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              317.2734375,
+              309.578125,
+              220.6171875,
+              54.5
+            ]
+          ]
+        },
+        "end": 31.25760494743008,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "room",
+        "purpose": "The room vote lands and the headline compares it to the judge",
+        "caption": "The room votes. No server involved.",
+        "definition_sha256": "4f2e5e27d2beb97fe50be27de1839e11336859018c656f2158d26f08803f0692",
+        "checks": [
+          {
+            "type": "text",
+            "target": {
+              "css": "#headline"
+            },
+            "contains": "wins the room"
+          }
+        ],
+        "status": "passed",
+        "expectations": [
+          {
+            "type": "text",
+            "status": "passed",
+            "actual": "PIRATE CAPTAIN WINS THE ROOM \u00b7 THE JUDGE DISAGREES",
+            "at": 28.230588611739222
+          }
+        ],
+        "verified_at": 28.23058927874081,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/room.png",
+        "start": 27.261714694730472,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                92.3359375,
+                309.578125,
+                215.78125,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                308.1171875,
+                309.578125,
+                559.5390625,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                35,
+                405.375,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                453.875,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                511.875,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                172.015625,
+                511.875,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                250.015625,
+                511.875,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                350.59375,
+                511.875,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                234.2109375,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                334.7890625,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                440.1953125,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                520.8984375,
+                413.875,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": [
+            [
+              317.2734375,
+              309.578125,
+              220.6171875,
+              54.5
+            ]
+          ]
+        },
+        "end": 31.27454748674063,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": -0.003,
+      "evidence_changed": false,
+      "results_changed": false
+    },
+    {
+      "beat": "debate-club/end",
+      "change": "matched",
+      "previous": {
+        "id": "end",
+        "purpose": null,
+        "caption": null,
+        "definition_sha256": "4a9f4469f919faeb85d41e36bbaca5d6adf5255566afafe6c7f70b19a06a55c8",
+        "checks": [],
+        "status": "unverified",
+        "expectations": [],
+        "verified_at": 31.30206998839276,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/end.png",
+        "start": 31.298941072425805,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                92.3359375,
+                309.578125,
+                215.78125,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                308.1171875,
+                309.578125,
+                559.5390625,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                35,
+                405.375,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                453.875,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                511.875,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                172.015625,
+                511.875,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                250.015625,
+                511.875,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                350.59375,
+                511.875,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                234.2109375,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                334.7890625,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                440.1953125,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                520.8984375,
+                413.875,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": []
+        },
+        "end": 31.81756965542445,
+        "source_video": "takes/demo.mp4"
+      },
+      "current": {
+        "id": "end",
+        "purpose": null,
+        "caption": null,
+        "definition_sha256": "4a9f4469f919faeb85d41e36bbaca5d6adf5255566afafe6c7f70b19a06a55c8",
+        "checks": [],
+        "status": "unverified",
+        "expectations": [],
+        "verified_at": 31.320805944735184,
+        "trim_wait": false,
+        "min_reading": 0,
+        "screenshot": "takes/demo.evidence/end.png",
+        "start": 31.317812194756698,
+        "layout": {
+          "schema_version": 1,
+          "viewport": [
+            960,
+            540
+          ],
+          "text": [
+            {
+              "box": [
+                35,
+                19.078125,
+                122.390625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                50,
+                79.078125,
+                126.390625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                58,
+                107.078125,
+                50.40625,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                370.796875,
+                107.078125,
+                79.203125,
+                15.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                50,
+                140.078125,
+                87.5625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                50,
+                183.578125,
+                381.6015625,
+                51.5
+              ],
+              "font_px": 12
+            },
+            {
+              "box": [
+                502,
+                79.078125,
+                203.2890625,
+                14
+              ],
+              "font_px": 11.5
+            },
+            {
+              "box": [
+                502,
+                104.078125,
+                369.5546875,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                538.1328125,
+                162.078125,
+                126.7265625,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                502,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                728.6328125,
+                162.078125,
+                163.734375,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                711,
+                212.578125,
+                8.7109375,
+                42
+              ],
+              "font_px": 28
+            },
+            {
+              "box": [
+                502,
+                265.578125,
+                49.859375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                570.859375,
+                265.578125,
+                102.1484375,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                703.0078125,
+                265.578125,
+                134.2265625,
+                15.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                92.3359375,
+                309.578125,
+                215.78125,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                308.1171875,
+                309.578125,
+                559.5390625,
+                54.5
+              ],
+              "font_px": 36
+            },
+            {
+              "box": [
+                35,
+                405.375,
+                147.515625,
+                39
+              ],
+              "font_px": 26
+            },
+            {
+              "box": [
+                35,
+                453.875,
+                390.640625,
+                35
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                39,
+                511.875,
+                38.234375,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                172.015625,
+                511.875,
+                56.1328125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                250.015625,
+                511.875,
+                74.6953125,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                350.59375,
+                511.875,
+                78.65625,
+                13
+              ],
+              "font_px": 11
+            },
+            {
+              "box": [
+                234.2109375,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                334.7890625,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                440.1953125,
+                539.875,
+                7.8046875,
+                17.5
+              ],
+              "font_px": 13
+            },
+            {
+              "box": [
+                520.8984375,
+                413.875,
+                93.9296875,
+                18
+              ],
+              "font_px": 15
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                64.1171875,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                444.375,
+                376.2578125,
+                38
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                93.5703125,
+                17
+              ],
+              "font_px": 14
+            },
+            {
+              "box": [
+                526,
+                492.375,
+                390.6328125,
+                59
+              ],
+              "font_px": 14
+            }
+          ],
+          "skipped_transforms": 0,
+          "scope": "sampled main-page text at the result hold",
+          "checked": []
+        },
+        "end": 31.83796223672107,
+        "source_video": "takes/demo.mp4"
+      },
+      "checks_changed": {
+        "removed": [],
+        "added": []
+      },
+      "definition_changed": false,
+      "duration_delta": 0.002,
+      "evidence_changed": false,
+      "results_changed": false
+    }
+  ],
+  "screenshots": [],
+  "tours": [],
+  "inputs_changed": true,
+  "previous_environment": [
+    {
+      "story_id": "debate-club",
+      "browser": "158.0.8127.37",
+      "capture": {
+        "css_width": 960,
+        "css_height": 540,
+        "pixel_ratio": 2.0,
+        "zoom": false,
+        "frames": 665,
+        "max_gap_seconds": 3.5331900119781494,
+        "seed": 1,
+        "locale": "en-US",
+        "timezone": "UTC",
+        "theme": "dark",
+        "mobile": false
+      },
+      "story_sha256": "91a3023314bb0af9e540a38abf628869044d11267cb7c2d27d7d498fabd836e6"
+    }
+  ],
+  "current_environment": [
+    {
+      "story_id": "debate-club",
+      "browser": "158.0.8127.37",
+      "capture": {
+        "css_width": 960,
+        "css_height": 540,
+        "pixel_ratio": 2.0,
+        "zoom": false,
+        "frames": 666,
+        "max_gap_seconds": 3.533191204071045,
+        "seed": 1,
+        "locale": "en-US",
+        "timezone": "UTC",
+        "theme": "dark",
+        "mobile": false
+      },
+      "story_sha256": "91a3023314bb0af9e540a38abf628869044d11267cb7c2d27d7d498fabd836e6"
+    }
+  ],
+  "note": "Kept means the step is still in the story, not that it looks the same."
+}
