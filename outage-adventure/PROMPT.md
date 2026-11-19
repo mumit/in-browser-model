@@ -45,6 +45,8 @@ Build **Outage at 3 A.M.**: a single self-contained HTML text adventure for on-c
 - **State:** `{room, inv[], roomItems{room:[ids]}, opened[], unlocked["room:dir"], visited[], flags{}, moves, hints, won, started, ended}`.
 - **`act(state, {action, object, direction})`** handles look (room or object, noting open/closed and changed states), go (by direction or room name), take (including "all"), drop, open (containers move their contents into the room), read, use (the per-item logic above; keycard and door use mean go north), inventory, hint and help. It returns `{text, facts:{room, exits, items, fixtures, event}, changed, room}`.
 - **`resolve()`** finds nouns in this order: inventory, visible room items, visible fixtures, then "elsewhere", which produces "There's no X here."
+- **Going back and auto-walking:** "back", "go back" and "head back" mean the room you came from (track `prev`). "Go to the {room}" for a room that isn't adjacent walks a shortest route (breadth-first) through visited rooms and unlocked doors (or the keycard in hand), costing one move per room. A room never visited answers "You haven't found the way to the {room} yet."
+- **Tie-break:** when the matcher's top pick is "look at X" and "open X" scores within 0.12 of it, prefer open ("raid the fridge").
 - **Moves:** each command costs 1 move except help. A hint costs 5 moves instead, and gives the first unmet step from an ordered hint list.
 
 ## Parsing
@@ -91,6 +93,7 @@ Each command line in the transcript shows a badge: "rules", or "matched “open 
 
 - In Node, run the 14-move solve and assert a win.
 - Check failure paths: locked door, wrong room, eat before taking, unknown verb, the hint penalty, and the dark room with "too dark" responses.
+- Check "go back" uses the previous room and "go to the ops room" from the kitchen walks through the Hallway for 2 moves.
 - Check that `groundCheck` passes a faithful lobby narration and flags an invented keycard, fridge, door and exit.
 - Run `node --check` and take a screenshot.
 - Tell the user that model parsing and narration quality need a real browser test.

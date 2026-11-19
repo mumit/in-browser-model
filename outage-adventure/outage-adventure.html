@@ -250,7 +250,7 @@ const WORLD = {
     switch: { name: "core switch", words: ["switch", "router", "core"], desc: "The core switch. Every light on it is off." },
   },
 };
-const DIRS = { n: "north", s: "south", e: "east", w: "west", north: "north", south: "south", east: "east", west: "west", up: "north", down: "south", forward: "north", back: "south" };
+const DIRS = { n: "north", s: "south", e: "east", w: "west", north: "north", south: "south", east: "east", west: "west", up: "north", down: "south", forward: "north", back: "back" };
 const HINTS = [
   [s => !s.inv.includes("flashlight") && !s.opened.includes("desk"), "The security desk in the lobby has a drawer. Try opening it."],
   [s => !s.inv.includes("flashlight"), "Take the flashlight. The server room will be dark."],
@@ -294,6 +294,21 @@ function describeRoom(s) {
   let text = r.desc + (items.length ? ` You can see ${list(items.map(n => "a " + n))}.` : "") + ` Exits: ${list(exits)}.`;
   return { text, facts: { room: r.name, exits, items, fixtures: r.fixtures.map(f => WORLD.fixtures[f].name) } };
 }
+// Shortest list of directions between two rooms, through visited rooms and unlocked doors (or the keycard in hand).
+function route(s, from, to) {
+  const q = [[from, []]], seen = new Set([from]);
+  while (q.length) {
+    const [room, path] = q.shift();
+    if (room === to) return path;
+    for (const [d, next] of Object.entries(WORLD.rooms[room].exits)) {
+      if (seen.has(next) || !(s.visited.includes(next) || next === to)) continue;
+      const need = WORLD.rooms[room].lock?.[d];
+      if (need && !s.unlocked.includes(room + ":" + d) && !s.inv.includes(need)) continue;
+      seen.add(next); q.push([next, [...path, d]]);
+    }
+  }
+  return null;
+}
 // Runs one action. Returns {text, facts, changed:boolean, event}
 function act(s, a) {
   const r = WORLD.rooms[s.room], out = (text, extra = {}) => { const d = describeRoom(s); return { text, facts: { ...d.facts, event: text, ...extra.facts }, changed: !!extra.changed, room: !!extra.room }; };
@@ -314,8 +329,22 @@ function act(s, a) {
       return out(def.desc + extra);
     }
     case "go": {
-      const dir = DIRS[a.direction] || Object.entries(r.exits).find(([, to]) => WORLD.rooms[to].name.toLowerCase().includes((a.object || "").toLowerCase()) && a.object)?.[0];
-      if (!dir || !r.exits[dir]) return out(`You can't go ${a.direction || a.object || "that way"} from here.`);
+      if (a.direction === "back" && !s.prev) return out("You haven't come from anywhere yet.");
+      const dir = a.direction === "back" ? Object.entries(r.exits).find(([, to]) => to === s.prev)?.[0]
+        : DIRS[a.direction] || Object.entries(r.exits).find(([, to]) => WORLD.rooms[to].name.toLowerCase().includes((a.object || "").toLowerCase()) && a.object)?.[0];
+      if ((!dir || !r.exits[dir]) && a.object && !a.direction) {
+        // Not next door: walk there through rooms you've already visited (each room on the way costs a move).
+        const target = Object.keys(WORLD.rooms).find(k => WORLD.rooms[k].name.toLowerCase().includes(a.object.toLowerCase()));
+        const path = target && target !== s.room && s.visited.includes(target) ? route(s, s.room, target) : null;
+        if (!path) return out(target && !s.visited.includes(target) ? `You haven't found the way to the ${WORLD.rooms[target].name} yet.` : `You can't get to the ${a.object} from here.`);
+        const via = [];
+        for (const d of path) { const res = act(s, { action: "go", direction: d }); if (!res.changed) return res; via.push(WORLD.rooms[s.room].name); }
+        s.moves += path.length - 1;
+        const d2 = describeRoom(s);
+        const text = (via.length > 1 ? `You walk through the ${via.slice(0, -1).join(" and the ")}. ` : "") + d2.text;
+        return { text, facts: { ...d2.facts, event: `walked to the ${WORLD.rooms[s.room].name}` }, changed: true, room: true };
+      }
+      if (!dir || !r.exits[dir]) return out(`You can't go ${a.direction || "that way"} from here.`);
       const key = s.room + ":" + dir, need = r.lock?.[dir];
       let pre = "";
       if (need && !s.unlocked.includes(key)) {
@@ -396,6 +425,7 @@ function act(s, a) {
 const VERBS = [
   [/^(?:go|walk|move|head|run|enter|go to|walk to)\b\s*(.*)$/, m => goParse(m[1])],
   [/^(n|s|e|w|north|south|east|west)$/, m => ({ action: "go", direction: DIRS[m[1]] })],
+  [/^(?:back|head back|turn back|retreat)$/, () => ({ action: "go", direction: "back" })],
   [/^(?:take|get|grab|pick up|pick|collect)\s+(?:up\s+)?(.+)$/, m => ({ action: "take", object: m[1] })],
   [/^(?:drop|put down|leave)\s+(.+)$/, m => ({ action: "drop", object: m[1] })],
   [/^(?:open|unlock)\s+(.+)$/, m => ({ action: "open", object: m[1] })],
@@ -413,6 +443,7 @@ const VERBS = [
 function goParse(rest) {
   const words = rest.split(/\s+/).filter(Boolean);
   for (const w of words) if (DIRS[w] && !["up", "down", "back", "forward"].includes(w)) return { action: "go", direction: DIRS[w] };
+  if (words.includes("back")) return { action: "go", direction: "back" };
   const obj = rest.replace(/\b(up|down|over|back|forward|to|into|in|the|towards|toward)\b/g, " ").replace(/\s+/g, " ").trim();
   if (!obj) { const d = DIRS[words[0]]; return d ? { action: "go", direction: d } : null; }
   return { action: "go", object: obj };
@@ -555,6 +586,9 @@ async function meaningParse(text) {
   const [q, ...vecs] = await embedAll([text.toLowerCase(), ...cands.flatMap(c => c.phr)]);
   let k = 0; const scored = cands.map(c => { let best = -1; for (const _ of c.phr) best = Math.max(best, cos(q, vecs[k++])); return { ...c, score: best }; });
   scored.sort((a, b) => b.score - a.score);
+  // "raid the fridge" scores look-at and open almost equally; when they're close, opening is the useful reading.
+  const t0 = scored[0];
+  if (t0.a.action === "look" && t0.a.object) { const op = scored.find(c => c.a.action === "open" && c.a.object === t0.a.object); if (op && op.score >= t0.score - 0.12) { scored.splice(scored.indexOf(op), 1); scored.unshift(op); } }
   return { a: scored[0].score >= MATCH_MIN ? scored[0].a : null, top: scored.slice(0, 3) };
 }
 
