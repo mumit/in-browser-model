@@ -13,9 +13,9 @@ Six small apps and games that run AI models entirely in the browser (WebGPU, wit
 
 `index.html` is the landing page. Each folder has the app (a single HTML file) and a `PROMPT.md` that rebuilds it from scratch. `IDEAS.md` lists more ideas.
 
-![AI Debate Club demo: open it from the gallery, two tiny models debate in the browser, a judge model scores it](docs/demo/demo-final-readme.gif)
+![All six apps running in the browser: a debate verdict, a model unsure of a name, a narrator checked against the facts, a prompt golf albatross, a telephone chain that flips the meaning, and slides that follow speech](docs/demo/teaser/teaser-readme.gif)
 
-AI Debate Club with SmolLM2 135M as both debaters and the judge, recorded in real time ([MP4](docs/demo/demo-final.mp4)). The recording source is in `demo/`; re-record it with [reshoot](https://github.com/mumit/reshoot): `reshoot run demo/reshoot.toml`.
+The payoff moment of each app, recorded in real time. Full demos: [Prompt Golf](docs/demo/prompt-golf/demo-final.mp4) · [Nervous Narrator](docs/demo/nervous-narrator/demo-final.mp4) · [Slides That Follow You](docs/demo/follow-slides/demo-final.mp4) · [AI Telephone](docs/demo/ai-telephone/demo-final.mp4) · [Outage at 3 A.M.](docs/demo/outage-adventure/demo-final.mp4) · [AI Debate Club](docs/demo/demo-final.mp4) ([GIF](docs/demo/demo-final-readme.gif)). The recording sources are in `demo/` and `demos/`; re-record one with [reshoot](https://github.com/mumit/reshoot), for example `reshoot run demos/prompt-golf/reshoot.toml`.
 
 ## Run locally
 

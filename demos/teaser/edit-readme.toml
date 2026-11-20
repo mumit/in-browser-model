@@ -1,0 +1,67 @@
+schema_version = 1
+output = "readme.mp4"
+
+[[part]]
+card = "Six AI apps. All of them run in your browser tab."
+duration = 2.2
+
+[[part]]
+card = "AI Debate Club"
+duration = 1.0
+
+[[part]]
+take = 0
+start = 28.81  # last 3.4 s of "room"
+end = "end"
+
+[[part]]
+card = "Nervous Narrator"
+duration = 1.0
+
+[[part]]
+take = 1
+start = 37.32  # last 3.4 s of "inspect"
+end = "end"
+
+[[part]]
+card = "Outage at 3 A.M."
+duration = 1.0
+
+[[part]]
+take = 2
+start = 37.25  # last 3.6 s of "hallway"
+end = "end"
+
+[[part]]
+card = "Prompt Golf"
+duration = 1.0
+
+[[part]]
+take = 3
+start = 20.8  # last 3.6 s of "sink"
+end = "end"
+
+[[part]]
+card = "AI Telephone"
+duration = 1.0
+
+[[part]]
+take = 4
+start = 120.76  # last 3.8 s of "flip"
+end = "end"
+
+[[part]]
+card = "Slides That Follow You"
+duration = 1.0
+
+[[part]]
+take = 5
+start = 34.73  # last 3.4 s of "game"
+end = "end"
+
+[[part]]
+card = "Nothing leaves your computer. Try them below."
+duration = 2.4
+
+[[export]]
+preset = "readme"   # an 800x450 GIF for the repository README, checked against GitHub's 10 MB limit

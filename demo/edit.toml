@@ -12,3 +12,6 @@ end = "end"
 
 [[export]]
 preset = "readme"   # an 800x450 GIF, checked against GitHub's 10 MB limit
+
+[[export]]
+preset = "x"   # 1280x720 MP4 for X

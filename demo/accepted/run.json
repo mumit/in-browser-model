@@ -1,16 +1,11 @@
 {
   "schema_version": 1,
-  "config": "local source 01b7410a4f82",
+  "config": "local source 783e0437ca8c",
   "steps": [
-    {
-      "step": "web /Users/[user]/Development/AI/in-browser-model/demo/storyboard.toml",
-      "ok": true,
-      "seconds": 52.8
-    },
     {
       "step": "edit /Users/[user]/Development/AI/in-browser-model/demo/edit.toml",
       "ok": true,
-      "seconds": 11.5
+      "seconds": 13.8
     }
   ],
   "ok": true,
@@ -31,7 +26,7 @@
     ],
     "render_state": {
       "schema_version": 1,
-      "sha256": "9beefe8f1044598912d220e443031c607cc384d760a377e6fdd0f04c7bcea763",
+      "sha256": "ca3eb7f61af0ec8690843d133d0e68517c33310abbbf4235351c4ca53a07deff",
       "files": [
         {
           "key": "project",
@@ -49,7 +44,7 @@
           "key": "edit",
           "kind": "edit",
           "path": "edit.toml",
-          "sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906"
+          "sha256": "e6b4ec083f549b2bade56f767c7d34397198092c334b1fd840c6aedd44beef3c"
         }
       ]
     },
@@ -79,18 +74,19 @@
     },
     "fixtures": [],
     "recording_config_sha256": "e42f57a933dba7f1bad3c4d9ef192935c756424936edc186fbb58539e2fe83f9",
-    "edit_sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906",
-    "tracked_diff_sha256": "4788f5f3bc3fa45da9a23edfd17026d7ac384f10b9c6176f7f2b2206787f95f3",
-    "commit": "65ae6cb0591ecc1657f50511769033a70ad4531e",
+    "edit_sha256": "e6b4ec083f549b2bade56f767c7d34397198092c334b1fd840c6aedd44beef3c",
+    "tracked_diff_sha256": "807f51934247050c7625c119c6bb84e5f94b9c1e65818716c115eb4798988e85",
+    "commit": "73f64c4bd25a6e5bb2ec32d632eaaf2592b94fac",
     "dirty": true,
-    "dirty_index_sha256": "7884097b4efc19cbda694967e0cf60418285e9f9ca93171c8f4925435c8ed67b"
+    "dirty_index_sha256": "f113d537f7699740d5cb8d4ed771dfe2f0cecfbbc4dd01384dfb6a8624930e48"
   },
-  "id": "2d8c11ad8de54e8580045786e7b4a0e9",
+  "recut_from": "2d8c11ad8de54e8580045786e7b4a0e9",
+  "id": "65bcb550af0c47758d0ae1e3e01e14b2",
   "exports": {},
   "mode": "final",
-  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/2d8c11ad8de54e8580045786e7b4a0e9/review",
-  "seconds": 77.1,
-  "finished_at": "2026-11-20T16:01:17.780209+00:00",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/65bcb550af0c47758d0ae1e3e01e14b2/review",
+  "seconds": 27.2,
+  "finished_at": "2026-11-20T17:00:30.485308+00:00",
   "files": [
     {
       "path": "takes/demo.take.json",

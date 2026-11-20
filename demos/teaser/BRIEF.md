@@ -19,3 +19,10 @@ Make it:
     cd demos/teaser
     reshoot edit edit.toml takes/debate.mp4 takes/narrator.mp4 takes/outage.mp4 takes/golf.mp4 takes/telephone.mp4 takes/slides.mp4
     reshoot check takes/teaser.mp4 takes/teaser-x.mp4 --full --review review
+
+The README version (`edit-readme.toml`) is the same cut with a closing card
+that doesn't mention the X series, exported as an 800x450 GIF:
+
+    reshoot edit edit-readme.toml takes/debate.mp4 takes/narrator.mp4 takes/outage.mp4 takes/golf.mp4 takes/telephone.mp4 takes/slides.mp4
+    reshoot check takes/readme-readme.gif --full --review review-readme
+    cp takes/readme-readme.gif ../../docs/demo/teaser/teaser-readme.gif
