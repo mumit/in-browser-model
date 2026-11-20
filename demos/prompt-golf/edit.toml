@@ -1,0 +1,18 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "Golf, but every character of your prompt is a stroke. A 135M model, in your browser tab."
+duration = 2.6
+
+[[part]]
+take = 0
+start = 0
+end = "end"
+
+[[part]]
+card = "Can you beat 17? Nothing leaves your computer."
+duration = 2.2
+
+[[export]]
+preset = "x"

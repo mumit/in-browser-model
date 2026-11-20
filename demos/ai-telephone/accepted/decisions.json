@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "f04f512726cb4945a87bef2fa3da3d03",
+  "binding": "7963b78cffb7deb74fa1fc2f73684f93155e9e42d4194f52ab1db8e0d8d85d9d",
+  "decisions": {
+    "ai-telephone/chain": "accepted",
+    "ai-telephone/drift": "accepted",
+    "ai-telephone/end": "accepted",
+    "ai-telephone/flip": "accepted",
+    "ai-telephone/gallery": "accepted",
+    "ai-telephone/load": "accepted",
+    "ai-telephone/open": "accepted",
+    "ai-telephone/settings": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-20T16:16:56+00:00"
+}

@@ -1,0 +1,32 @@
+1
+00:00:02,425 --> 00:00:04,939
+A gallery of in-browser AI apps
+
+2
+00:00:04,939 --> 00:00:06,974
+Open Outage at 3 A.M.
+
+3
+00:00:06,974 --> 00:00:06,975
+Open Outage at 3 A.M.
+
+4
+00:00:06,975 --> 00:00:10,925
+Load a command matcher and a 0.5B narrator
+
+5
+00:00:10,925 --> 00:00:10,927
+Load a command matcher and a 0.5B narrator
+
+6
+00:00:10,927 --> 00:00:18,718
+Type anything: it maps to a real move
+
+7
+00:00:18,718 --> 00:00:24,064
+A 0.5B model tells the story in noir…
+
+8
+00:00:24,064 --> 00:00:31,334
+…the engine keeps the facts. Spot the difference.
+

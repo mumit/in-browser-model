@@ -1,0 +1,44 @@
+1
+00:00:02,423 --> 00:00:04,952
+A gallery of in-browser AI apps
+
+2
+00:00:04,952 --> 00:00:07,033
+Open AI Telephone
+
+3
+00:00:07,033 --> 00:00:07,034
+Open AI Telephone
+
+4
+00:00:07,034 --> 00:00:12,346
+Load four models: a voice, ears, a brain, a meaning matcher
+
+5
+00:00:12,346 --> 00:00:12,348
+Load four models: a voice, ears, a brain, a meaning matcher
+
+6
+00:00:12,348 --> 00:00:16,205
+4 relays, a tin-can line, gossipy retellers
+
+7
+00:00:16,205 --> 00:00:16,206
+4 relays, a tin-can line, gossipy retellers
+
+8
+00:00:16,206 --> 00:00:30,715
+Each relay speaks, hears it through static, retells it
+
+9
+00:00:30,715 --> 00:00:30,718
+Each relay speaks, hears it through static, retells it
+
+10
+00:00:30,718 --> 00:00:34,062
+Meaning drift: below “lost the plot” after one relay
+
+11
+00:00:34,062 --> 00:00:38,194
+“Blocked” became “successfully initiated”
+

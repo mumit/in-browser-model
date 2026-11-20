@@ -1,0 +1,129 @@
+schema_version = 1
+id = "ai-telephone"
+url = "http://127.0.0.1:8777/"
+size = "1280x720@2"
+timeout = 1500
+
+# The recorder captures no sound, and playing each relay aloud only slows the chain. The app saves this.
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/ai-telephone/ai-telephone.html"
+
+[[setup]]
+type = "check"
+target = {css = "#aloud"}
+checked = false
+
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/"
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 2.4
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "open"
+purpose = "Open AI Telephone from the gallery"
+caption = "Open AI Telephone"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 760
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='ai-telephone/ai-telephone.html']"}
+[[beat.expect]]
+type = "url"
+contains = "ai-telephone/ai-telephone.html"
+[[beat.expect]]
+type = "visible"
+target = {css = "#load"}
+
+[[beat]]
+id = "load"
+purpose = "Load Kokoro, Whisper, Qwen2.5 0.5B and MiniLM in the tab"
+caption = "Load four models: a voice, ears, a brain, a meaning matcher"
+hold = 0.8
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#status"}
+contains = "Line ready"
+timeout = 900000
+
+[[beat]]
+id = "settings"
+purpose = "Four relays on a tin-can line, each retelling it like gossip"
+caption = "4 relays, a tin-can line, gossipy retellers"
+hold = 1
+[[beat.action]]
+type = "select"
+target = {css = "#rounds"}
+option = "4"
+[[beat.action]]
+type = "select"
+target = {css = "#noise"}
+option = "Tin can"
+[[beat.action]]
+type = "click"
+target = {css = "[data-style='gossip']"}
+[[beat.expect]]
+type = "value"
+target = {css = "#noise"}
+value = "3"
+
+[[beat]]
+id = "chain"
+purpose = "Each relay speaks, goes through the line, is transcribed and retold"
+caption = "Each relay speaks, hears it through static, retells it"
+hold = 1.5
+[[beat.action]]
+type = "scroll"
+dy = 80
+[[beat.action]]
+type = "click"
+target = {css = "#go"}
+[[beat.expect]]
+type = "count"
+target = {css = ".relay:not(.origin) .simrow"}
+count = 4
+timeout = 600000
+
+[[beat]]
+id = "drift"
+purpose = "The drift chart falls below 'lost the plot' and stays there"
+caption = "Meaning drift: below “lost the plot” after one relay"
+hold = 2.8
+[[beat.action]]
+type = "scroll"
+dy = 250
+[[beat.expect]]
+type = "text"
+target = {css = "#rFinal"}
+contains = "0.41"
+
+[[beat]]
+id = "flip"
+purpose = "The original and relay 1 side by side: the meaning flipped"
+caption = "“Blocked” became “successfully initiated”"
+hold = 3.6
+[[beat.action]]
+type = "scroll"
+dy = -3000
+[[beat.expect]]
+type = "text"
+target = {css = "#chain .relay:nth-child(2)"}
+contains = "successfully initiated"
+
+[[beat]]
+id = "end"
+hold = 0.5

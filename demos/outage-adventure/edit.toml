@@ -1,0 +1,30 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "A text adventure narrated by a tiny AI. It runs in your browser tab."
+duration = 2.4
+
+[[part]]
+take = 0
+start = 0
+through = "open"
+
+[[part]]
+take = 0
+start = "load"
+through = "load"
+speed = 4
+label = "Sped up 4x"
+
+[[part]]
+take = 0
+start = "desk"
+end = "end"
+
+[[part]]
+card = "The model tells the story. The engine keeps the facts. Nothing leaves your computer."
+duration = 2.8
+
+[[export]]
+preset = "x"

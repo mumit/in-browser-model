@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "40c32dc3fae04d82ae43bcc1dc486ba4",
+  "binding": "cca76e27bf1fd77569d73d7e444c0550cd4ca4416099f77e8dc811cc319a4221",
+  "decisions": {
+    "nervous-narrator/easy": "accepted",
+    "nervous-narrator/end": "accepted",
+    "nervous-narrator/gallery": "accepted",
+    "nervous-narrator/hard": "accepted",
+    "nervous-narrator/inspect": "accepted",
+    "nervous-narrator/load": "accepted",
+    "nervous-narrator/open": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-20T04:59:08+00:00"
+}

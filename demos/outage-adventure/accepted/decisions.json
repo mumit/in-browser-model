@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "run_id": "ef4d5351f4b14d12a884a00fba776e2c",
+  "binding": "8c2c6aaf71468598ef614c6e7abb1e273238f25a1eca245c0fc19c79a6723bc3",
+  "decisions": {
+    "outage-adventure/desk": "accepted",
+    "outage-adventure/end": "accepted",
+    "outage-adventure/gallery": "accepted",
+    "outage-adventure/hallway": "accepted",
+    "outage-adventure/load": "accepted",
+    "outage-adventure/open": "accepted",
+    "outage-adventure/torch": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-20T05:24:15+00:00"
+}

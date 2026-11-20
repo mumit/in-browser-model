@@ -1,0 +1,18 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "Slides that follow what you say. Whisper and an embedding model, in your browser tab."
+duration = 2.6
+
+[[part]]
+take = 0
+start = 0
+end = "end"
+
+[[part]]
+card = "Six apps, all running in your browser tab. Nothing leaves your computer."
+duration = 2.8
+
+[[export]]
+preset = "x"

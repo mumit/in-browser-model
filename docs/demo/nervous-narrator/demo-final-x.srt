@@ -1,0 +1,32 @@
+1
+00:00:02,222 --> 00:00:04,722
+A gallery of in-browser AI apps
+
+2
+00:00:04,722 --> 00:00:06,905
+Open Nervous Narrator
+
+3
+00:00:06,905 --> 00:00:06,906
+Open Nervous Narrator
+
+4
+00:00:06,906 --> 00:00:10,662
+Load a 0.5B model into the tab
+
+5
+00:00:10,662 --> 00:00:10,664
+Load a 0.5B model into the tab
+
+6
+00:00:10,664 --> 00:00:18,232
+Easy question: every word steady
+
+7
+00:00:18,232 --> 00:00:27,144
+Harder: it wobbles on the wrong name
+
+8
+00:00:27,144 --> 00:00:31,576
+Click a word: what else it almost said
+

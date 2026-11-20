@@ -1,0 +1,18 @@
+{
+  "schema_version": 1,
+  "run_id": "e7213f9d995d4fd3bfd2134b0e6505ae",
+  "binding": "c169efdd37e06f1edcec3e93061ddd0e5f1fc0fee6152800c3e0b4ff18bf24af",
+  "decisions": {
+    "follow-slides/end": "accepted",
+    "follow-slides/gallery": "accepted",
+    "follow-slides/game": "accepted",
+    "follow-slides/load": "accepted",
+    "follow-slides/open": "accepted",
+    "follow-slides/privacy": "accepted",
+    "follow-slides/runtime": "accepted",
+    "follow-slides/sizes": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-20T15:53:12+00:00"
+}

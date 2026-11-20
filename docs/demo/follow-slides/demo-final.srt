@@ -1,0 +1,28 @@
+1
+00:00:02,636 --> 00:00:05,183
+A gallery of in-browser AI apps
+
+2
+00:00:05,183 --> 00:00:07,350
+Open Slides That Follow You
+
+3
+00:00:07,350 --> 00:00:14,333
+Load Whisper and a 23 MB meaning matcher
+
+4
+00:00:14,333 --> 00:00:21,677
+Typed here to stand in for speech. The slide follows.
+
+5
+00:00:21,677 --> 00:00:28,032
+It matches meaning, not keywords
+
+6
+00:00:28,032 --> 00:00:34,040
+The meters show how close you are to each slide
+
+7
+00:00:34,040 --> 00:00:40,730
+“Let me show you a little game…” → the Prompt Golf slide
+

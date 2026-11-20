@@ -1,0 +1,123 @@
+schema_version = 1
+id = "outage-adventure"
+url = "http://127.0.0.1:8777/"
+size = "992x558@2"
+timeout = 1500
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 2.4
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "open"
+purpose = "Open Outage at 3 A.M. from the gallery"
+caption = "Open Outage at 3 A.M."
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 840
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='outage-adventure/outage-adventure.html']"}
+[[beat.expect]]
+type = "url"
+contains = "outage-adventure/outage-adventure.html"
+[[beat.expect]]
+type = "visible"
+target = {css = "#feed"}
+
+[[beat]]
+id = "load"
+purpose = "Load the MiniLM matcher and the Qwen2.5 0.5B narrator in the tab"
+caption = "Load a command matcher and a 0.5B narrator"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 200
+[[beat.action]]
+type = "click"
+target = {css = "#loadEars"}
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#loadEars"}
+contains = "Loaded"
+timeout = 600000
+[[beat.expect]]
+type = "text"
+target = {css = "#load"}
+contains = "Loaded"
+timeout = 900000
+
+[[beat]]
+id = "desk"
+purpose = "A free-form command is matched to a real action"
+caption = "Type anything: it maps to a real move"
+hold = 2.6
+[[beat.action]]
+type = "scroll"
+dy = -50
+[[beat.action]]
+type = "type"
+target = {css = "#cmd"}
+text = "rummage through the desk"
+[[beat.action]]
+type = "key"
+target = {css = "#cmd"}
+key = "Enter"
+[[beat.expect]]
+type = "visible"
+target = {css = "#feed .turn:last-child .via.meaning"}
+timeout = 120000
+[[beat.expect]]
+type = "visible"
+target = {css = "#feed .turn:last-child .flag"}
+timeout = 120000
+
+[[beat]]
+id = "torch"
+purpose = "The narrator retells the engine's line in noir, with the facts underneath"
+caption = "A 0.5B model tells the story in noir…"
+hold = 2.6
+[[beat.action]]
+type = "type"
+target = {css = "#cmd"}
+text = "grab the torch"
+[[beat.action]]
+type = "key"
+target = {css = "#cmd"}
+key = "Enter"
+[[beat.expect]]
+type = "visible"
+target = {css = "#feed .turn:last-child .flag"}
+timeout = 120000
+
+[[beat]]
+id = "hallway"
+purpose = "The engine's line and the grounding check sit under the narration"
+caption = "…the engine keeps the facts. Spot the difference."
+hold = 3.4
+[[beat.action]]
+type = "type"
+target = {css = "#cmd"}
+text = "go north"
+[[beat.action]]
+type = "key"
+target = {css = "#cmd"}
+key = "Enter"
+[[beat.expect]]
+type = "visible"
+target = {css = "#feed .turn:last-child .flag"}
+timeout = 120000
+
+[[beat]]
+id = "end"
+hold = 0.5

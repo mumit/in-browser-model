@@ -1,0 +1,42 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "A game of telephone between AI models. All four run in your browser tab."
+duration = 2.4
+
+[[part]]
+take = 0
+start = 0
+through = "open"
+
+[[part]]
+take = 0
+start = "load"
+through = "load"
+speed = 4
+label = "Sped up 4x"
+
+[[part]]
+take = 0
+start = "settings"
+through = "settings"
+
+[[part]]
+take = 0
+start = "chain"
+through = "chain"
+speed = 6
+label = "Sped up 6x"
+
+[[part]]
+take = 0
+start = "drift"
+end = "end"
+
+[[part]]
+card = "Every step is pretty good. Errors still compound. Nothing leaves your computer."
+duration = 2.8
+
+[[export]]
+preset = "x"

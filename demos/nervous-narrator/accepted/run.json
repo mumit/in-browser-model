@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "config": "local source 0666b64d7dce",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/nervous-narrator/storyboard.toml",
+      "ok": true,
+      "seconds": 63.0
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/nervous-narrator/edit.toml",
+      "ok": true,
+      "seconds": 11.1
+    }
+  ],
+  "ok": true,
+  "unchecked": 24,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "8b94d6d3061521fb4f7a68f96c3b2996cf70248edf8627c520eced946ca76257",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "1aff631ce343fe940b95c1d95fdf86153e75bce58fdb2b7ced73568aefda9567",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "8b94d6d3061521fb4f7a68f96c3b2996cf70248edf8627c520eced946ca76257"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "3b4b967822b6bc593381051905f80c80d1d266991736bc976981196749007c46"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "1aff631ce343fe940b95c1d95fdf86153e75bce58fdb2b7ced73568aefda9567",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "8b94d6d3061521fb4f7a68f96c3b2996cf70248edf8627c520eced946ca76257"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "3b4b967822b6bc593381051905f80c80d1d266991736bc976981196749007c46"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "6e7b7fdd4e5168edd6c71953e5c8785e64375d3883f6864a89cc2c40a6196908",
+    "edit_sha256": "3b4b967822b6bc593381051905f80c80d1d266991736bc976981196749007c46",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "commit": "ad63dff3bc078348e01fb771dd55822b7fc90efa",
+    "dirty": true,
+    "dirty_index_sha256": "9b58dc357bad1fe2463069840529af905e3c718703fb3f4a198d167527c9e18c"
+  },
+  "id": "40c32dc3fae04d82ae43bcc1dc486ba4",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/nervous-narrator/takes/runs/40c32dc3fae04d82ae43bcc1dc486ba4/review",
+  "seconds": 84.9,
+  "finished_at": "2026-11-20T04:57:16.373293+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "92ab1c34ac4b1f640e3581ecf4b0e8fd946ac1019aff6b7e22d85cfbb4cd915a"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "ff2db3e4fe9255f262cec94b7260027e4031f20cccfa3c4abeff24e187c27561"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "6317cfe9f1e7c653d354a28724314b11e1aac1aee749313100a44224689f8632"
+    },
+    {
+      "path": "takes/demo.evidence/inspect.png",
+      "sha256": "7c3c13b0f57f6b41b974eae752fc03272a93152bb37ebf5b0c2a02b20dd5ee0c"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "7c3c13b0f57f6b41b974eae752fc03272a93152bb37ebf5b0c2a02b20dd5ee0c"
+    },
+    {
+      "path": "takes/demo.evidence/easy.png",
+      "sha256": "f3ef7a7f7ad9100174b9e8870d5a5ec18f2f8a02a9adc146e413d5329f47c847"
+    },
+    {
+      "path": "takes/demo.evidence/hard.png",
+      "sha256": "eb9d8a1b96766778644c1d9b39b7ec5ae768e70f8de15e3921c64962bbc81492"
+    },
+    {
+      "path": "takes/demo.evidence/open.png",
+      "sha256": "2f33d4c1c97ae0dfdb3c8ba7129f5ec870ac5a4144dee9a435075d635d75f75b"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 7,
+  "record": true
+}

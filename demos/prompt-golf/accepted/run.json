@@ -1,0 +1,127 @@
+{
+  "schema_version": 1,
+  "config": "local source 16dce3bdbe3f",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/prompt-golf/storyboard.toml",
+      "ok": true,
+      "seconds": 40.5
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/prompt-golf/edit.toml",
+      "ok": true,
+      "seconds": 8.0
+    }
+  ],
+  "ok": true,
+  "unchecked": 20,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "98a85960009fa5197ebf384d174cbcaa7f9415f593eb1266455c20684b12b536",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "e47bd1b9671384a3177c2936f864be88ec16caceebf9f42882a17b23be9761e3",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "98a85960009fa5197ebf384d174cbcaa7f9415f593eb1266455c20684b12b536"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "bcec62d9a550c44d04e02603b01af6a7ab599f04aff25f2e960e12e5ff57078d"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "e47bd1b9671384a3177c2936f864be88ec16caceebf9f42882a17b23be9761e3",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "98a85960009fa5197ebf384d174cbcaa7f9415f593eb1266455c20684b12b536"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "bcec62d9a550c44d04e02603b01af6a7ab599f04aff25f2e960e12e5ff57078d"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "6e7b7fdd4e5168edd6c71953e5c8785e64375d3883f6864a89cc2c40a6196908",
+    "edit_sha256": "bcec62d9a550c44d04e02603b01af6a7ab599f04aff25f2e960e12e5ff57078d",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "commit": "0301c185da32173589b9309aa0cb160f80352cfd",
+    "dirty": true,
+    "dirty_index_sha256": "6b6be1a0e1b0631c7f6e311976567f001dc74cef3bcc936d30d5b6e7cc980a3b"
+  },
+  "id": "ed91e543b6694c3ba9ab2cd169092e06",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/prompt-golf/takes/runs/ed91e543b6694c3ba9ab2cd169092e06/review",
+  "seconds": 60.0,
+  "finished_at": "2026-11-20T05:34:53.556249+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "c20246546ffa0f06c054be19dda02c16c73e9329dfbf043242415c732619fdf8"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "07da7324ff15b0e4a94145250372a00052cae04cafe4884e48e69ee995d999b7"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "e88fceedb133e1c4f170512dc2657bbd8707084559a18611108b119922d41062"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "f639ce784a936600706d9d1d093510b378a84cd32f7495c5fdb646e4bf240315"
+    },
+    {
+      "path": "takes/demo.evidence/open.png",
+      "sha256": "3f8a7e5d6157ad036c9b9223ecb4da80c186029cb762710db623c8ce3f808ac6"
+    },
+    {
+      "path": "takes/demo.evidence/miss.png",
+      "sha256": "b517cc38d358861c47c06e7a19ed58d25b2ce035a201cdc62ebd5144404ee931"
+    },
+    {
+      "path": "takes/demo.evidence/sink.png",
+      "sha256": "f639ce784a936600706d9d1d093510b378a84cd32f7495c5fdb646e4bf240315"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 6,
+  "record": true
+}

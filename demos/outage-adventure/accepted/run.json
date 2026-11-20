@@ -1,0 +1,131 @@
+{
+  "schema_version": 1,
+  "config": "local source 8202bdadbd1b",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/outage-adventure/storyboard.toml",
+      "ok": true,
+      "seconds": 61.8
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/outage-adventure/edit.toml",
+      "ok": true,
+      "seconds": 11.1
+    }
+  ],
+  "ok": true,
+  "unchecked": 24,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "bc1fdd561557160923cce122282e360dd97d22395b43a05af885d47c2fc49317",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "8454fb011489746881075848cbaa14c56149d2e6f973ed16906ff370d9754a49",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "bc1fdd561557160923cce122282e360dd97d22395b43a05af885d47c2fc49317"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "d626a9149f946a8fc3fb91bd4fcfc514dcd1dd12f29e4182c1c5a95c2199bee8"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "8454fb011489746881075848cbaa14c56149d2e6f973ed16906ff370d9754a49",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "bc1fdd561557160923cce122282e360dd97d22395b43a05af885d47c2fc49317"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "d626a9149f946a8fc3fb91bd4fcfc514dcd1dd12f29e4182c1c5a95c2199bee8"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "6e7b7fdd4e5168edd6c71953e5c8785e64375d3883f6864a89cc2c40a6196908",
+    "edit_sha256": "d626a9149f946a8fc3fb91bd4fcfc514dcd1dd12f29e4182c1c5a95c2199bee8",
+    "tracked_diff_sha256": "129b85471edd0996f1b6e00c4729221c8e1a80b97ed618cb07a4c4aea76dde47",
+    "commit": "ad63dff3bc078348e01fb771dd55822b7fc90efa",
+    "dirty": true,
+    "dirty_index_sha256": "9a19e3655ca4a4ef669e220dd1e0c5b63aeb1efb88c5c6fd39a3c1830824f485"
+  },
+  "id": "ef4d5351f4b14d12a884a00fba776e2c",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/outage-adventure/takes/runs/ef4d5351f4b14d12a884a00fba776e2c/review",
+  "seconds": 84.3,
+  "finished_at": "2026-11-20T05:20:01.789553+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "5350bc04005a6baf3ff14f317bcdd4c91a22c54df3af7b67f251d435d8ea6ebf"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "ea2947ea065c50568360c20ad114764b8e234bef69cef81670757332813b3fb8"
+    },
+    {
+      "path": "takes/demo.evidence/desk.png",
+      "sha256": "814d668e57c0d7d9526a9145361d11b991fbec7fed6baf50caf57601ba88e2ee"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "e5a696a0f0fe098efaf3b1ece91671d04b95c4127a9c30a558088d6a0d4d8bd2"
+    },
+    {
+      "path": "takes/demo.evidence/torch.png",
+      "sha256": "01eb0781a2a16a2f76ebe3debc1d47447184016c80c72b7d49ad1fc400cd3e62"
+    },
+    {
+      "path": "takes/demo.evidence/hallway.png",
+      "sha256": "cba3ade1efd875871895e4410704d82374300c7f86864cea3acd173a535b2a20"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "0584531f5094d629820df15cd0ff1beb1446d7a748f8fe0b03a7cbdb0c8cc282"
+    },
+    {
+      "path": "takes/demo.evidence/open.png",
+      "sha256": "5919a908b47bb2c605791e9ab748da9094089a2d65616629c36cd7c026a60856"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 9,
+  "record": true
+}

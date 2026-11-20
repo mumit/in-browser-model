@@ -1,0 +1,17 @@
+schema_version = 1
+timeout = 1500
+
+[app]
+run = "python3 -m http.server 8777 --bind 127.0.0.1 --directory ../.."
+url = "http://127.0.0.1:8777/"
+
+[[take]]
+web = "storyboard.toml"
+out = "takes/demo.mp4"
+[edit]
+file = "edit.toml"
+args = ["takes/demo.mp4"]
+[check]
+sources = ["takes/demo-final.mp4", "takes/demo-final-x.mp4"]
+review = "review"
+scan = true

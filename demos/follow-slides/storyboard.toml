@@ -1,0 +1,134 @@
+schema_version = 1
+id = "follow-slides"
+url = "http://127.0.0.1:8777/"
+size = "1280x720@2"
+timeout = 1200
+
+[cursor]
+typing = 28
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 2.4
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "open"
+purpose = "Open Slides That Follow You from the gallery"
+caption = "Open Slides That Follow You"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 340
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='follow-slides/follow-slides.html']"}
+[[beat.expect]]
+type = "url"
+contains = "follow-slides/follow-slides.html"
+[[beat.expect]]
+type = "text"
+target = {css = "#count"}
+contains = "1 / 8"
+
+[[beat]]
+id = "load"
+purpose = "Whisper and MiniLM load in the tab and index the deck"
+caption = "Load Whisper and a 23 MB meaning matcher"
+hold = 1
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#status"}
+contains = "8 slides indexed"
+timeout = 600000
+
+[[beat]]
+id = "privacy"
+purpose = "A sentence about privacy moves to 'Why run models locally?'"
+caption = "Typed here to stand in for speech. The slide follows."
+hold = 1.8
+[[beat.action]]
+type = "scroll"
+dy = 130
+[[beat.action]]
+type = "type"
+target = {css = "#sim"}
+text = "Honestly, the big reason is privacy: nothing you say leaves your laptop."
+[[beat.action]]
+type = "key"
+target = {css = "#sim"}
+key = "Enter"
+[[beat.expect]]
+type = "text"
+target = {css = "#count"}
+contains = "2 / 8"
+
+[[beat]]
+id = "sizes"
+purpose = "A sentence about model sizes moves to 'What fits in a browser today'"
+caption = "It matches meaning, not keywords"
+hold = 1.8
+[[beat.action]]
+type = "type"
+target = {css = "#sim"}
+text = "So how big are these models? Whisper is about eighty megabytes."
+[[beat.action]]
+type = "key"
+target = {css = "#sim"}
+key = "Enter"
+[[beat.expect]]
+type = "text"
+target = {css = "#count"}
+contains = "3 / 8"
+
+[[beat]]
+id = "runtime"
+purpose = "A sentence about WebGPU moves to 'How it runs'"
+caption = "The meters show how close you are to each slide"
+hold = 2
+[[beat.action]]
+type = "type"
+target = {css = "#sim"}
+text = "Under the hood, WebGPU runs it on the graphics card."
+[[beat.action]]
+type = "key"
+target = {css = "#sim"}
+key = "Enter"
+[[beat.expect]]
+type = "text"
+target = {css = "#count"}
+contains = "4 / 8"
+
+[[beat]]
+id = "game"
+purpose = "'Let me show you a little game' lands on the Prompt Golf demo slide"
+caption = "“Let me show you a little game…” → the Prompt Golf slide"
+hold = 3.2
+[[beat.action]]
+type = "type"
+target = {css = "#sim"}
+text = "Let me show you a little game we built."
+[[beat.action]]
+type = "key"
+target = {css = "#sim"}
+key = "Enter"
+[[beat.expect]]
+type = "text"
+target = {css = "#count"}
+contains = "5 / 8"
+[[beat.expect]]
+type = "text"
+target = {css = "#slide"}
+contains = "Prompt Golf"
+
+[[beat]]
+id = "end"
+hold = 0.5

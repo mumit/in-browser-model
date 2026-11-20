@@ -1,0 +1,16 @@
+{
+  "schema_version": 1,
+  "run_id": "ed91e543b6694c3ba9ab2cd169092e06",
+  "binding": "55a74e2e0f022f181feb72ee4de5cd6e670612147c3c708bb1dfffdf2cd75788",
+  "decisions": {
+    "prompt-golf/end": "accepted",
+    "prompt-golf/gallery": "accepted",
+    "prompt-golf/load": "accepted",
+    "prompt-golf/miss": "accepted",
+    "prompt-golf/open": "accepted",
+    "prompt-golf/sink": "accepted",
+    "video": "accepted"
+  },
+  "recorded_by": "reshoot accept",
+  "recorded_at": "2026-11-20T05:36:01+00:00"
+}

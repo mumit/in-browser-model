@@ -1,0 +1,30 @@
+schema_version = 1
+output = "demo-final.mp4"
+
+[[part]]
+card = "This AI tells you when it's guessing. It runs in your browser tab."
+duration = 2.2
+
+[[part]]
+take = 0
+start = 0
+through = "open"
+
+[[part]]
+take = 0
+start = "load"
+through = "load"
+speed = 4
+label = "Sped up 4x"
+
+[[part]]
+take = 0
+start = "easy"
+end = "end"
+
+[[part]]
+card = "In the app, its voice shakes on those words. Nothing leaves your computer."
+duration = 2.6
+
+[[export]]
+preset = "x"

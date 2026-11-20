@@ -5,12 +5,12 @@
     {
       "step": "web /Users/[user]/Development/AI/in-browser-model/demo/storyboard.toml",
       "ok": true,
-      "seconds": 52.1
+      "seconds": 52.8
     },
     {
       "step": "edit /Users/[user]/Development/AI/in-browser-model/demo/edit.toml",
       "ok": true,
-      "seconds": 11.9
+      "seconds": 11.5
     }
   ],
   "ok": true,
@@ -80,21 +80,21 @@
     "fixtures": [],
     "recording_config_sha256": "e42f57a933dba7f1bad3c4d9ef192935c756424936edc186fbb58539e2fe83f9",
     "edit_sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906",
-    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
-    "commit": "8a340efddc9ee59ac9723385893b8d1da78acc3b",
+    "tracked_diff_sha256": "4788f5f3bc3fa45da9a23edfd17026d7ac384f10b9c6176f7f2b2206787f95f3",
+    "commit": "65ae6cb0591ecc1657f50511769033a70ad4531e",
     "dirty": true,
-    "dirty_index_sha256": "fbc8443a3eede07cd3ac03854485af2170822f41071a8857ab6cfb4b982bbdb3"
+    "dirty_index_sha256": "7884097b4efc19cbda694967e0cf60418285e9f9ca93171c8f4925435c8ed67b"
   },
-  "id": "3eacf714310a428c9c30dda2b8094e0e",
+  "id": "2d8c11ad8de54e8580045786e7b4a0e9",
   "exports": {},
   "mode": "final",
-  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/3eacf714310a428c9c30dda2b8094e0e/review",
-  "seconds": 77.2,
-  "finished_at": "2026-11-19T00:57:09.134750+00:00",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/2d8c11ad8de54e8580045786e7b4a0e9/review",
+  "seconds": 77.1,
+  "finished_at": "2026-11-20T16:01:17.780209+00:00",
   "files": [
     {
       "path": "takes/demo.take.json",
-      "sha256": "ce0ecd0bcd4394bd880bb5c6c98ff4371eb9ddad4889590e50c70a70508ff146"
+      "sha256": "be45581014f062c52b1ad757eab044344d4a97699b857362a69f7620c06966f7"
     },
     {
       "path": "takes/demo.evidence/load.png",
@@ -106,7 +106,7 @@
     },
     {
       "path": "takes/demo.evidence/room.png",
-      "sha256": "5ef607b57348a4e62ab8f5634f7a3ec2f14df019c83eb8276e83001c3a9f84d5"
+      "sha256": "c0dc3c10f2ab885b6a7a14caf8bdff131eb96a8fabdbdf6c47bf12981b43dbe7"
     },
     {
       "path": "takes/demo.evidence/home.png",
@@ -114,11 +114,11 @@
     },
     {
       "path": "takes/demo.evidence/reply.png",
-      "sha256": "90df501a8417e7ec2778531ba11427fd080f0d4ba9a4f2d22a0f5cf48aadde15"
+      "sha256": "8ba81ae553df90d6d038ebdd35dbf74dfc521bb191878cbab085b9cc8b10b4a1"
     },
     {
       "path": "takes/demo.evidence/end.png",
-      "sha256": "5ef607b57348a4e62ab8f5634f7a3ec2f14df019c83eb8276e83001c3a9f84d5"
+      "sha256": "c0dc3c10f2ab885b6a7a14caf8bdff131eb96a8fabdbdf6c47bf12981b43dbe7"
     },
     {
       "path": "takes/demo.evidence/motion.png",
@@ -126,11 +126,11 @@
     },
     {
       "path": "takes/demo.evidence/debate.png",
-      "sha256": "7be2142e8a123cd0547bb4aa4715051a98de944dca68dde1fb7638134b473efe"
+      "sha256": "b1b6e1681efb838693a7e1686cb77bb7b8132cfcb75635f59a8bd07c98062395"
     },
     {
       "path": "takes/demo.evidence/verdict.png",
-      "sha256": "b379f5413af434a32d7cf1c4eaad9327bb4d50f8121a33d20226f096cf3a2be1"
+      "sha256": "722754facad53de1dab9ccf74efe79cbde2d75fe70db48aa0d3c689b972d1947"
     }
   ],
   "expectations_status": "passed",

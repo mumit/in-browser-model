@@ -1,0 +1,108 @@
+schema_version = 1
+id = "prompt-golf"
+url = "http://127.0.0.1:8777/"
+size = "1024x576@2"
+timeout = 1200
+
+[caption]
+position = "top"
+margin = 0.03
+
+# A first visit opens the "How to play" guide; close it once so it stays closed.
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/prompt-golf/prompt-golf.html"
+
+[[setup]]
+type = "click"
+target = {css = "#docsX"}
+
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/"
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 2.4
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "open"
+purpose = "Open Prompt Golf from the gallery"
+caption = "Open Prompt Golf"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 360
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='prompt-golf/prompt-golf.html']"}
+[[beat.expect]]
+type = "url"
+contains = "prompt-golf/prompt-golf.html"
+[[beat.expect]]
+type = "text"
+target = {css = "#hName"}
+contains = "Hello, World"
+
+[[beat]]
+id = "load"
+purpose = "SmolLM2 135M loads in the tab"
+caption = "Load a 135M model into the tab"
+hold = 1
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#load"}
+contains = "Loaded"
+timeout = 600000
+
+[[beat]]
+id = "miss"
+purpose = "The bare target as a prompt makes the model ramble: a miss"
+caption = "Hole 1: make it say exactly “Hello, World!”"
+hold = 2.6
+[[beat.action]]
+type = "scroll"
+dy = 500
+[[beat.action]]
+type = "type"
+target = {css = "#prompt"}
+text = "Hello, World!"
+[[beat.action]]
+type = "click"
+target = {css = "#swing"}
+[[beat.expect]]
+type = "text"
+target = {css = "#verdict"}
+contains = "Missed"
+timeout = 120000
+
+[[beat]]
+id = "sink"
+purpose = "One more word sinks it in 17 strokes, 3 under par"
+caption = "Add “Say ”: in the cup, 3 under par"
+hold = 3.4
+[[beat.action]]
+type = "type"
+target = {css = "#prompt"}
+text = "Say Hello, World!"
+[[beat.action]]
+type = "click"
+target = {css = "#swing"}
+[[beat.expect]]
+type = "text"
+target = {css = "#verdict"}
+contains = "In the cup · 17 strokes"
+timeout = 120000
+
+[[beat]]
+id = "end"
+hold = 0.5

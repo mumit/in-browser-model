@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "config": "local source fb3fbed5a08b",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/follow-slides/storyboard.toml",
+      "ok": true,
+      "seconds": 76.8
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/follow-slides/edit.toml",
+      "ok": true,
+      "seconds": 17.3
+    }
+  ],
+  "ok": true,
+  "unchecked": 30,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "7839810058ec07b07b98dbff9045d9ac3c78a7e4a0f9dbd25a28ec95d7c79f29",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "26aac07a8f43c89c587b7250ecf26c468c1f22f74c446e655ec9aaa7c1d76ae3",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "7839810058ec07b07b98dbff9045d9ac3c78a7e4a0f9dbd25a28ec95d7c79f29"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "3a99e93fce16c747716664fa7740b618eb8cf27dc076939095dfabcc72bfbf65"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "26aac07a8f43c89c587b7250ecf26c468c1f22f74c446e655ec9aaa7c1d76ae3",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "c813d4eaf3fb6644b1dc266daa7a3e8ae861056b1c2d1f69ba2ea02d4ad6b29d"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "7839810058ec07b07b98dbff9045d9ac3c78a7e4a0f9dbd25a28ec95d7c79f29"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "3a99e93fce16c747716664fa7740b618eb8cf27dc076939095dfabcc72bfbf65"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "6e7b7fdd4e5168edd6c71953e5c8785e64375d3883f6864a89cc2c40a6196908",
+    "edit_sha256": "3a99e93fce16c747716664fa7740b618eb8cf27dc076939095dfabcc72bfbf65",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "commit": "65ae6cb0591ecc1657f50511769033a70ad4531e",
+    "dirty": true,
+    "dirty_index_sha256": "802c792935e31e971ba94f025045189957e1b6fbe1aa5db584dd02ea9ced7d07"
+  },
+  "id": "e7213f9d995d4fd3bfd2134b0e6505ae",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/follow-slides/takes/runs/e7213f9d995d4fd3bfd2134b0e6505ae/review",
+  "seconds": 117.4,
+  "finished_at": "2026-11-20T15:09:20.214459+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "631a8bd9abaf333518a1ae57250b72b6afdf0e65ffe2571bcc2eebab47668cc7"
+    },
+    {
+      "path": "takes/demo.evidence/runtime.png",
+      "sha256": "7b4f769f3ffdbf10b2afc58d429a1830b1c430fa6904964b60856d815f41a3d8"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "7041ccada9fc5a72585d842b81f23e8a3081570e48bd7e6e4a810055a5b991fd"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "b2589a4efb517fa7332b8f424b38b58b0cf7b57970d866cd4cbd6c70f39a8dcc"
+    },
+    {
+      "path": "takes/demo.evidence/game.png",
+      "sha256": "710756a7c6d0ebb4438838a06ab8094be25c07e1bf47ad8625e9c187d4603cb6"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "aa80cc8afc3913d9615b6c7cdf9c58c82e44fa14c912dd07058b2f01357c1655"
+    },
+    {
+      "path": "takes/demo.evidence/privacy.png",
+      "sha256": "c79f2a46c327b9c7ac6338ac79b545ec69ac4495d514024b23668b1a0aa71e4c"
+    },
+    {
+      "path": "takes/demo.evidence/open.png",
+      "sha256": "65daba1986b05bd52ee6d67502a69d879946d9ab8bd0bd610d4e9bc97178b144"
+    },
+    {
+      "path": "takes/demo.evidence/sizes.png",
+      "sha256": "8a7b28d506f99c5f55e006579dfaf73f16645f49c119038f8167e0f842551fed"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 9,
+  "record": true
+}

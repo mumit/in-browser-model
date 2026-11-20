@@ -1,0 +1,129 @@
+schema_version = 1
+id = "nervous-narrator"
+url = "http://127.0.0.1:8777/"
+size = "960x540@2"
+timeout = 1500
+
+# The recorder captures no sound, so the app is set to text only. The app saves this in localStorage.
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/nervous-narrator/nervous-narrator.html"
+
+[[setup]]
+type = "select"
+target = {css = "#voiceEngine"}
+option = "Silent (text only)"
+
+[[setup]]
+type = "navigate"
+url = "http://127.0.0.1:8777/"
+
+[[beat]]
+id = "gallery"
+purpose = "Start on the app gallery"
+caption = "A gallery of in-browser AI apps"
+hold = 2.4
+[[beat.expect]]
+type = "text"
+target = {css = "h1"}
+contains = "In-Browser Model Lab"
+
+[[beat]]
+id = "open"
+purpose = "Open Nervous Narrator from the gallery"
+caption = "Open Nervous Narrator"
+hold = 0.8
+[[beat.action]]
+type = "scroll"
+dy = 300
+[[beat.action]]
+type = "click"
+target = {css = "a.open[href='nervous-narrator/nervous-narrator.html']"}
+[[beat.expect]]
+type = "url"
+contains = "nervous-narrator/nervous-narrator.html"
+[[beat.expect]]
+type = "visible"
+target = {css = "#load"}
+
+[[beat]]
+id = "load"
+purpose = "Qwen2.5 0.5B downloads and loads in the tab"
+caption = "Load a 0.5B model into the tab"
+hold = 1
+[[beat.action]]
+type = "click"
+target = {css = "#load"}
+[[beat.expect]]
+type = "text"
+target = {css = "#status"}
+contains = "Ready"
+timeout = 900000
+
+[[beat]]
+id = "easy"
+purpose = "An easy question comes back with every word confident"
+caption = "Easy question: every word steady"
+hold = 2.2
+[[beat.action]]
+type = "scroll"
+dy = 340
+[[beat.action]]
+type = "type"
+target = {css = "#q"}
+text = "What is the capital of France?"
+[[beat.action]]
+type = "click"
+target = {css = "#ask"}
+[[beat.action]]
+type = "scroll"
+dy = 420
+[[beat.expect]]
+type = "text"
+target = {css = "#answer"}
+contains = "Paris"
+timeout = 120000
+
+[[beat]]
+id = "hard"
+purpose = "A harder question: the wrong name is the shaky part"
+caption = "Harder: it wobbles on the wrong name"
+hold = 2.8
+[[beat.action]]
+type = "scroll"
+dy = -420
+[[beat.action]]
+type = "type"
+target = {css = "#q"}
+text = "Who was Canada's 14th prime minister?"
+[[beat.action]]
+type = "click"
+target = {css = "#ask"}
+[[beat.action]]
+type = "scroll"
+dy = 420
+[[beat.expect]]
+type = "text"
+target = {css = "#answer"}
+contains = "Trudeau"
+timeout = 120000
+
+[[beat]]
+id = "inspect"
+purpose = "Click the shaky word to see what else the model considered"
+caption = "Click a word: what else it almost said"
+hold = 3
+[[beat.action]]
+type = "click"
+target = {css = "#answer .w[data-i='7']"}
+[[beat.action]]
+type = "scroll"
+dy = 220
+[[beat.expect]]
+type = "text"
+target = {css = "#detailTitle"}
+contains = "Justin"
+
+[[beat]]
+id = "end"
+hold = 0.5

@@ -1,0 +1,135 @@
+{
+  "schema_version": 1,
+  "config": "local source 942c0ea8d212",
+  "steps": [
+    {
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/ai-telephone/storyboard.toml",
+      "ok": true,
+      "seconds": 226.1
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/ai-telephone/edit.toml",
+      "ok": true,
+      "seconds": 29.3
+    }
+  ],
+  "ok": true,
+  "unchecked": 28,
+  "flagged": 0,
+  "kept": [],
+  "scan_status": "completed",
+  "review_status": "completed",
+  "errors": [],
+  "inputs": {
+    "config_sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c",
+    "reshoot": "0.3.15",
+    "stories": [
+      {
+        "sha256": "57cd57404204cc361ced979c5c44f1fc0da39522fb19c49a1fb17b8dc810f717",
+        "kind": "web"
+      }
+    ],
+    "render_state": {
+      "schema_version": 1,
+      "sha256": "a6ccc19af73b2640e3035bba2897d1cc4f4cde591d2098e560aae21a50aaeee9",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "57cd57404204cc361ced979c5c44f1fc0da39522fb19c49a1fb17b8dc810f717"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "7fc1807a0c71442dbf0ffb0272b4db568e9d636c97fad21085990e5786df3b73"
+        }
+      ]
+    },
+    "capture_state": {
+      "schema_version": 1,
+      "sha256": "a6ccc19af73b2640e3035bba2897d1cc4f4cde591d2098e560aae21a50aaeee9",
+      "files": [
+        {
+          "key": "project",
+          "kind": "project",
+          "path": "reshoot.toml",
+          "sha256": "57eb756b7f9f9f93c77d22e1dc5e64cfe110fccda07abcf3b51a9cb906154c8c"
+        },
+        {
+          "key": "take:0",
+          "kind": "story",
+          "path": "storyboard.toml",
+          "sha256": "57cd57404204cc361ced979c5c44f1fc0da39522fb19c49a1fb17b8dc810f717"
+        },
+        {
+          "key": "edit",
+          "kind": "edit",
+          "path": "edit.toml",
+          "sha256": "7fc1807a0c71442dbf0ffb0272b4db568e9d636c97fad21085990e5786df3b73"
+        }
+      ]
+    },
+    "fixtures": [],
+    "recording_config_sha256": "6e7b7fdd4e5168edd6c71953e5c8785e64375d3883f6864a89cc2c40a6196908",
+    "edit_sha256": "7fc1807a0c71442dbf0ffb0272b4db568e9d636c97fad21085990e5786df3b73",
+    "tracked_diff_sha256": "ecdc18d22523682ffa20895f3f6fbc075efabda1d1321838d10dd6c7172b699e",
+    "commit": "0301c185da32173589b9309aa0cb160f80352cfd",
+    "dirty": true,
+    "dirty_index_sha256": "f92a460950af408ff417655977ee974746bf9e824a1f664224c3cbfa981d0a39"
+  },
+  "id": "f04f512726cb4945a87bef2fa3da3d03",
+  "exports": {},
+  "mode": "final",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/ai-telephone/takes/runs/f04f512726cb4945a87bef2fa3da3d03/review",
+  "seconds": 275.5,
+  "finished_at": "2026-11-20T06:20:18.359360+00:00",
+  "files": [
+    {
+      "path": "takes/demo.take.json",
+      "sha256": "1fad9120c07800fe5885376f7afb26a301cef67d80876875a7c9315090a541be"
+    },
+    {
+      "path": "takes/demo.evidence/load.png",
+      "sha256": "bf0fee1ecef55b16232848ed720173f62a1685f665f90aa425fc0c994ee87d72"
+    },
+    {
+      "path": "takes/demo.evidence/gallery.png",
+      "sha256": "dc3670af4aae70a6b059d2f84f475d16e9e14468e1fe94f2f542ce3704bb6d80"
+    },
+    {
+      "path": "takes/demo.evidence/settings.png",
+      "sha256": "2e6addb895d4951aa309918434a62ef1f071148f96b981ba119be5d44a867e7e"
+    },
+    {
+      "path": "takes/demo.evidence/drift.png",
+      "sha256": "beb84200ce0b9a9ac2c82b7f0d979dc004cb195605cffc0d2b1ed4dbf6a0322e"
+    },
+    {
+      "path": "takes/demo.evidence/chain.png",
+      "sha256": "64bf5f564eeacb4219b879729026931d6739cda560434cbc61dd5a1a15e57bfb"
+    },
+    {
+      "path": "takes/demo.evidence/end.png",
+      "sha256": "999bccaa1b794a7de821d0f9649b85f3d9e8e4202d3cd6f420a0a6a17dd904cd"
+    },
+    {
+      "path": "takes/demo.evidence/flip.png",
+      "sha256": "999bccaa1b794a7de821d0f9649b85f3d9e8e4202d3cd6f420a0a6a17dd904cd"
+    },
+    {
+      "path": "takes/demo.evidence/open.png",
+      "sha256": "caa5ef8129181454213b32f667049981cdaa387027b8c9c9a88b78d1d7899949"
+    }
+  ],
+  "expectations_status": "passed",
+  "expectations_count": 8,
+  "record": true
+}
