@@ -282,7 +282,7 @@ function progressTracker(label) {
   };
 }
 async function loadLLM() {
-  T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+  T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
   let hasGPU = false;
   try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
   tok = await withRetry(() => T.AutoTokenizer.from_pretrained(prefs.llm), "Brain");
@@ -586,7 +586,7 @@ function stopTalk() { if (rec && rec.state === "recording") { rec.stop(); stream
 let asrLoading = null;
 function loadASR() {
   asrLoading = asrLoading || (async () => {
-    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
     asr = await withRetry(() => T.pipeline("automatic-speech-recognition", "Xenova/whisper-base.en", { progress_callback: progressTracker("Ears") }), "Ears");
     setStatus(`Ready · ${prefs.llm.split("/")[1]} on ${backend} · voice: ${prefs.voice} · ears: whisper-base.en`, 100);
   })();
