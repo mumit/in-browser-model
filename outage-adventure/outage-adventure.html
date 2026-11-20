@@ -335,6 +335,7 @@ function act(s, a) {
       if ((!dir || !r.exits[dir]) && a.object && !a.direction) {
         // Not next door: walk there through rooms you've already visited (each room on the way costs a move).
         const target = Object.keys(WORLD.rooms).find(k => WORLD.rooms[k].name.toLowerCase().includes(a.object.toLowerCase()));
+        if (target === s.room) return out(`You're already in the ${WORLD.rooms[target].name}.`);
         const path = target && target !== s.room && s.visited.includes(target) ? route(s, s.room, target) : null;
         if (!path) return out(target && !s.visited.includes(target) ? `You haven't found the way to the ${WORLD.rooms[target].name} yet.` : `You can't get to the ${a.object} from here.`);
         const via = [];
@@ -430,6 +431,7 @@ const VERBS = [
   [/^(?:drop|put down|leave)\s+(.+)$/, m => ({ action: "drop", object: m[1] })],
   [/^(?:open|unlock)\s+(.+)$/, m => ({ action: "open", object: m[1] })],
   [/^(?:look|l|look around)$/, () => ({ action: "look" })],
+  [/^(?:look|check|search|see|peek)\b.*\b(?:inside|in)\s+(?:the\s+|that\s+)?(.+)$/, m => ({ action: "open", object: m[1] })],
   [/^(?:look at|look in|examine|x|inspect|check|search)\s+(.+)$/, m => ({ action: "look", object: m[1] })],
   [/^read\s*(.*)$/, m => ({ action: "read", object: m[1] || null })],
   [/^(?:use|flip|press|push|reset|restart|reboot|turn on|switch on|log into|login to|log in to|unlock)\s+(.+?)(?:\s+(?:on|with)\s+.+)?$/, m => ({ action: "use", object: m[1] })],
@@ -561,7 +563,7 @@ function candidates(s) {
   }
   for (const i of vis.items) {
     const it = WORLD.items[i];
-    add({ action: "take", object: i }, [`take the ${it.name}`, `pick up the ${it.name}`, ...it.words.slice(0, 2).map(w => `grab the ${w}`)]);
+    add({ action: "take", object: i }, [`take the ${it.name}`, `pick up the ${it.name}`, `pocket the ${it.name}`, ...it.words.map(w => `grab the ${w}`)]);
     add({ action: "look", object: i }, [`look at the ${it.name}`, `examine the ${it.name}`]);
   }
   for (const f of vis.fixtures) {
