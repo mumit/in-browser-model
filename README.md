@@ -15,7 +15,7 @@ Six small apps and games that run AI models entirely in the browser (WebGPU, wit
 
 ![All six apps running in the browser: a debate verdict, a model unsure of a name, a narrator checked against the facts, a prompt golf albatross, a telephone chain that flips the meaning, and slides that follow speech](docs/demo/teaser/teaser-readme.gif)
 
-The payoff moment of each app, recorded in real time. Full demos: [Prompt Golf](docs/demo/prompt-golf/demo-final.mp4) · [Nervous Narrator](docs/demo/nervous-narrator/demo-final.mp4) · [Slides That Follow You](docs/demo/follow-slides/demo-final.mp4) · [AI Telephone](docs/demo/ai-telephone/demo-final.mp4) · [Outage at 3 A.M.](docs/demo/outage-adventure/demo-final.mp4) · [AI Debate Club](docs/demo/demo-final.mp4) ([GIF](docs/demo/demo-final-readme.gif)). The recording sources are in `demo/` and `demos/`; re-record one with [reshoot](https://github.com/mumit/reshoot), for example `reshoot run demos/prompt-golf/reshoot.toml`.
+The payoff moment of each app, recorded in real time. Full demos: [Prompt Golf](docs/demo/prompt-golf/demo-final.mp4) · [Nervous Narrator](docs/demo/nervous-narrator/demo-final.mp4) · [Slides That Follow You](docs/demo/follow-slides/demo-final.mp4) · [AI Telephone](docs/demo/ai-telephone/demo-final.mp4) · [Outage at 3 A.M.](docs/demo/outage-adventure/demo-final.mp4) · [AI Debate Club](docs/demo/debate-club/demo-final.mp4) ([GIF](docs/demo/debate-club/demo-final-readme.gif)). The recording sources are in `demos/`; re-record one with [reshoot](https://github.com/mumit/reshoot), for example `reshoot run demos/prompt-golf/reshoot.toml`.
 
 ## Run locally
 

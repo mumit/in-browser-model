@@ -25,14 +25,14 @@
           "type": "text",
           "status": "passed",
           "actual": "In-Browser Model Lab",
-          "at": 0.02581247058697045
+          "at": 0.02473751438083127
         }
       ],
-      "verified_at": 0.02581451158039272,
+      "verified_at": 0.0247396394261159,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/gallery.png",
-      "start": 0.002203095587901771,
+      "start": 0,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -133,7 +133,7 @@
           ]
         ]
       },
-      "end": 1.869316136580892
+      "end": 1.8666768894181587
     },
     {
       "id": "home",
@@ -158,20 +158,20 @@
           "type": "url",
           "status": "passed",
           "actual": "remote source 74996e732064",
-          "at": 3.0235745535464957
+          "at": 3.0442371803801507
         },
         {
           "type": "visible",
           "status": "passed",
           "actual": "True",
-          "at": 3.026559636578895
+          "at": 3.048091222415678
         }
       ],
-      "verified_at": 3.0265613455558196,
+      "verified_at": 3.048093764402438,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/home.png",
-      "start": 1.924392303568311,
+      "start": 1.9203878894331865,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -335,7 +335,7 @@
           ]
         ]
       },
-      "end": 3.8576101785874926
+      "end": 3.885797805385664
     },
     {
       "id": "motion",
@@ -364,20 +364,20 @@
           "type": "value",
           "status": "passed",
           "actual": "This house believes a hot dog is a sandwich",
-          "at": 6.850472595542669
+          "at": 6.9412304303841665
         },
         {
           "type": "value",
           "status": "passed",
           "actual": "pirate",
-          "at": 6.856606928573456
+          "at": 6.954776764381677
         }
       ],
-      "verified_at": 6.856607886555139,
+      "verified_at": 6.954778930405155,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/motion.png",
-      "start": 3.9015553455683403,
+      "start": 3.9253523474326357,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -628,7 +628,7 @@
           ]
         ]
       },
-      "end": 8.091626303561497
+      "end": 8.190050972392783
     },
     {
       "id": "load",
@@ -650,14 +650,14 @@
           "type": "text",
           "status": "passed",
           "actual": "Ready \u00b7 SmolLM2 135M on webgpu/q4f16 \u00b7 sound: off",
-          "at": 13.771895928541198
+          "at": 14.889496597403195
         }
       ],
-      "verified_at": 13.771898303588387,
+      "verified_at": 14.889497930416837,
       "trim_wait": false,
       "min_reading": 2.5,
       "screenshot": "demo.evidence/load.png",
-      "start": 8.13151680357987,
+      "start": 8.228948555421084,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -857,7 +857,7 @@
           ]
         ]
       },
-      "end": 16.31590455357218
+      "end": 17.4336382644251
     },
     {
       "id": "debate",
@@ -878,14 +878,14 @@
           "type": "visible",
           "status": "passed",
           "actual": "True",
-          "at": 19.09418680355884
+          "at": 21.21947830542922
         }
       ],
-      "verified_at": 19.094190720585175,
+      "verified_at": 21.219481180422008,
       "trim_wait": false,
       "min_reading": 2.5,
       "screenshot": "demo.evidence/debate.png",
-      "start": 16.353578595560975,
+      "start": 17.47320772241801,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -1643,7 +1643,7 @@
           ]
         ]
       },
-      "end": 21.63302684557857
+      "end": 23.753348680387717
     },
     {
       "id": "reply",
@@ -1664,14 +1664,14 @@
           "type": "visible",
           "status": "passed",
           "actual": "True",
-          "at": 22.08991280355258
+          "at": 24.222583014401607
         }
       ],
-      "verified_at": 22.089914886571933,
+      "verified_at": 24.222592264413834,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/reply.png",
-      "start": 21.6751475535566,
+      "start": 23.799928722379263,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -2573,7 +2573,7 @@
           ]
         ]
       },
-      "end": 24.621621511585545
+      "end": 26.750916347431485
     },
     {
       "id": "verdict",
@@ -2595,14 +2595,14 @@
           "type": "text",
           "status": "passed",
           "actual": "Run 1 (FOR labelled A): 67% FOR \u00b7 Run 2 (FOR labelled B): 33% FOR \u00b7 position bias toward \u201cA\u201d: +33 pts \u00b7 SmolLM2 135M",
-          "at": 25.08656517858617
+          "at": 27.22049343038816
         }
       ],
-      "verified_at": 25.086567136575468,
+      "verified_at": 27.220494597393554,
       "trim_wait": false,
       "min_reading": 2,
       "screenshot": "demo.evidence/verdict.png",
-      "start": 24.662896636582445,
+      "start": 26.791410389414523,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -2883,7 +2883,7 @@
           ]
         ]
       },
-      "end": 28.12475080357399
+      "end": 30.254015139420517
     },
     {
       "id": "room",
@@ -2905,14 +2905,14 @@
           "type": "text",
           "status": "passed",
           "actual": "PIRATE CAPTAIN WINS THE ROOM \u00b7 THE JUDGE DISAGREES",
-          "at": 29.12880105356453
+          "at": 31.301634097413626
         }
       ],
-      "verified_at": 29.128802011546213,
+      "verified_at": 31.301635597425047,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/room.png",
-      "start": 28.16746338654775,
+      "start": 30.2951685974258,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -3184,7 +3184,7 @@
           ]
         ]
       },
-      "end": 32.1665960115497
+      "end": 34.34259701438714
     },
     {
       "id": "end",
@@ -3194,11 +3194,11 @@
       "checks": [],
       "status": "unverified",
       "expectations": [],
-      "verified_at": 32.21091309556505,
+      "verified_at": 34.38722480542492,
       "trim_wait": false,
       "min_reading": 0,
       "screenshot": "demo.evidence/end.png",
-      "start": 32.20838842855301,
+      "start": 34.38342122238828,
       "layout": {
         "schema_version": 1,
         "viewport": [
@@ -3463,7 +3463,7 @@
         "scope": "sampled main-page text at the result hold",
         "checked": []
       },
-      "end": 32.72528397059068
+      "end": 34.902758430398535
     }
   ],
   "recording_settings_sha256": "0b2a0ea47a75f6300925c8bd393ed5040ee5ae9cb5fda2601112d2340a8a9e43",
@@ -3713,8 +3713,8 @@
     "css_height": 540,
     "pixel_ratio": 2.0,
     "zoom": false,
-    "frames": 653,
-    "max_gap_seconds": 3.51652193069458,
+    "frames": 767,
+    "max_gap_seconds": 3.5331919193267822,
     "seed": 1,
     "locale": "en-US",
     "timezone": "UTC",
@@ -3723,19 +3723,19 @@
   },
   "events": [
     {
-      "t": 0.005536011594813317,
+      "t": 0.0028199724038131535,
       "kind": "caption",
       "text": "A gallery of in-browser AI apps",
       "sub": null
     },
     {
-      "t": 1.9269646785687655,
+      "t": 1.9241276393877342,
       "kind": "caption",
       "text": "Open AI Debate Club",
       "sub": null
     },
     {
-      "t": 2.3571440535597503,
+      "t": 2.3774280144134536,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3746,7 +3746,7 @@
       ]
     },
     {
-      "t": 3.016432345553767,
+      "t": 3.0352663053781725,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3757,13 +3757,13 @@
       ]
     },
     {
-      "t": 3.9040120535646565,
+      "t": 3.9301522644236684,
       "kind": "caption",
       "text": "Pick a motion and two personas",
       "sub": null
     },
     {
-      "t": 3.94249997055158,
+      "t": 3.9770940974121913,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3774,7 +3774,7 @@
       ]
     },
     {
-      "t": 4.936763261561282,
+      "t": 4.99762713938253,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3785,7 +3785,7 @@
       ]
     },
     {
-      "t": 4.992058678588364,
+      "t": 5.061118722427636,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3796,7 +3796,7 @@
       ]
     },
     {
-      "t": 5.925097470579203,
+      "t": 5.995444805419538,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3807,7 +3807,7 @@
       ]
     },
     {
-      "t": 5.975624345592223,
+      "t": 6.047130222432315,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3818,7 +3818,7 @@
       ]
     },
     {
-      "t": 6.842785511573311,
+      "t": 6.9283308474114165,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3829,13 +3829,13 @@
       ]
     },
     {
-      "t": 8.133369053539354,
+      "t": 8.231671722431201,
       "kind": "caption",
       "text": "Load a 135M model into the tab",
       "sub": null
     },
     {
-      "t": 8.15645134553779,
+      "t": 8.259535180404782,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3846,7 +3846,7 @@
       ]
     },
     {
-      "t": 8.904109678580426,
+      "t": 9.005757889419328,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3857,13 +3857,13 @@
       ]
     },
     {
-      "t": 16.355849803541787,
+      "t": 17.477011097420473,
       "kind": "caption",
       "text": "The models argue, live in the browser",
       "sub": null
     },
     {
-      "t": 16.389014928543475,
+      "t": 17.511022889404558,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3874,7 +3874,7 @@
       ]
     },
     {
-      "t": 17.225336970586795,
+      "t": 18.348178805375937,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3885,25 +3885,25 @@
       ]
     },
     {
-      "t": 21.676998261536937,
+      "t": 23.802885764394887,
       "kind": "caption",
       "text": null,
       "sub": null
     },
     {
-      "t": 24.664967428543605,
+      "t": 26.79449101438513,
       "kind": "caption",
       "text": "A judge model scores the debate",
       "sub": null
     },
     {
-      "t": 28.169176553550642,
+      "t": 30.298293514410034,
       "kind": "caption",
       "text": "The room votes. No server involved.",
       "sub": null
     },
     {
-      "t": 28.188479761593044,
+      "t": 30.343274305399973,
       "kind": "act",
       "phase": "start",
       "rect": [
@@ -3914,7 +3914,7 @@
       ]
     },
     {
-      "t": 29.120200011588167,
+      "t": 31.287788847403135,
       "kind": "act",
       "phase": "end",
       "rect": [
@@ -3925,11 +3925,11 @@
       ]
     },
     {
-      "t": 32.20997522055404,
+      "t": 34.38603238941869,
       "kind": "caption",
       "text": null,
       "sub": null
     }
   ],
-  "sha256": "7f548d64fc5baa0a1900b7e3b78f712db4372ca6129e57b9eae17d9bbb622757"
+  "sha256": "75b7d981536764f4c5d8411edb8ed41c03b611f3f8a6c23e2a7980fc5e299808"
 }

@@ -1,22 +1,27 @@
 {
   "schema_version": 1,
-  "config": "local source 783e0437ca8c",
+  "config": "local source 8754ac061ca4",
   "steps": [
     {
-      "step": "edit /Users/[user]/Development/AI/in-browser-model/demo/edit.toml",
+      "step": "web /Users/[user]/Development/AI/in-browser-model/demos/debate-club/storyboard.toml",
       "ok": true,
-      "seconds": 13.8
+      "seconds": 60.9
+    },
+    {
+      "step": "edit /Users/[user]/Development/AI/in-browser-model/demos/debate-club/edit.toml",
+      "ok": true,
+      "seconds": 17.5
     }
   ],
   "ok": true,
-  "unchecked": 24,
+  "unchecked": 26,
   "flagged": 0,
   "kept": [],
   "scan_status": "completed",
   "review_status": "completed",
   "errors": [],
   "inputs": {
-    "config_sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d",
+    "config_sha256": "28f52e1b579fbbb5d4732b66f73e21b1c6a164085b7f126ecf38739b8cd5f848",
     "reshoot": "0.3.15",
     "stories": [
       {
@@ -26,13 +31,13 @@
     ],
     "render_state": {
       "schema_version": 1,
-      "sha256": "ca3eb7f61af0ec8690843d133d0e68517c33310abbbf4235351c4ca53a07deff",
+      "sha256": "8906491367f8d3306e7625db917113aa52ee8c525194dd49f914ff068208b2a9",
       "files": [
         {
           "key": "project",
           "kind": "project",
           "path": "reshoot.toml",
-          "sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d"
+          "sha256": "28f52e1b579fbbb5d4732b66f73e21b1c6a164085b7f126ecf38739b8cd5f848"
         },
         {
           "key": "take:0",
@@ -50,13 +55,13 @@
     },
     "capture_state": {
       "schema_version": 1,
-      "sha256": "9beefe8f1044598912d220e443031c607cc384d760a377e6fdd0f04c7bcea763",
+      "sha256": "8906491367f8d3306e7625db917113aa52ee8c525194dd49f914ff068208b2a9",
       "files": [
         {
           "key": "project",
           "kind": "project",
           "path": "reshoot.toml",
-          "sha256": "13803b38cc4be65969cf89c3389fbf23690f5ace9806e5686973898ced32b72d"
+          "sha256": "28f52e1b579fbbb5d4732b66f73e21b1c6a164085b7f126ecf38739b8cd5f848"
         },
         {
           "key": "take:0",
@@ -68,29 +73,28 @@
           "key": "edit",
           "kind": "edit",
           "path": "edit.toml",
-          "sha256": "a1fedad640aa6973281f852741154dd71340267bd702cacb131714ecb0dfc906"
+          "sha256": "e6b4ec083f549b2bade56f767c7d34397198092c334b1fd840c6aedd44beef3c"
         }
       ]
     },
     "fixtures": [],
-    "recording_config_sha256": "e42f57a933dba7f1bad3c4d9ef192935c756424936edc186fbb58539e2fe83f9",
+    "recording_config_sha256": "cc72a93581cab6a79905ea46aecaadb9f55eeba49f90f61bfbf808b4cb575e6c",
     "edit_sha256": "e6b4ec083f549b2bade56f767c7d34397198092c334b1fd840c6aedd44beef3c",
-    "tracked_diff_sha256": "807f51934247050c7625c119c6bb84e5f94b9c1e65818716c115eb4798988e85",
-    "commit": "73f64c4bd25a6e5bb2ec32d632eaaf2592b94fac",
+    "tracked_diff_sha256": "4e33854065be3eaf1df9fe275ef9284e40a0d67db07237c811ece1912d585137",
+    "commit": "992398d231ba7d6f5f8d1920bb31bfdc6aa2f813",
     "dirty": true,
-    "dirty_index_sha256": "f113d537f7699740d5cb8d4ed771dfe2f0cecfbbc4dd01384dfb6a8624930e48"
+    "dirty_index_sha256": "443a37c56799ed47aa5d940a15e0b09b22911743a60758976ff459c243bb66dc"
   },
-  "recut_from": "2d8c11ad8de54e8580045786e7b4a0e9",
-  "id": "65bcb550af0c47758d0ae1e3e01e14b2",
+  "id": "551e2432656f4884895817d1521b6cd7",
   "exports": {},
   "mode": "final",
-  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demo/takes/runs/65bcb550af0c47758d0ae1e3e01e14b2/review",
-  "seconds": 27.2,
-  "finished_at": "2026-11-20T17:00:30.485308+00:00",
+  "review": "/Users/mumitkhan/Development/AI/in-browser-model/demos/debate-club/takes/runs/551e2432656f4884895817d1521b6cd7/review",
+  "seconds": 94.2,
+  "finished_at": "2026-11-20T17:17:59.437683+00:00",
   "files": [
     {
       "path": "takes/demo.take.json",
-      "sha256": "be45581014f062c52b1ad757eab044344d4a97699b857362a69f7620c06966f7"
+      "sha256": "389e0153ea19d7e8f1701f6a2b12ffbb8fac150cb9bf370d43dd6419cc7b2440"
     },
     {
       "path": "takes/demo.evidence/load.png",

@@ -6,7 +6,7 @@
 - Source: each demo's caption-free take (`takes/demo.clean.mp4` and its
   `demo.beats.json`) from the run below, copied into `takes/` and scaled to
   1920x1080. Re-make it after re-recording any demo by copying the new take.
-  - debate: demo/takes/runs/2d8c11ad8de54e8580045786e7b4a0e9 (step "room")
+  - debate: demos/debate-club/takes/runs/2d8c11ad8de54e8580045786e7b4a0e9 (step "room")
   - narrator: demos/nervous-narrator/takes/runs/40c32dc3fae04d82ae43bcc1dc486ba4 ("inspect")
   - outage: demos/outage-adventure/takes/runs/ef4d5351f4b14d12a884a00fba776e2c ("hallway")
   - golf: demos/prompt-golf/takes/runs/ed91e543b6694c3ba9ab2cd169092e06 ("sink")

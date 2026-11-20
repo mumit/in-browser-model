@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
-  "run_id": "65bcb550af0c47758d0ae1e3e01e14b2",
-  "binding": "111b1c93ed283da2a47086a63d2310948666f43d4a0b7aee1da84716de5e4a0b",
+  "run_id": "551e2432656f4884895817d1521b6cd7",
+  "binding": "0e6c2dbbafa8efacd6e0cca5f03b071a6d6b559148f4139516ba2f3ebe5ce6cd",
   "decisions": {
     "debate-club/debate": "accepted",
     "debate-club/end": "accepted",
@@ -15,5 +15,5 @@
     "video": "accepted"
   },
   "recorded_by": "reshoot accept",
-  "recorded_at": "2026-11-20T17:00:50+00:00"
+  "recorded_at": "2026-11-20T17:18:06+00:00"
 }

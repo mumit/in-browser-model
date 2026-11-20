@@ -2,7 +2,7 @@ schema_version = 1
 timeout = 1800
 
 [app]
-run = "python3 -m http.server 8777 --bind 127.0.0.1 --directory .."
+run = "python3 -m http.server 8777 --bind 127.0.0.1 --directory ../.."
 url = "http://127.0.0.1:8777/debate-club/debate-club.html"
 
 [[take]]
