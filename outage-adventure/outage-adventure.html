@@ -469,9 +469,10 @@ const VOCAB = (() => {
   v.delete("server"); v.delete("room");
   return v;
 })();
-function groundCheck(narration, facts, s) {
+function groundCheck(narration, facts, s, engineText = "") {
   const allowed = new Set([facts.room, ...(facts.items || []), ...(facts.fixtures || []), ...(facts.exits || []).map(e => e.split(" ")[0]), ...s.inv.map(i => WORLD.items[i].name), facts.prevRoom].filter(Boolean).map(x => x.toLowerCase()));
-  const eventText = (facts.event || "").toLowerCase();
+  // Words from the engine's own line are never inventions: "card reader" in the hallway isn't the keycard.
+  const eventText = ((facts.event || "") + " " + engineText).toLowerCase();
   const bad = new Set();
   for (const [w, canon] of VOCAB) {
     if (!new RegExp(`\\b${w}s?\\b`, "i").test(narration)) continue;
@@ -509,7 +510,7 @@ function tracker(label) {
 $("load").onclick = async () => {
   const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
   try {
-    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
     const id = prefs.model;
     let hasGPU = false; try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
     tok = await withRetry(() => T.AutoTokenizer.from_pretrained(id), "Brain");
@@ -542,7 +543,7 @@ async function embedAll(texts) {
 $("loadEars").onclick = async () => {
   const btn = $("loadEars"); btn.disabled = true; btn.textContent = "Loading…";
   try {
-    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
     embedder = await withRetry(() => T.pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2", { progress_callback: tracker("Matcher") }), "Matcher");
     await embedAll(candidates(S).flatMap(c => c.phr));
     setStatus(`Matcher ready · type anything.${llm ? "" : " Load the narrator for styled storytelling."}`, 100);
@@ -716,7 +717,7 @@ async function run(text) {
   if (prefs.style !== "plain" && llm && !["help", "inventory", "hint"].includes(a.action)) {
     brainBusy = true;
     const tmp = document.createElement("p"); tmp.className = "truth"; tmp.textContent = "The narrator is thinking…"; turn.appendChild(tmp);
-    try { story = await narrate(res.text); styled = true; flags = groundCheck(story, res.facts, S); } catch (e) { console.error(e); story = res.text; }
+    try { story = await narrate(res.text); styled = true; flags = groundCheck(story, res.facts, S, res.text); } catch (e) { console.error(e); story = res.text; }
     tmp.remove(); brainBusy = false;
   }
   sayInto(turn, story, res.room ? WORLD.rooms[S.room].name : null);
@@ -725,6 +726,7 @@ async function run(text) {
     const f = document.createElement("div"); f.className = "flag" + (flags.length ? "" : " ok");
     f.textContent = flags.length ? `⚠ Grounding check: the narrator mentioned ${list(flags)}, which ${flags.length > 1 ? "aren't" : "isn't"} here.` : "✓ Grounding check: stuck to the facts.";
     turn.appendChild(f);
+    $("feed").scrollTop = $("feed").scrollHeight; // keep the engine line and the check in view
   }
   under({ text, via, top, action: a, changed: before !== after, before, after, engine: res.text, story: styled ? story : null, flags });
   if (S.won) celebrate();
