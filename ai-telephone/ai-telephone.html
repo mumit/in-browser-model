@@ -253,7 +253,7 @@ function tracker(label) {
 $("load").onclick = async () => {
   const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
   try {
-    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
     setStatus("Loading the meaning matcher (MiniLM)…", 0);
     embedder = await withRetry(() => T.pipeline("feature-extraction", "Xenova/all-MiniLM-L6-v2", { progress_callback: tracker("Matcher") }), "Matcher");
     setStatus("Loading the ears (Whisper)…", 0);
