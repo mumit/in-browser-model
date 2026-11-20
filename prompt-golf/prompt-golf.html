@@ -893,7 +893,7 @@ async function withRetry(fn, label) {
 $("load").onclick = async () => {
   const btn = $("load"); btn.disabled = true; btn.textContent = "Loading…";
   try {
-    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@3.7.6");
+    T = T || await import("https://cdn.jsdelivr.net/npm/@huggingface/transformers@4.3.2");
     let hasGPU = false;
     try { hasGPU = !!(navigator.gpu && await navigator.gpu.requestAdapter()); } catch {}
     const files = {};
